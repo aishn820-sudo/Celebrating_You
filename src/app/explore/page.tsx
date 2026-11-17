@@ -1,12 +1,15 @@
 import Navbar from "@/components/Navbar";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { isDatabaseUnavailableError } from "@/lib/dbErrors";
 import { Star, ShieldCheck, Filter, ArrowRight, Search, Clock, MapPin, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import ExploreGridClient from "./ExploreGridClient";
+
+export const dynamic = "force-dynamic";
 
 export default async function ExplorePage({
   searchParams,
@@ -20,7 +23,16 @@ export default async function ExplorePage({
     sort?: string;
   };
 }) {
-  const categories = await prisma.vendorCategory.findMany({ where: { isActive: true } });
+  let categories: any[] = [];
+  try {
+    categories = await prisma.vendorCategory.findMany({ where: { isActive: true } });
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      console.warn("[ExplorePage] Database uninitialized or unavailable. Rendering with empty categories.");
+    } else {
+      throw error;
+    }
+  }
 
   const where: any = {
     status: "PUBLISHED",
@@ -67,16 +79,25 @@ export default async function ExplorePage({
     orderBy = { basePrice: "desc" };
   }
 
-  const services = await prisma.service.findMany({
-    where,
-    include: {
-      category: true,
-      vendor: true,
-      packages: true,
-      images: { take: 1 },
-    },
-    orderBy,
-  });
+  let services: any[] = [];
+  try {
+    services = await prisma.service.findMany({
+      where,
+      include: {
+        category: true,
+        vendor: true,
+        packages: true,
+        images: { take: 1 },
+      },
+      orderBy,
+    });
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      console.warn("[ExplorePage] Database uninitialized or unavailable. Rendering with empty services.");
+    } else {
+      throw error;
+    }
+  }
 
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 

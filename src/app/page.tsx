@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import prisma from "@/lib/prisma";
+import { isDatabaseUnavailableError } from "@/lib/dbErrors";
 import {
   Camera,
   UtensilsCrossed,
@@ -20,21 +21,38 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
-  const [categories, featuredServices, templates] = await Promise.all([
-    prisma.vendorCategory.findMany({ where: { isActive: true } }),
-    prisma.service.findMany({
-      where: { status: "PUBLISHED", vendor: { verificationStatus: "VERIFIED" } },
-      include: {
-        category: true,
-        vendor: true,
-        packages: true,
-        images: { take: 1 },
-      },
-      take: 6,
-    }),
-    prisma.eventTemplate.findMany({ where: { isActive: true }, take: 3 }),
-  ]);
+  let categories: any[] = [];
+  let featuredServices: any[] = [];
+  let templates: any[] = [];
+
+  try {
+    const [fetchedCategories, fetchedServices, fetchedTemplates] = await Promise.all([
+      prisma.vendorCategory.findMany({ where: { isActive: true } }),
+      prisma.service.findMany({
+        where: { status: "PUBLISHED", vendor: { verificationStatus: "VERIFIED" } },
+        include: {
+          category: true,
+          vendor: true,
+          packages: true,
+          images: { take: 1 },
+        },
+        take: 6,
+      }),
+      prisma.eventTemplate.findMany({ where: { isActive: true }, take: 3 }),
+    ]);
+    categories = fetchedCategories;
+    featuredServices = fetchedServices;
+    templates = fetchedTemplates;
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      console.warn("[HomePage] Database uninitialized or unavailable. Rendering with empty collections.");
+    } else {
+      throw error;
+    }
+  }
 
   const categoryIcons: Record<string, any> = {
     "photography-editing": Camera,
@@ -153,31 +171,39 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-            {categories.map((cat) => {
-              const Icon = categoryIcons[cat.slug] || Sparkles;
-              return (
-                <Link key={cat.id} href={`/explore?category=${cat.id}`} className="group">
-                  <Card hoverEffect className="h-full p-6 flex flex-col justify-between">
-                    <div>
-                      <div className="w-11 h-11 rounded-xl bg-stone-100 border border-stone-200/70 text-stone-800 flex items-center justify-center mb-4 transition-colors group-hover:bg-rose-50 group-hover:text-rose-700 group-hover:border-rose-200">
-                        <Icon className="w-5 h-5" />
+          {categories.length === 0 ? (
+            <div className="text-center py-10 bg-white rounded-2xl border border-stone-200/70 p-6 max-w-lg mx-auto">
+              <Sparkles className="w-6 h-6 text-stone-400 mx-auto mb-2" />
+              <p className="text-xs font-semibold text-stone-700">Artisan categories are currently being initialized.</p>
+              <p className="text-[11px] text-stone-500 mt-1">Please check back shortly or explore the directory.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+              {categories.map((cat) => {
+                const Icon = categoryIcons[cat.slug] || Sparkles;
+                return (
+                  <Link key={cat.id} href={`/explore?category=${cat.id}`} className="group">
+                    <Card hoverEffect className="h-full p-6 flex flex-col justify-between">
+                      <div>
+                        <div className="w-11 h-11 rounded-xl bg-stone-100 border border-stone-200/70 text-stone-800 flex items-center justify-center mb-4 transition-colors group-hover:bg-rose-50 group-hover:text-rose-700 group-hover:border-rose-200">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <h3 className="font-bold text-stone-900 text-sm group-hover:text-rose-700 transition-colors">
+                          {cat.name}
+                        </h3>
+                        <p className="text-xs text-stone-500 mt-1 line-clamp-2 leading-relaxed">
+                          {cat.description}
+                        </p>
                       </div>
-                      <h3 className="font-bold text-stone-900 text-sm group-hover:text-rose-700 transition-colors">
-                        {cat.name}
-                      </h3>
-                      <p className="text-xs text-stone-500 mt-1 line-clamp-2 leading-relaxed">
-                        {cat.description}
-                      </p>
-                    </div>
-                    <span className="mt-4 text-[11px] font-semibold text-stone-400 group-hover:text-rose-600 transition-colors flex items-center gap-1">
-                      View Listings <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
+                      <span className="mt-4 text-[11px] font-semibold text-stone-400 group-hover:text-rose-600 transition-colors flex items-center gap-1">
+                        View Listings <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         {/* FEATURED ARTISANS */}
@@ -198,72 +224,89 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredServices.map((service) => (
-                <Card key={service.id} hoverEffect className="flex flex-col justify-between">
-                  <div>
-                    {/* Media / Image placeholder */}
-                    <div className="h-48 w-full bg-stone-200 relative overflow-hidden">
-                      {service.images[0] ? (
-                        <img
-                          src={service.images[0].imageUrl}
-                          alt={service.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400">
-                          <Sparkles className="w-8 h-8 mb-1" />
-                          <span className="text-xs font-medium">Curated Artisan Portfolio</span>
-                        </div>
-                      )}
-                      <div className="absolute top-3 left-3">
-                        <Badge variant="neutral" size="sm" className="bg-white/95 backdrop-blur-sm shadow-sm font-medium">
-                          {service.category.name}
-                        </Badge>
-                      </div>
-                      <div className="absolute top-3 right-3">
-                        <Badge variant="success" size="sm" dot>
-                          Verified
-                        </Badge>
-                      </div>
-                    </div>
-
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
-                        <span className="font-semibold text-stone-800">{service.vendor.businessName}</span>
-                        <div className="flex items-center gap-1 text-amber-700 font-bold">
-                          <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                          <span>{service.vendor.rating.toFixed(1)}</span>
-                          <span className="text-stone-400 font-normal">({service.vendor.reviewCount})</span>
-                        </div>
-                      </div>
-
-                      <h3 className="font-serif font-bold text-base text-stone-900 leading-snug line-clamp-1">
-                        {service.title}
-                      </h3>
-                      <p className="text-xs text-stone-500 mt-2 line-clamp-2 leading-relaxed">
-                        {service.description}
-                      </p>
-                    </CardContent>
-                  </div>
-
-                  <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex items-center justify-between">
+            {featuredServices.length === 0 ? (
+              <div className="text-center py-12 bg-white/70 rounded-2xl border border-stone-200/70 p-8 max-w-lg mx-auto">
+                <Sparkles className="w-8 h-8 text-stone-400 mx-auto mb-2" />
+                <h3 className="font-serif font-bold text-stone-800 text-base">Curating Verified Artisans</h3>
+                <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto leading-relaxed">
+                  Our artisan partners are currently completing onboarding and verification.
+                </p>
+                <div className="mt-4">
+                  <Link href="/explore">
+                    <Button variant="outline" size="sm">
+                      Explore Directory
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {featuredServices.map((service) => (
+                  <Card key={service.id} hoverEffect className="flex flex-col justify-between">
                     <div>
-                      <p className="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Packages From</p>
-                      <p className="text-base font-bold text-stone-900">
-                        {formatPrice(service.packages[0]?.price || service.basePrice)}
-                      </p>
+                      {/* Media / Image placeholder */}
+                      <div className="h-48 w-full bg-stone-200 relative overflow-hidden">
+                        {service.images[0] ? (
+                          <img
+                            src={service.images[0].imageUrl}
+                            alt={service.title}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400">
+                            <Sparkles className="w-8 h-8 mb-1" />
+                            <span className="text-xs font-medium">Curated Artisan Portfolio</span>
+                          </div>
+                        )}
+                        <div className="absolute top-3 left-3">
+                          <Badge variant="neutral" size="sm" className="bg-white/95 backdrop-blur-sm shadow-sm font-medium">
+                            {service.category.name}
+                          </Badge>
+                        </div>
+                        <div className="absolute top-3 right-3">
+                          <Badge variant="success" size="sm" dot>
+                            Verified
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
+                          <span className="font-semibold text-stone-800">{service.vendor.businessName}</span>
+                          <div className="flex items-center gap-1 text-amber-700 font-bold">
+                            <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                            <span>{service.vendor.rating.toFixed(1)}</span>
+                            <span className="text-stone-400 font-normal">({service.vendor.reviewCount})</span>
+                          </div>
+                        </div>
+
+                        <h3 className="font-serif font-bold text-base text-stone-900 leading-snug line-clamp-1">
+                          {service.title}
+                        </h3>
+                        <p className="text-xs text-stone-500 mt-2 line-clamp-2 leading-relaxed">
+                          {service.description}
+                        </p>
+                      </CardContent>
                     </div>
 
-                    <Link href={`/services/${service.id}`}>
-                      <Button variant="outline" size="sm">
-                        View Details
-                      </Button>
-                    </Link>
-                  </div>
-                </Card>
-              ))}
-            </div>
+                    <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex items-center justify-between">
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Packages From</p>
+                        <p className="text-base font-bold text-stone-900">
+                          {formatPrice(service.packages[0]?.price || service.basePrice)}
+                        </p>
+                      </div>
+
+                      <Link href={`/services/${service.id}`}>
+                        <Button variant="outline" size="sm">
+                          View Details
+                        </Button>
+                      </Link>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -279,46 +322,56 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {templates.map((tpl) => (
-              <Card key={tpl.id} hoverEffect className="p-7 flex flex-col justify-between">
-                <div>
-                  <Badge variant="champagne" size="sm" className="mb-4">
-                    {tpl.category}
-                  </Badge>
-                  <h3 className="text-lg font-serif font-bold text-stone-900 leading-snug">{tpl.name}</h3>
-                  <p className="text-xs text-stone-600 mt-2.5 leading-relaxed line-clamp-3">
-                    {tpl.description}
-                  </p>
+          {templates.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-2xl border border-stone-200/70 p-8 max-w-lg mx-auto">
+              <Sparkles className="w-8 h-8 text-stone-400 mx-auto mb-2" />
+              <h3 className="font-serif font-bold text-stone-800 text-base">Celebration Blueprints Preparing</h3>
+              <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto leading-relaxed">
+                Expert-designed milestone timelines and budget templates are currently being organized.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {templates.map((tpl) => (
+                <Card key={tpl.id} hoverEffect className="p-7 flex flex-col justify-between">
+                  <div>
+                    <Badge variant="champagne" size="sm" className="mb-4">
+                      {tpl.category}
+                    </Badge>
+                    <h3 className="text-lg font-serif font-bold text-stone-900 leading-snug">{tpl.name}</h3>
+                    <p className="text-xs text-stone-600 mt-2.5 leading-relaxed line-clamp-3">
+                      {tpl.description}
+                    </p>
 
-                  <div className="mt-6 pt-5 border-t border-stone-100 flex items-center justify-between text-xs">
-                    <div>
-                      <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
-                        Suggested Budget
-                      </span>
-                      <span className="font-bold text-stone-900">
-                        {formatPrice(tpl.suggestedBudgetMin)} – {formatPrice(tpl.suggestedBudgetMax)}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
-                        Guest Capacity
-                      </span>
-                      <span className="font-bold text-stone-900">~{tpl.defaultGuestCount} Guests</span>
+                    <div className="mt-6 pt-5 border-t border-stone-100 flex items-center justify-between text-xs">
+                      <div>
+                        <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
+                          Suggested Budget
+                        </span>
+                        <span className="font-bold text-stone-900">
+                          {formatPrice(tpl.suggestedBudgetMin)} – {formatPrice(tpl.suggestedBudgetMax)}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
+                          Guest Capacity
+                        </span>
+                        <span className="font-bold text-stone-900">~{tpl.defaultGuestCount} Guests</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mt-6">
-                  <Link href={`/customer/events?template=${tpl.slug}`}>
-                    <Button variant="secondary" size="sm" className="w-full">
-                      Use Blueprint
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
-            ))}
-          </div>
+                  <div className="mt-6">
+                    <Link href={`/customer/events?template=${tpl.slug}`}>
+                      <Button variant="secondary" size="sm" className="w-full">
+                        Use Blueprint
+                      </Button>
+                    </Link>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* HOW IT WORKS */}

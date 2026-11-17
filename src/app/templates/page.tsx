@@ -1,16 +1,29 @@
 import Navbar from "@/components/Navbar";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+import { isDatabaseUnavailableError } from "@/lib/dbErrors";
 import { Sparkles, CheckSquare, Layers, ArrowRight, Users, IndianRupee } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
+
+export const dynamic = "force-dynamic";
 
 export default async function TemplatesPage() {
-  const templates = await prisma.eventTemplate.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: "asc" },
-  });
+  let templates: any[] = [];
+  try {
+    templates = await prisma.eventTemplate.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: "asc" },
+    });
+  } catch (error) {
+    if (isDatabaseUnavailableError(error)) {
+      console.warn("[TemplatesPage] Database uninitialized or unavailable. Rendering with empty collection.");
+    } else {
+      throw error;
+    }
+  }
 
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
@@ -31,8 +44,22 @@ export default async function TemplatesPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {templates.map((tpl) => {
+        {templates.length === 0 ? (
+          <EmptyState
+            icon={<Sparkles className="w-8 h-8 text-stone-400" />}
+            title="Celebration Blueprints Preparing"
+            description="Our curated milestone blueprints, recommended budgets, and event timelines are currently being organized. Please check back shortly."
+            action={
+              <Link href="/explore">
+                <Button variant="secondary" size="sm">
+                  Explore Verified Artisans
+                </Button>
+              </Link>
+            }
+          />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {templates.map((tpl) => {
             let stages: string[] = [];
             let checkpoints: any[] = [];
             try {
@@ -118,7 +145,8 @@ export default async function TemplatesPage() {
               </Card>
             );
           })}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );

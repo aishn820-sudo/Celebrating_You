@@ -11,6 +11,9 @@
     "prisma:push": "prisma db push",
     "seed": "node scripts/seed.mjs"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
