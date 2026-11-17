@@ -1,6 +1,6 @@
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -90,6 +90,8 @@ model Vendor {
   reviews              Review[]
   complaints           Complaint[]
   promotions           VendorPromotion[]
+
+  @@index([categoryId])
 }
 
 // 4. VendorVerification
@@ -104,6 +106,8 @@ model VendorVerification {
   submittedAt        DateTime  @default(now())
   reviewedAt         DateTime?
   createdAt          DateTime  @default(now())
+
+  @@index([vendorId])
 }
 
 // 5. VendorDocuments
@@ -117,6 +121,8 @@ model VendorDocument {
   status             String    @default("PENDING") // "PENDING", "APPROVED", "REJECTED"
   uploadedAt         DateTime  @default(now())
   reviewedAt         DateTime?
+
+  @@index([vendorId])
 }
 
 // 6. VendorCategories
@@ -168,6 +174,10 @@ model Service {
   eventServices      EventService[]
   bookings           Booking[]
   reviews            Review[]
+
+  @@index([vendorId])
+  @@index([categoryId])
+  @@index([status])
 }
 
 // 8. ServicePackages
@@ -186,6 +196,8 @@ model ServicePackage {
 
   bookings           Booking[]
   eventServices      EventService[]
+
+  @@index([serviceId])
 }
 
 // 9. ServiceImages
@@ -197,6 +209,8 @@ model ServiceImage {
   isCover            Boolean   @default(false)
   sortOrder          Int       @default(0)
   createdAt          DateTime  @default(now())
+
+  @@index([serviceId])
 }
 
 // 10. ServiceAddons
@@ -209,6 +223,8 @@ model ServiceAddon {
   price              Int       // minor units (paise)
   isActive           Boolean   @default(true)
   createdAt          DateTime  @default(now())
+
+  @@index([serviceId])
 }
 
 // 11. ServiceAvailability
@@ -222,6 +238,8 @@ model ServiceAvailability {
   isBlocked          Boolean   @default(true)
   reason             String?
   createdAt          DateTime  @default(now())
+
+  @@index([vendorId, date])
 }
 
 // 12. Events
@@ -249,6 +267,9 @@ model Event {
   checkpoints        EventCheckpoint[]
   eventServices      EventService[]
   bookings           Booking[]
+
+  @@index([customerId])
+  @@index([eventDate])
 }
 
 // 13. EventTemplates
@@ -281,6 +302,8 @@ model EventCheckpoint {
   status             String    @default("PENDING") // "PENDING", "IN_PROGRESS", "COMPLETED"
   isCustom           Boolean   @default(false)
   createdAt          DateTime  @default(now())
+
+  @@index([eventId])
 }
 
 // 15. EventServices
@@ -298,6 +321,8 @@ model EventService {
   createdAt          DateTime  @default(now())
 
   @@map("EventServices")
+  @@index([eventId])
+  @@index([serviceId])
 }
 
 // 16. Bookings
@@ -356,6 +381,11 @@ model Booking {
   refunds                   Refund[]
   reviews                   Review[]
   complaints                Complaint[]
+
+  @@index([vendorId, eventDate])
+  @@index([customerId])
+  @@index([eventId])
+  @@index([status])
 }
 
 // 17. BookingStatusHistory
@@ -369,6 +399,8 @@ model BookingStatusHistory {
   changedByUserId    String?
   note               String?
   timestamp          DateTime  @default(now())
+
+  @@index([bookingId])
 }
 
 // 18. BookingIssues
@@ -387,6 +419,8 @@ model BookingIssue {
   resolvedAt         DateTime?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+
+  @@index([bookingId])
 }
 
 // 19. Payments
@@ -404,6 +438,9 @@ model Payment {
   updatedAt          DateTime  @updatedAt
 
   transactions       PaymentTransaction[]
+
+  @@index([bookingId])
+  @@index([customerId])
 }
 
 // 20. PaymentTransactions
@@ -428,6 +465,9 @@ model PaymentTransaction {
 
   invoices           Invoice[]
   refunds            Refund[]
+
+  @@index([bookingId])
+  @@index([paymentId])
 }
 
 // 21. Invoices
@@ -458,6 +498,9 @@ model Invoice {
   status                 String    @default("ISSUED") // "ISSUED", "PAID", "CANCELLED"
   pdfUrl                 String?
   createdAt              DateTime  @default(now())
+
+  @@index([bookingId])
+  @@index([transactionId])
 }
 
 // 22. VendorSettlements
@@ -477,6 +520,9 @@ model VendorSettlement {
   remarks                String?
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
+
+  @@index([vendorId])
+  @@index([bookingId])
 }
 
 // 23. Refunds
@@ -493,6 +539,8 @@ model Refund {
   processedAt            DateTime?
   refundRef              String?
   createdAt              DateTime  @default(now())
+
+  @@index([bookingId])
 }
 
 // 24. Reviews
@@ -513,6 +561,10 @@ model Review {
   isApproved         Boolean   @default(true)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+
+  @@index([vendorId])
+  @@index([serviceId])
+  @@index([customerId])
 }
 
 // 25. Notifications
@@ -527,6 +579,8 @@ model Notification {
   type               String    @default("BOOKING") // "BOOKING", "PAYMENT", "SYSTEM", "ALERT"
   isRead             Boolean   @default(false)
   createdAt          DateTime  @default(now())
+
+  @@index([userId])
 }
 
 // 26. Complaints
@@ -547,6 +601,10 @@ model Complaint {
   resolvedAt         DateTime?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+
+  @@index([vendorId])
+  @@index([customerId])
+  @@index([bookingId])
 }
 
 // 27. CommissionSettings
@@ -560,6 +618,8 @@ model CommissionSetting {
   isDefault                Boolean   @default(false)
   createdAt                DateTime  @default(now())
   updatedAt                DateTime  @updatedAt
+
+  @@index([categoryId])
 }
 
 // 28. PlatformSettings
@@ -583,6 +643,8 @@ model AuditLog {
   newValue           String?
   ipAddress          String?
   timestamp          DateTime  @default(now())
+
+  @@index([adminId])
 }
 
 // 30. VendorPromotions
@@ -598,4 +660,6 @@ model VendorPromotion {
   validUntil         DateTime
   isActive           Boolean   @default(true)
   createdAt          DateTime  @default(now())
+
+  @@index([vendorId])
 }

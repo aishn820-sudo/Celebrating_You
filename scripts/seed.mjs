@@ -33,15 +33,20 @@ async function main() {
 
   // 2. Default Commission Settings
   for (const cat of categories) {
-    await prisma.commissionSetting.create({
-      data: {
-        categoryId: cat.id,
-        defaultCommissionPercent: 10.0,
-        minCommissionPercent: 8.0,
-        maxCommissionPercent: 15.0,
-        isDefault: true,
-      },
+    const existing = await prisma.commissionSetting.findFirst({
+      where: { categoryId: cat.id },
     });
+    if (!existing) {
+      await prisma.commissionSetting.create({
+        data: {
+          categoryId: cat.id,
+          defaultCommissionPercent: 10.0,
+          minCommissionPercent: 8.0,
+          maxCommissionPercent: 15.0,
+          isDefault: true,
+        },
+      });
+    }
   }
 
   // 3. Event Templates
