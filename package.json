@@ -10,6 +10,8 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate deploy",
+    "prisma:resolve": "prisma migrate resolve --rolled-back 20261117000000_init_postgresql",
+    "db:inspect": "node scripts/inspect-db.mjs",
     "db:restore": "node scripts/migrate-to-postgres.mjs --restore",
     "db:export": "node scripts/migrate-to-postgres.mjs",
     "seed": "node scripts/seed.mjs"
