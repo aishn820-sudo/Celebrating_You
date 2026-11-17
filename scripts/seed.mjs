@@ -4,12 +4,17 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  if (process.env.NODE_ENV === "production" && !process.env.ALLOW_PROD_SEED) {
-    console.error("CRITICAL: Seeding test demo credentials is prohibited in production!");
-    console.error("To seed reference categories and templates only, use seed-reference-only script.");
-    process.exit(1);
+  const isReferenceOnly =
+    process.argv.includes("--reference-only") ||
+    (process.env.NODE_ENV === "production" && !process.env.ALLOW_PROD_SEED);
+
+  if (isReferenceOnly) {
+    console.log(
+      "Running in PRODUCTION REFERENCE-ONLY mode: Initializing core categories, commission settings and event templates without demo accounts."
+    );
+  } else {
+    console.log("Starting full database seeding for Celebrating YOU (Development Demo Mode)...");
   }
-  console.log("Starting database seeding for Celebrating YOU...");
 
   // 1. Categories
   const categoriesData = [
@@ -154,6 +159,28 @@ async function main() {
     });
   }
   console.log(`Created ${templatesData.length} event templates.`);
+
+  // 4. Default Platform Settings
+  const defaultSettings = [
+    { key: "SITE_NAME", value: "Celebrating YOU", description: "Marketplace brand name" },
+    { key: "RESPONSE_WINDOW_HOURS", value: "2", description: "Artisan response SLA window in hours" },
+    { key: "DEFAULT_COMMISSION_PERCENT", value: "10.0", description: "Default platform commission percentage" },
+    { key: "MAX_WEEKLY_DECLINES", value: "3", description: "Maximum allowed artisan declines within 7 days" },
+  ];
+  for (const s of defaultSettings) {
+    await prisma.platformSetting.upsert({
+      where: { key: s.key },
+      update: {},
+      create: s,
+    });
+  }
+  console.log(`Created ${defaultSettings.length} platform settings.`);
+
+  if (isReferenceOnly) {
+    console.log("✓ Core reference seeding complete! Categories, commission settings, event templates, and platform settings initialized.");
+    console.log("✓ Demo credentials and mock test accounts skipped for production safety.");
+    return;
+  }
 
   // 4. Admin User
   const adminPassword = await bcrypt.hash("Admin@12345", 10);
