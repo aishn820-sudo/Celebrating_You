@@ -84,7 +84,11 @@ async function run() {
     const customerPassword = await bcrypt.hash("Customer@12345", 10);
     const custUser = await prisma.user.upsert({
       where: { email: "priya@example.com" },
-      update: { role: "CUSTOMER", isFirstLogin: false },
+      update: {
+        passwordHash: customerPassword,
+        role: "CUSTOMER",
+        isFirstLogin: false,
+      },
       create: {
         email: "priya@example.com",
         passwordHash: customerPassword,
@@ -93,11 +97,21 @@ async function run() {
       },
     });
 
-    const custProfile = await prisma.customer.findUnique({ where: { userId: custUser.id } });
+    let custProfile = await prisma.customer.findFirst({
+      where: {
+        OR: [
+          { userId: custUser.id },
+          { email: "priya@example.com" },
+          { customerCode: "CY-CUST-1001" },
+        ],
+      },
+    });
+
     if (!custProfile) {
-      await prisma.customer.create({
+      custProfile = await prisma.customer.create({
         data: {
           userId: custUser.id,
+          customerCode: "CY-CUST-1001",
           name: "Priya Sharma",
           phone: "+91 99001 23456",
           email: "priya@example.com",
@@ -107,14 +121,23 @@ async function run() {
           pincode: "560034",
         },
       });
+    } else if (custProfile.userId !== custUser.id) {
+      custProfile = await prisma.customer.update({
+        where: { id: custProfile.id },
+        data: { userId: custUser.id },
+      });
     }
-    console.log("✓ Customer demo account verified (priya@example.com).");
+    console.log("✓ Customer demo account verified (priya@example.com / CY-CUST-1001).");
 
     // 3. Vendor Demo: studio@memories.com / Vendor@12345
     const vendorPassword = await bcrypt.hash("Vendor@12345", 10);
     const vendorUser = await prisma.user.upsert({
       where: { email: "studio@memories.com" },
-      update: { role: "VENDOR", isFirstLogin: false },
+      update: {
+        passwordHash: vendorPassword,
+        role: "VENDOR",
+        isFirstLogin: false,
+      },
       create: {
         email: "studio@memories.com",
         passwordHash: vendorPassword,
@@ -124,37 +147,58 @@ async function run() {
     });
 
     const photoCatId = categoryMap.get("photography-videography");
-    let vendorRecord = await prisma.vendor.findFirst({ where: { email: "studio@memories.com" } });
+    let vendorRecord = await prisma.vendor.findFirst({
+      where: {
+        OR: [
+          { userId: vendorUser.id },
+          { email: "studio@memories.com" },
+          { vendorCode: "CY-VEND-2001" },
+        ],
+      },
+    });
+
     if (!vendorRecord) {
       vendorRecord = await prisma.vendor.create({
         data: {
           userId: vendorUser.id,
+          vendorCode: "CY-VEND-2001",
           businessName: "Moments & Memories Studio",
+          contactPerson: "Arjun Mehta",
           categoryId: photoCatId,
-          businessType: "INDIVIDUAL",
           phone: "+91 98860 12345",
           email: "studio@memories.com",
-          address: "12, 100ft Road, Indiranagar",
           city: "Bangalore",
           state: "Karnataka",
           pincode: "560038",
           rating: 4.9,
           reviewCount: 28,
-          bio: "Boutique celebration photography and cinematic films capturing authentic emotion, timeless portraits and spontaneous joyful moments.",
-          yearsExperience: 8,
-          priceRange: "$$",
           verificationStatus: "VERIFIED",
-          isActive: true,
-          commissionRate: 10,
+          isVerified: true,
+          canPublish: true,
+          commissionRate: 10.0,
+          responseTimeMinutes: 12,
+        },
+      });
+    } else {
+      vendorRecord = await prisma.vendor.update({
+        where: { id: vendorRecord.id },
+        data: {
+          userId: vendorUser.id,
+          isVerified: true,
+          canPublish: true,
+          verificationStatus: "VERIFIED",
         },
       });
     }
-    console.log("✓ Vendor demo account verified (studio@memories.com).");
+    console.log("✓ Vendor demo account verified (studio@memories.com / CY-VEND-2001).");
 
     // 4. Ensure published service
-    const existingServices = await prisma.service.count({ where: { vendorId: vendorRecord.id } });
-    if (existingServices === 0 && photoCatId) {
-      const s = await prisma.service.create({
+    let demoService = await prisma.service.findFirst({
+      where: { vendorId: vendorRecord.id },
+    });
+
+    if (!demoService && photoCatId) {
+      demoService = await prisma.service.create({
         data: {
           vendorId: vendorRecord.id,
           categoryId: photoCatId,
@@ -162,48 +206,124 @@ async function run() {
           slug: "cinematic-celebration-portrait-coverage",
           description: "Full-spectrum event photo and cinema coverage. Includes candid photojournalism, family portraits, high-res digital delivery, and highlight teaser film.",
           basePrice: 1500000,
-          advancePercentage: 30,
-          leadTimeDays: 7,
-          city: "Bangalore",
           status: "PUBLISHED",
           rating: 4.9,
           reviewCount: 28,
+          duration: "6 Hours",
+          inclusions: JSON.stringify(["1 Lead Photographer", "1 Cinematographer", "Drone 4K shots", "300+ Mastered Photos"]),
         },
       });
 
-      await prisma.servicePackage.create({
+      const pkg = await prisma.servicePackage.create({
         data: {
-          serviceId: s.id,
+          serviceId: demoService.id,
           name: "Essential Photo Package",
           description: "4 hours coverage, 1 candid photographer, 100+ edited digital high-res photos.",
           price: 1500000,
-          advancePaise: 450000,
-          durationHours: 4,
-          inclusions: JSON.stringify(["1 Senior Photographer", "100+ Master Color-Graded Photos", "Online Private Gallery"]),
-          sortOrder: 1,
+          advancePercent: 25,
+          duration: "4 Hours",
+          features: JSON.stringify(["1 Senior Photographer", "100+ Master Color-Graded Photos", "Online Private Gallery"]),
         },
       });
 
       await prisma.serviceImage.create({
         data: {
-          serviceId: s.id,
+          serviceId: demoService.id,
           imageUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop",
-          isPrimary: true,
-          caption: "Celebration portraiture and candid moments",
+          isCover: true,
+          sortOrder: 1,
         },
       });
       console.log("✓ Created published service for Moments & Memories Studio.");
     }
 
-    // 5. Blueprints
+    // 5. Ensure Priya has a sample Event & Booking
+    const existingEventsCount = await prisma.event.count({
+      where: { customerId: custProfile.id },
+    });
+
+    if (existingEventsCount === 0) {
+      const demoEvent = await prisma.event.create({
+        data: {
+          customerId: custProfile.id,
+          title: "Aarav's 5th Superhero Birthday",
+          eventType: "Birthday",
+          eventDate: "2026-11-28",
+          eventTime: "16:00",
+          locationAddress: "The Grand Orchid Clubhouse, Sarjapur Road",
+          city: "Bangalore",
+          state: "Karnataka",
+          pincode: "560035",
+          guestCount: 65,
+          overallBudget: 4500000,
+          status: "PLANNING",
+          notes: "Superhero themed celebration with photo coverage and custom cake.",
+        },
+      });
+
+      await prisma.eventCheckpoint.createMany({
+        data: [
+          {
+            eventId: demoEvent.id,
+            title: "Theme & Palette Finalized",
+            description: "Confirmed superhero theme with decorator",
+            targetDate: "2026-11-18",
+            status: "COMPLETED",
+          },
+          {
+            eventId: demoEvent.id,
+            title: "Photography Crew Booked",
+            description: "Moments & Memories Studio confirmed",
+            targetDate: "2026-11-21",
+            status: "COMPLETED",
+          },
+          {
+            eventId: demoEvent.id,
+            title: "Final Guest Count & Cake Flavor",
+            description: "Verify head count and bakery delivery time",
+            targetDate: "2026-11-25",
+            status: "PENDING",
+          },
+        ],
+      });
+
+      if (demoService) {
+        const demoPkg = await prisma.servicePackage.findFirst({
+          where: { serviceId: demoService.id },
+        });
+
+        await prisma.booking.create({
+          data: {
+            bookingCode: "CY-BK-5001",
+            eventId: demoEvent.id,
+            customerId: custProfile.id,
+            vendorId: vendorRecord.id,
+            serviceId: demoService.id,
+            packageId: demoPkg?.id,
+            eventDate: "2026-11-28",
+            status: "CONFIRMED",
+            agreedServiceValue: 1500000,
+            advanceRequired: 375000,
+            advancePaid: 375000,
+            finalBalanceDue: 1125000,
+            isCustomerContactRevealed: true,
+            isVendorContactRevealed: true,
+            specialRequirements: "Focus on candid photos of kids games and family cake cutting.",
+          },
+        });
+      }
+      console.log("✓ Created sample celebration event & confirmed booking for Priya.");
+    }
+
+    // 6. Curated Celebration Blueprints
     const blueprints = [
       {
         slug: "dream-birthday-celebration",
         name: "Dream Birthday Celebration",
         category: "Birthday",
         description: "The complete milestone birthday package: thematic balloon backdrops, artisan custom cake, candid celebration photojournalism, gourmet banquet, and engaging party entertainment.",
-        suggestedBudgetMin: 2500000, // ₹25,000
-        suggestedBudgetMax: 5000000, // ₹50,000
+        suggestedBudgetMin: 2500000,
+        suggestedBudgetMax: 5000000,
         defaultGuestCount: 50,
         stagesJson: JSON.stringify(["Concept & Palette", "Vendor Shortlisting", "Advance Payment & Checklist", "Party Showtime"]),
         recommendedServicesJson: JSON.stringify(["decoration-services", "cakes-bakeries", "photography-videography", "catering-services", "entertainment"]),
@@ -220,8 +340,8 @@ async function run() {
         name: "Elegant Wedding Celebration",
         category: "Wedding",
         description: "A breathtaking celebration bringing together luxury venue decor, cinematic photo and drone film crews, royal banquet catering, and celebratory bridal makeover artists.",
-        suggestedBudgetMin: 20000000, // ₹2,00,000
-        suggestedBudgetMax: 50000000, // ₹5,00,000
+        suggestedBudgetMin: 20000000,
+        suggestedBudgetMax: 50000000,
         defaultGuestCount: 200,
         stagesJson: JSON.stringify(["Venue & Mandap Styling", "Tasting Session", "Cinematography Brief", "Wedding Day Execution"]),
         recommendedServicesJson: JSON.stringify(["venues", "decoration-services", "photography-videography", "catering-services", "makeup-beauty", "entertainment"]),
@@ -238,8 +358,8 @@ async function run() {
         name: "Intimate Engagement Soiree",
         category: "Engagement",
         description: "An intimate, romantic gathering with floral ring-ceremony archways, champagne canapés, bespoke engagement cake, and couple portraiture.",
-        suggestedBudgetMin: 5000000, // ₹50,000
-        suggestedBudgetMax: 10000000, // ₹1,00,000
+        suggestedBudgetMin: 5000000,
+        suggestedBudgetMax: 10000000,
         defaultGuestCount: 60,
         stagesJson: JSON.stringify(["Arch & Decor Styling", "Couple Photography Session", "Engagement Feast"]),
         recommendedServicesJson: JSON.stringify(["decoration-services", "photography-videography", "cakes-bakeries", "catering-services", "venues"]),
@@ -255,8 +375,8 @@ async function run() {
         name: "Romantic Anniversary Celebration",
         category: "Anniversary",
         description: "Celebrate enduring love with candlelit floral tablescapes, gourmet dining, nostalgic photo slideshow, and signature anniversary cake.",
-        suggestedBudgetMin: 1000000, // ₹10,000
-        suggestedBudgetMax: 2500000, // ₹25,000
+        suggestedBudgetMin: 1000000,
+        suggestedBudgetMax: 2500000,
         defaultGuestCount: 25,
         stagesJson: JSON.stringify(["Theme & Atmosphere", "Gourmet Dining Selection", "Execution"]),
         recommendedServicesJson: JSON.stringify(["decoration-services", "photography-videography", "cakes-bakeries", "catering-services"]),
@@ -272,8 +392,8 @@ async function run() {
         name: "Beautiful Baby Shower",
         category: "Baby Shower",
         description: "Welcome the arrival with pastel floral backdrops, gender-neutral dessert tables, sweet mom-to-be portraits, and delicious hi-tea bites.",
-        suggestedBudgetMin: 2000000, // ₹20,000
-        suggestedBudgetMax: 4000000, // ₹40,000
+        suggestedBudgetMin: 2000000,
+        suggestedBudgetMax: 4000000,
         defaultGuestCount: 40,
         stagesJson: JSON.stringify(["Pastel Theme & Invitations", "Hi-Tea & Sweets", "Games & Photo Session"]),
         recommendedServicesJson: JSON.stringify(["decoration-services", "cakes-bakeries", "photography-videography", "catering-services", "celebration-services"]),
@@ -289,8 +409,8 @@ async function run() {
         name: "Auspicious Housewarming Celebration",
         category: "Housewarming",
         description: "Bless your new home with traditional marigold pooja decor, traditional banana-leaf welcome dining, auspicious floral rangoli, and family milestone photos.",
-        suggestedBudgetMin: 1500000, // ₹15,000
-        suggestedBudgetMax: 3500000, // ₹35,000
+        suggestedBudgetMin: 1500000,
+        suggestedBudgetMax: 3500000,
         defaultGuestCount: 45,
         stagesJson: JSON.stringify(["Pooja Staging", "Traditional Lunch Feast", "Home Showcase"]),
         recommendedServicesJson: JSON.stringify(["decoration-services", "catering-services", "photography-videography", "celebration-services"]),
@@ -306,8 +426,8 @@ async function run() {
         name: "Triumphant Graduation Celebration",
         category: "Graduation",
         description: "Celebrate academic achievement with custom diploma cake, graduate cap balloon arch, high-energy sound & DJ setup, and celebratory buffet spread.",
-        suggestedBudgetMin: 2000000, // ₹20,000
-        suggestedBudgetMax: 4500000, // ₹45,000
+        suggestedBudgetMin: 2000000,
+        suggestedBudgetMax: 4500000,
         defaultGuestCount: 50,
         stagesJson: JSON.stringify(["Setup & DJ Sound Check", "Toasts & Cap Toss", "Buffet & Dance"]),
         recommendedServicesJson: JSON.stringify(["decoration-services", "cakes-bakeries", "entertainment", "photography-videography", "catering-services"]),
@@ -323,8 +443,8 @@ async function run() {
         name: "Corporate Milestone & Annual Celebration",
         category: "Corporate Event",
         description: "Professional annual galas, product launches and team milestones with state-of-the-art AV staging, executive hi-tea banquet, emcee hosting and documentary coverage.",
-        suggestedBudgetMin: 7500000, // ₹75,000
-        suggestedBudgetMax: 20000000, // ₹2,00,000
+        suggestedBudgetMin: 7500000,
+        suggestedBudgetMax: 20000000,
         defaultGuestCount: 100,
         stagesJson: JSON.stringify(["Tech Dry Run & Lighting", "Keynote & Recognitions", "Banquet Feast"]),
         recommendedServicesJson: JSON.stringify(["venues", "decoration-services", "catering-services", "entertainment", "photography-videography"]),
@@ -351,7 +471,11 @@ async function run() {
     console.log("====================================================");
   } catch (err) {
     console.error("Seeding error:", err);
-    process.exitCode = 1;
+    if (err.name === "PrismaClientInitializationError" && process.env.NODE_ENV !== "production") {
+      console.warn("⚠️ Local development database unreachable. Skipping seed step for local build.");
+    } else {
+      process.exitCode = 1;
+    }
   } finally {
     await prisma.$disconnect();
   }

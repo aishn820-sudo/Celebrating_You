@@ -79,73 +79,85 @@ export async function ensureDemoData(): Promise<void> {
     }
 
     // 2. Ensure Customer Demo Account: priya@example.com / Customer@12345
-    const existingCustomerUser = await prisma.user.findUnique({
+    const customerPassword = await bcrypt.hash("Customer@12345", 10);
+    const custUser = await prisma.user.upsert({
       where: { email: "priya@example.com" },
+      update: {
+        passwordHash: customerPassword,
+        role: "CUSTOMER",
+        isFirstLogin: false,
+      },
+      create: {
+        email: "priya@example.com",
+        passwordHash: customerPassword,
+        role: "CUSTOMER",
+        isFirstLogin: false,
+      },
     });
 
-    let customerUserId = existingCustomerUser?.id;
-    if (!existingCustomerUser) {
-      const customerPassword = await bcrypt.hash("Customer@12345", 10);
-      const custUser = await prisma.user.create({
+    let custProfile = await prisma.customer.findFirst({
+      where: {
+        OR: [
+          { userId: custUser.id },
+          { email: "priya@example.com" },
+          { customerCode: "CY-CUST-1001" },
+        ],
+      },
+    });
+
+    if (!custProfile) {
+      custProfile = await prisma.customer.create({
         data: {
+          userId: custUser.id,
+          customerCode: "CY-CUST-1001",
+          name: "Priya Sharma",
+          phone: "+91 99001 23456",
           email: "priya@example.com",
-          passwordHash: customerPassword,
-          role: "CUSTOMER",
-          isFirstLogin: false,
+          address: "Flat 402, Sunshine Heights, Koramangala 4th Block",
+          city: "Bangalore",
+          state: "Karnataka",
+          pincode: "560034",
         },
       });
-      customerUserId = custUser.id;
-    }
-
-    if (customerUserId) {
-      const existingCustomer = await prisma.customer.findUnique({
-        where: { userId: customerUserId },
+    } else if (custProfile.userId !== custUser.id) {
+      custProfile = await prisma.customer.update({
+        where: { id: custProfile.id },
+        data: { userId: custUser.id },
       });
-      if (!existingCustomer) {
-        await prisma.customer.create({
-          data: {
-            userId: customerUserId,
-            customerCode: "CY-CUST-1001",
-            name: "Priya Sharma",
-            phone: "+91 99001 23456",
-            email: "priya@example.com",
-            address: "Flat 402, Sunshine Heights, Koramangala 4th Block",
-            city: "Bangalore",
-            state: "Karnataka",
-            pincode: "560034",
-          },
-        });
-      }
     }
 
     // 3. Ensure Vendor Demo Account: studio@memories.com / Vendor@12345
-    const photoCatId = categoryMap.get("photography-videography") || "";
-    const existingVendorUser = await prisma.user.findUnique({
+    const photoCatId = categoryMap.get("photography-videography");
+    const vendorPassword = await bcrypt.hash("Vendor@12345", 10);
+    const vendorUser = await prisma.user.upsert({
       where: { email: "studio@memories.com" },
+      update: {
+        passwordHash: vendorPassword,
+        role: "VENDOR",
+        isFirstLogin: false,
+      },
+      create: {
+        email: "studio@memories.com",
+        passwordHash: vendorPassword,
+        role: "VENDOR",
+        isFirstLogin: false,
+      },
     });
-
-    let vendorUserId = existingVendorUser?.id;
-    if (!existingVendorUser) {
-      const vendorPassword = await bcrypt.hash("Vendor@12345", 10);
-      const vUser = await prisma.user.create({
-        data: {
-          email: "studio@memories.com",
-          passwordHash: vendorPassword,
-          role: "VENDOR",
-          isFirstLogin: false,
-        },
-      });
-      vendorUserId = vUser.id;
-    }
 
     let vendorRecord = await prisma.vendor.findFirst({
-      where: { email: "studio@memories.com" },
+      where: {
+        OR: [
+          { userId: vendorUser.id },
+          { email: "studio@memories.com" },
+          { vendorCode: "CY-VEND-2001" },
+        ],
+      },
     });
 
-    if (!vendorRecord && vendorUserId && photoCatId) {
+    if (!vendorRecord && photoCatId) {
       vendorRecord = await prisma.vendor.create({
         data: {
-          userId: vendorUserId,
+          userId: vendorUser.id,
           vendorCode: "CY-VEND-2001",
           businessName: "Moments & Memories Studio",
           contactPerson: "Arjun Mehta",
@@ -160,8 +172,18 @@ export async function ensureDemoData(): Promise<void> {
           verificationStatus: "VERIFIED",
           isVerified: true,
           canPublish: true,
-          commissionRate: 10,
+          commissionRate: 10.0,
           responseTimeMinutes: 12,
+        },
+      });
+    } else if (vendorRecord) {
+      vendorRecord = await prisma.vendor.update({
+        where: { id: vendorRecord.id },
+        data: {
+          userId: vendorUser.id,
+          isVerified: true,
+          canPublish: true,
+          verificationStatus: "VERIFIED",
         },
       });
     }
