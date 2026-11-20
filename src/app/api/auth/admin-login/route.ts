@@ -61,6 +61,12 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (err: any) {
     console.error("Admin login error:", err);
+    if (err.code === "P1000" || err.code === "P1001" || err.name === "PrismaClientInitializationError") {
+      return NextResponse.json(
+        { error: "Database connection failure: Unable to reach database server. Please verify database connectivity." },
+        { status: 503 }
+      );
+    }
     return NextResponse.json({ error: err.message || "Admin login failed" }, { status: 500 });
   }
 }
