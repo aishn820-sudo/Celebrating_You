@@ -113,14 +113,21 @@ export default function EventsClient({
             </p>
           </div>
 
-          <Button
-            variant="primary"
-            size="md"
-            onClick={() => setIsModalOpen(true)}
-            leftIcon={<Plus className="w-4 h-4" />}
-          >
-            Create New Event
-          </Button>
+          <div className="flex flex-wrap gap-2.5">
+            <Link href="/plan">
+              <Button variant="champagne" size="md" leftIcon={<Sparkles className="w-4 h-4" />}>
+                Guided 5-Step Planner
+              </Button>
+            </Link>
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => setIsModalOpen(true)}
+              leftIcon={<Plus className="w-4 h-4" />}
+            >
+              Quick Create
+            </Button>
+          </div>
         </div>
 
         {/* Events Grid */}
@@ -210,7 +217,7 @@ export default function EventsClient({
 
                     {/* Bookings Count */}
                     <div className="mt-4 flex items-center justify-between text-xs text-stone-500">
-                      <span>Artisan Bookings</span>
+                      <span>Vendor Bookings</span>
                       <span className="font-bold text-stone-800">{event.bookings?.length || 0} Linked</span>
                     </div>
                   </div>
@@ -218,7 +225,7 @@ export default function EventsClient({
                   <div className="mt-6 pt-4 border-t border-stone-100">
                     <Link href={`/customer/events/${event.id}`}>
                       <Button variant="secondary" size="sm" className="w-full">
-                        Open Event Workspace <ArrowRight className="w-3.5 h-3.5" />
+                        Open Celebration Dashboard <ArrowRight className="w-3.5 h-3.5" />
                       </Button>
                     </Link>
                   </div>

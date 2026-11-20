@@ -133,7 +133,7 @@ export default function VendorNav({ vendor }: { vendor?: any }) {
           <div className="flex items-center justify-between mb-3 px-2">
             <div className="truncate">
               <p className="text-xs font-bold text-white truncate">
-                {vendor?.businessName || "Artisan Business"}
+                {vendor?.businessName || "Vendor Business"}
               </p>
               <p className="text-[10px] text-stone-400 font-mono truncate">
                 {vendor?.vendorCode || "CY-VEND"}

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Celebrating YOU — Curated Celebration Marketplace",
-  description: "The premier full-stack platform for booking verified event photographers, caterers, bakers, decorators, and celebration artisans.",
+  title: "Celebrating YOU — Every Celebration. One Place.",
+  description: "You Imagine the Celebration. We Bring Everything Together. Connect with trusted event service providers and vendors through one unified celebration marketplace.",
 };
 
 export default function RootLayout({

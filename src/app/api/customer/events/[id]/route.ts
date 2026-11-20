@@ -50,7 +50,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     }
 
     const body = await req.json();
-    const { title, guestCount, overallBudget, notes, status, checkpointUpdate } = body;
+    const { title, guestCount, overallBudget, notes, status, checkpointUpdate, newCheckpoint } = body;
 
     const event = await prisma.event.findFirst({
       where: { id: params.id, customerId: session.customerId },
@@ -65,6 +65,18 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       await prisma.eventCheckpoint.update({
         where: { id: checkpointId },
         data: { status: cpStatus },
+      });
+    }
+
+    if (newCheckpoint && newCheckpoint.title) {
+      await prisma.eventCheckpoint.create({
+        data: {
+          eventId: params.id,
+          title: newCheckpoint.title,
+          description: newCheckpoint.description || "",
+          targetDate: newCheckpoint.targetDate || null,
+          status: "PENDING",
+        },
       });
     }
 

@@ -14,6 +14,7 @@ import {
   AlertTriangle,
   FileText,
   Lock,
+  Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -55,6 +56,11 @@ export default async function CustomerDashboardPage() {
   const confirmedBookings = bookings.filter((b) => b.status === "CONFIRMED" || b.status === "IN_PROGRESS");
   const completedBookings = bookings.filter((b) => b.status === "COMPLETED");
 
+  const totalOutstandingBalance = confirmedBookings.reduce(
+    (sum, b) => sum + (b.finalBalanceDue || 0),
+    0
+  );
+
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   return (
@@ -66,28 +72,28 @@ export default async function CustomerDashboardPage() {
         <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/90 shadow-soft mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="neutral" size="sm" className="font-mono">
+              <Badge variant="champagne" size="sm" className="font-mono">
                 {customer?.customerCode || "CY-CUST"}
               </Badge>
-              <span className="text-xs text-stone-400 font-medium">Customer Portal</span>
+              <span className="text-xs text-stone-500 font-medium">Celebration Hub</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
               Welcome back, {customer?.name || "Friend"}
             </h1>
             <p className="text-xs sm:text-sm text-stone-500 mt-1 max-w-xl leading-relaxed">
-              Track your milestone checkpoints, review incoming vendor acceptances, and inspect verified transaction documents.
+              Track your upcoming celebrations, manage vendor contracts, review milestone checkpoints, and access official tax invoices.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Link href="/customer/events">
-              <Button variant="outline" size="sm" leftIcon={<Calendar className="w-4 h-4 text-stone-600" />}>
-                Plan An Event
+            <Link href="/plan">
+              <Button variant="primary" size="sm" leftIcon={<Sparkles className="w-4 h-4" />}>
+                Plan My Celebration
               </Button>
             </Link>
             <Link href="/explore">
-              <Button variant="primary" size="sm" leftIcon={<Sparkles className="w-4 h-4" />}>
-                Explore Artisans
+              <Button variant="outline" size="sm" leftIcon={<Calendar className="w-4 h-4 text-stone-600" />}>
+                Explore Services
               </Button>
             </Link>
           </div>
@@ -95,7 +101,7 @@ export default async function CustomerDashboardPage() {
 
         {/* Action Required Alert: Vendor Accepted, Awaiting Advance */}
         {awaitingAdvanceBookings.length > 0 && (
-          <div className="mb-8 p-5 bg-amber-50/80 rounded-2xl border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="mb-8 p-5 bg-amber-50/90 rounded-2xl border border-amber-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start sm:items-center gap-3.5">
               <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-5 h-5 text-amber-700" />
@@ -105,14 +111,14 @@ export default async function CustomerDashboardPage() {
                   Action Required: Vendor Accepted Booking Request
                 </h4>
                 <p className="text-xs text-amber-800 mt-0.5 leading-relaxed">
-                  {awaitingAdvanceBookings[0].vendor.businessName} has accepted your request. Pay the advance milestone to lock the slot and reveal direct contact info.
+                  <strong>{awaitingAdvanceBookings[0].vendor.businessName}</strong> accepted your request for &quot;{awaitingAdvanceBookings[0].service.title}&quot;. Clear the advance deposit to lock your event date and unlock vendor direct contact.
                 </p>
               </div>
             </div>
 
             <Link href={`/customer/bookings/${awaitingAdvanceBookings[0].id}`}>
-              <Button variant="champagne" size="sm" className="whitespace-nowrap">
-                Review & Confirm Booking <ArrowRight className="w-4 h-4" />
+              <Button variant="champagne" size="sm" className="whitespace-nowrap shadow-xs">
+                Review & Confirm Booking <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             </Link>
           </div>
@@ -122,22 +128,22 @@ export default async function CustomerDashboardPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card className="p-5">
             <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
-              Active Events
+              Upcoming Celebrations
             </span>
             <span className="text-2xl font-serif font-bold text-stone-900 mt-1 block">
               {upcomingEvents.length}
             </span>
-            <span className="text-[11px] text-stone-500 mt-0.5 block">Celebrations in progress</span>
+            <span className="text-[11px] text-stone-500 mt-0.5 block">Events in progress</span>
           </Card>
 
           <Card className="p-5">
             <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
-              Confirmed Artisans
+              Confirmed Vendors
             </span>
             <span className="text-2xl font-serif font-bold text-stone-900 mt-1 block">
               {confirmedBookings.length}
             </span>
-            <span className="text-[11px] text-stone-500 mt-0.5 block">Locked milestone contracts</span>
+            <span className="text-[11px] text-stone-500 mt-0.5 block">Locked service contracts</span>
           </Card>
 
           <Card className="p-5">
@@ -152,22 +158,22 @@ export default async function CustomerDashboardPage() {
 
           <Card className="p-5">
             <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
-              Completed Events
+              Outstanding Balances
             </span>
-            <span className="text-2xl font-serif font-bold text-stone-900 mt-1 block">
-              {completedBookings.length}
+            <span className="text-2xl font-serif font-bold text-stone-900 mt-1 block font-mono">
+              {formatPrice(totalOutstandingBalance)}
             </span>
-            <span className="text-[11px] text-stone-500 mt-0.5 block">Successfully celebrated</span>
+            <span className="text-[11px] text-stone-500 mt-0.5 block">Due on final fulfillment</span>
           </Card>
         </div>
 
-        {/* Two Column Layout: My Events & Recent Bookings */}
+        {/* Two Column Layout: My Celebrations & Recent Bookings */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left: Active Events */}
+          {/* Left: Celebrations */}
           <Card className="flex flex-col justify-between">
             <div>
               <CardHeader>
-                <CardTitle>My Celebration Events</CardTitle>
+                <CardTitle>My Celebrations</CardTitle>
                 <Link href="/customer/events" className="text-xs font-semibold text-rose-700 hover:text-rose-800">
                   View All
                 </Link>
@@ -177,12 +183,12 @@ export default async function CustomerDashboardPage() {
                 {events.length === 0 ? (
                   <EmptyState
                     icon={<Calendar className="w-5 h-5" />}
-                    title="No events planned yet"
+                    title="No celebrations planned yet"
                     description="Create your first celebration blueprint to organize checkpoints and vendors."
                     action={
-                      <Link href="/customer/events">
+                      <Link href="/plan">
                         <Button variant="secondary" size="sm">
-                          Plan New Event
+                          Plan My Celebration
                         </Button>
                       </Link>
                     }
@@ -195,6 +201,10 @@ export default async function CustomerDashboardPage() {
                         ? Math.round((completedCheckpoints / event.checkpoints.length) * 100)
                         : 0;
 
+                    const daysLeft = Math.ceil(
+                      (new Date(event.eventDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+                    );
+
                     return (
                       <Link key={event.id} href={`/customer/events/${event.id}`} className="block group">
                         <div className="p-4 rounded-xl border border-stone-200/80 bg-stone-50/50 hover:bg-stone-50 transition-colors">
@@ -202,9 +212,16 @@ export default async function CustomerDashboardPage() {
                             <span className="text-sm font-bold text-stone-900 group-hover:text-rose-700 transition-colors">
                               {event.title}
                             </span>
-                            <Badge variant={event.status === "COMPLETED" ? "success" : "neutral"} size="sm">
-                              {event.status}
-                            </Badge>
+                            <div className="flex items-center gap-1.5">
+                              {daysLeft >= 0 && daysLeft <= 60 && (
+                                <span className="text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full">
+                                  {daysLeft === 0 ? "Today" : `${daysLeft} days away`}
+                                </span>
+                              )}
+                              <Badge variant={event.status === "COMPLETED" ? "success" : "neutral"} size="sm">
+                                {event.status}
+                              </Badge>
+                            </div>
                           </div>
 
                           <div className="flex items-center gap-4 text-xs text-stone-500 mb-3">
@@ -238,7 +255,10 @@ export default async function CustomerDashboardPage() {
               </CardContent>
             </div>
 
-            <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex justify-end">
+            <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex justify-between items-center">
+              <Link href="/plan" className="text-xs font-semibold text-stone-600 hover:text-stone-900 flex items-center gap-1">
+                <Plus className="w-3.5 h-3.5" /> Plan New Celebration
+              </Link>
               <Link href="/customer/events" className="text-xs font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1">
                 Manage all events <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -260,11 +280,11 @@ export default async function CustomerDashboardPage() {
                   <EmptyState
                     icon={<BookOpen className="w-5 h-5" />}
                     title="No service bookings placed"
-                    description="Browse verified artisans to book cinematography, catering, decor, and cakes."
+                    description="Browse verified vendors to book cinematography, catering, decor, and custom cakes."
                     action={
                       <Link href="/explore">
                         <Button variant="secondary" size="sm">
-                          Browse Artisans
+                          Browse Services
                         </Button>
                       </Link>
                     }
@@ -302,7 +322,7 @@ export default async function CustomerDashboardPage() {
                           </div>
 
                           <div className="text-right">
-                            <span className="font-bold text-stone-900 block">{formatPrice(b.agreedServiceValue)}</span>
+                            <span className="font-bold text-stone-900 block font-mono">{formatPrice(b.agreedServiceValue)}</span>
                             {b.invoices.length > 0 && (
                               <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1 justify-end mt-0.5">
                                 <FileText className="w-3 h-3" /> {b.invoices.length} Receipt(s)

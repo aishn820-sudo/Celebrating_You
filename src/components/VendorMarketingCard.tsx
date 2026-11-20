@@ -36,7 +36,7 @@ export default function VendorMarketingCard({
           <div className="flex items-center gap-2">
             <Share2 className="w-4 h-4 text-rose-700" />
             <span className="font-serif font-bold text-stone-900 text-base">
-              Artisan Marketing & Direct Booking Link
+              Vendor Storefront & Direct Booking Link
             </span>
           </div>
           <p className="text-xs text-stone-600 mt-1">

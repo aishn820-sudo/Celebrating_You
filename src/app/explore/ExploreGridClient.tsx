@@ -57,7 +57,7 @@ export default function ExploreGridClient({
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400">
-                      <span className="text-xs font-medium">Curated Artisan Portfolio</span>
+                      <span className="text-xs font-medium">Curated Vendor Portfolio</span>
                     </div>
                   )}
                   <div className="absolute top-3 left-3">
@@ -137,7 +137,7 @@ export default function ExploreGridClient({
           <div className="flex items-center gap-2">
             <Scale className="w-4 h-4 text-rose-400" />
             <span className="font-semibold">
-              Comparing {selectedForCompare.length} {selectedForCompare.length === 1 ? "artisan" : "artisans"} (max 3)
+              Comparing {selectedForCompare.length} {selectedForCompare.length === 1 ? "vendor" : "vendors"} (max 3)
             </span>
           </div>
 
@@ -166,7 +166,7 @@ export default function ExploreGridClient({
           <div className="bg-white rounded-3xl max-w-4xl w-full p-6 sm:p-8 border border-stone-200 shadow-2xl text-stone-900 my-8 text-xs animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-6">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-rose-700">Artisan Match</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider text-rose-700">Vendor Comparison</span>
                 <h3 className="font-serif font-bold text-stone-900 text-xl mt-0.5">
                   Service Feature & Pricing Comparison
                 </h3>

@@ -66,8 +66,8 @@ export default function InvoiceModal({
     : "FINAL PAYMENT RECEIPT";
 
   const docCategory = isGstRegistered
-    ? `GST Registered Artisan • GSTIN: ${invoice.vendorGstin}`
-    : "Artisan Unregistered Under GST • Commercial Payment Receipt";
+    ? `GST Registered Vendor • GSTIN: ${invoice.vendorGstin}`
+    : "Vendor Unregistered Under GST • Commercial Payment Receipt";
 
   const handlePrint = () => {
     window.print();
@@ -100,7 +100,7 @@ export default function InvoiceModal({
       doc.text(`Transaction ID: ${invoice.transaction?.transactionRef || "N/A"}`, 14, 64);
 
       doc.setFont("helvetica", "bold");
-      doc.text("ARTISAN DETAILS:", 14, 76);
+      doc.text("VENDOR DETAILS:", 14, 76);
       doc.setFont("helvetica", "normal");
       doc.text(invoice.vendorBusinessName, 14, 82);
       doc.text(
@@ -248,7 +248,7 @@ export default function InvoiceModal({
           {/* Meta Info Grid */}
           <div className="grid grid-cols-2 gap-6 text-xs bg-warm-50 p-5 rounded-2xl border border-stone-200/80">
             <div>
-              <p className="text-stone-500 font-bold uppercase tracking-wider text-[10px]">Artisan Details</p>
+              <p className="text-stone-500 font-bold uppercase tracking-wider text-[10px]">Vendor Details</p>
               <p className="font-serif font-bold text-stone-900 text-sm mt-1">{invoice.vendorBusinessName}</p>
               <p className="text-stone-600 mt-0.5">
                 {isGstRegistered ? `GSTIN: ${invoice.vendorGstin}` : "GST: Not Applicable (Unregistered)"}
@@ -336,7 +336,7 @@ export default function InvoiceModal({
                 {isGstRegistered ? "Applicable GST (18% Component):" : "GST Applicability:"}
               </span>
               <span className="font-mono">
-                {isGstRegistered ? formatINR(invoice.taxAmount) : "₹0 (Artisan Unregistered)"}
+                {isGstRegistered ? formatINR(invoice.taxAmount) : "₹0 (Vendor Unregistered)"}
               </span>
             </div>
           </div>

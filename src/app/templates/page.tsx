@@ -52,7 +52,7 @@ export default async function TemplatesPage() {
             action={
               <Link href="/explore">
                 <Button variant="secondary" size="sm">
-                  Explore Verified Artisans
+                  Explore Verified Vendors
                 </Button>
               </Link>
             }
@@ -136,7 +136,7 @@ export default async function TemplatesPage() {
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-stone-100">
-                  <Link href={`/customer/events?template=${tpl.slug}`}>
+                  <Link href={`/plan?templateId=${tpl.id}`}>
                     <Button variant="primary" size="md" className="w-full">
                       Use This Blueprint <ArrowRight className="w-4 h-4" />
                     </Button>

@@ -18,11 +18,15 @@ async function main() {
 
   // 1. Categories
   const categoriesData = [
-    { name: "Photography & Editing Labs", slug: "photography-editing", description: "Candid, traditional, cinematic videography and instant editing labs", icon: "Camera" },
+    { name: "Photography & Videography", slug: "photography-editing", description: "Candid, traditional, cinematic videography and instant editing labs", icon: "Camera" },
     { name: "Catering Services", slug: "catering-services", description: "Multi-cuisine catering, live food counters, and royal dining spreads", icon: "UtensilsCrossed" },
-    { name: "Bakeries & Cloud Kitchens", slug: "bakeries-cloud-kitchens", description: "Custom celebration cakes, dessert tables, and artisan bakeries", icon: "Cake" },
+    { name: "Cakes & Desserts", slug: "bakeries-cloud-kitchens", description: "Custom celebration cakes, dessert tables, and artisan bakeries", icon: "Cake" },
     { name: "Decoration Services", slug: "decoration-services", description: "Floral, balloon, theme-based and luxury venue decor setups", icon: "Sparkles" },
-    { name: "Celebration Items & Materials", slug: "celebration-items", description: "Party props, return gifts, personalized keepsakes, and lighting", icon: "Gift" },
+    { name: "Celebration Essentials", slug: "celebration-items", description: "Party props, return gifts, personalized keepsakes, and lighting", icon: "Gift" },
+    { name: "Venues & Spaces", slug: "venues", description: "Banquet halls, open lawn farms, and boutique private event spaces", icon: "Building2" },
+    { name: "Makeup & Beauty", slug: "makeup-beauty", description: "Bridal makeovers, grooming artists, and pre-celebration styling", icon: "Sparkles" },
+    { name: "Music & Entertainment", slug: "music-entertainment", description: "Live acoustic musicians, celebration DJs, emcees, and performers", icon: "Music" },
+    { name: "Invitations & Stationery", slug: "invitations", description: "Digital animated video invites, custom cards, and save-the-dates", icon: "Mail" },
   ];
 
   const categories = [];

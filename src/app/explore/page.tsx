@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { isDatabaseUnavailableError } from "@/lib/dbErrors";
-import { Star, ShieldCheck, Filter, ArrowRight, Search, Clock, MapPin, X } from "lucide-react";
+import { Star, ShieldCheck, Filter, ArrowRight, Search, Clock, MapPin, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -16,6 +16,7 @@ export default async function ExplorePage({
 }: {
   searchParams: {
     category?: string;
+    occasion?: string;
     city?: string;
     search?: string;
     maxBudget?: string;
@@ -34,6 +35,19 @@ export default async function ExplorePage({
     }
   }
 
+  const OCCASIONS = [
+    "All Occasions",
+    "Birthday",
+    "Wedding",
+    "Engagement",
+    "Anniversary",
+    "Baby Shower",
+    "Housewarming",
+    "Graduation",
+    "Corporate Event",
+    "Festival Celebration",
+  ];
+
   const where: any = {
     status: "PUBLISHED",
     vendor: {
@@ -48,7 +62,7 @@ export default async function ExplorePage({
     ];
   }
 
-  if (searchParams.city) {
+  if (searchParams.city && searchParams.city !== "all") {
     where.vendor.city = { contains: searchParams.city };
   }
 
@@ -109,14 +123,45 @@ export default async function ExplorePage({
         {/* Page Header */}
         <div className="mb-8">
           <Badge variant="rose" size="sm" className="mb-2">
-            Verified Artisan Marketplace
+            Verified Celebration Marketplace
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
-            Explore Celebration Specialists
+            Explore Celebration Services & Vendors
           </h1>
           <p className="text-sm text-stone-600 mt-1.5 max-w-2xl">
-            Browse through background-screened vendors bound by our mandatory 2-hour response guarantee.
+            Browse through background-screened vendors bound by our mandatory 2-hour response guarantee. Book independently or combine services under one celebration workspace.
           </p>
+        </div>
+
+        {/* Occasion Filter Pill Bar */}
+        <div className="mb-8 overflow-x-auto pb-2 flex items-center gap-2">
+          {OCCASIONS.map((occ) => {
+            const isAll = occ === "All Occasions";
+            const active = isAll
+              ? !searchParams.occasion || searchParams.occasion === "all"
+              : searchParams.occasion === occ;
+
+            const nextParams = new URLSearchParams(searchParams as Record<string, string>);
+            if (isAll) {
+              nextParams.delete("occasion");
+            } else {
+              nextParams.set("occasion", occ);
+            }
+
+            return (
+              <Link
+                key={occ}
+                href={`/explore?${nextParams.toString()}`}
+                className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap border transition-all ${
+                  active
+                    ? "bg-rose-700 text-white border-rose-700 shadow-sm"
+                    : "bg-white text-stone-700 border-stone-200 hover:border-stone-300 hover:bg-stone-50"
+                }`}
+              >
+                {occ}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Layout: Sidebar Filter & Grid */}
@@ -133,10 +178,10 @@ export default async function ExplorePage({
                 </Link>
               </div>
 
-              {/* Categories */}
+              {/* Service Categories */}
               <div className="py-4 border-b border-stone-100">
                 <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-3">
-                  Disciplines
+                  Service Categories
                 </p>
                 <div className="space-y-1.5">
                   <Link
@@ -168,10 +213,36 @@ export default async function ExplorePage({
                 </div>
               </div>
 
+              {/* Location Filter */}
+              <div className="py-4 border-b border-stone-100">
+                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2.5">
+                  City Location
+                </p>
+                <div className="space-y-1 text-xs">
+                  {["Bangalore", "Mumbai", "Delhi NCR", "Hyderabad"].map((city) => {
+                    const active = searchParams.city === city;
+                    return (
+                      <Link
+                        key={city}
+                        href={`/explore?${new URLSearchParams({ ...searchParams, city: active ? "all" : city }).toString()}`}
+                        className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg ${
+                          active
+                            ? "text-rose-700 font-bold bg-rose-50"
+                            : "text-stone-600 hover:text-stone-900 hover:bg-stone-50"
+                        }`}
+                      >
+                        <span>{city}</span>
+                        {active && <span className="text-[10px]">✓</span>}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Minimum Rating Filter */}
               <div className="py-4 border-b border-stone-100">
                 <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2.5">
-                  Artisan Rating
+                  Vendor Rating
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {[4.5, 4.0, 3.5].map((rate) => {
@@ -232,21 +303,33 @@ export default async function ExplorePage({
                 </div>
               </div>
             </Card>
+
+            <div className="p-5 rounded-2xl bg-warm-100/60 border border-stone-200/80 text-xs text-stone-600">
+              <h5 className="font-bold text-stone-900 mb-1">Looking to plan an event?</h5>
+              <p className="text-[11px] text-stone-500 mb-3">
+                Use our guided 5-step celebration planner to discover matching vendors across all your required categories.
+              </p>
+              <Link href="/plan">
+                <Button variant="primary" size="sm" className="w-full text-xs">
+                  <Sparkles className="w-3.5 h-3.5 mr-1" /> Plan My Celebration
+                </Button>
+              </Link>
+            </div>
           </aside>
 
           {/* Service Results Grid */}
           <div className="lg:col-span-3">
             <div className="mb-4 flex items-center justify-between text-xs text-stone-500">
               <p>
-                Found <span className="font-bold text-stone-900">{services.length}</span> curated services
+                Found <span className="font-bold text-stone-900">{services.length}</span> verified services
               </p>
             </div>
 
             {services.length === 0 ? (
               <EmptyState
                 icon={<Search className="w-6 h-6" />}
-                title="No artisans match your filters"
-                description="Try loosening your search criteria, adjusting maximum budget, or exploring all celebration categories."
+                title="No vendors match your filters"
+                description="Try loosening your search criteria, selecting another occasion, or exploring all celebration categories."
                 action={
                   <Link href="/explore">
                     <Button variant="secondary" size="sm">

@@ -8,6 +8,11 @@ import {
   Cake,
   Palette,
   Gift,
+  Building2,
+  Sparkles,
+  Music,
+  Mail,
+  Heart,
   ArrowRight,
   ShieldCheck,
   Clock,
@@ -15,11 +20,15 @@ import {
   Star,
   Search,
   MapPin,
-  Sparkles,
+  Calendar,
+  CheckCircle2,
+  FolderCheck,
+  UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
+import BudgetInspirationSection from "@/components/BudgetInspirationSection";
 
 export const dynamic = "force-dynamic";
 
@@ -41,14 +50,14 @@ export default async function HomePage() {
         },
         take: 6,
       }),
-      prisma.eventTemplate.findMany({ where: { isActive: true }, take: 3 }),
+      prisma.eventTemplate.findMany({ where: { isActive: true }, take: 4 }),
     ]);
     categories = fetchedCategories;
     featuredServices = fetchedServices;
     templates = fetchedTemplates;
   } catch (error) {
     if (isDatabaseUnavailableError(error)) {
-      console.warn("[HomePage] Database uninitialized or unavailable. Rendering with empty collections.");
+      console.warn("[HomePage] Database uninitialized or unavailable. Rendering with graceful empty states.");
     } else {
       throw error;
     }
@@ -56,11 +65,91 @@ export default async function HomePage() {
 
   const categoryIcons: Record<string, any> = {
     "photography-editing": Camera,
+    "photography-videography": Camera,
     "catering-services": UtensilsCrossed,
     "bakeries-cloud-kitchens": Cake,
+    "cakes-desserts": Cake,
     "decoration-services": Palette,
     "celebration-items": Gift,
+    "celebration-essentials": Gift,
+    "venues": Building2,
+    "makeup-beauty": Sparkles,
+    "music-entertainment": Music,
+    "invitations": Mail,
   };
+
+  const OCCASIONS = [
+    {
+      title: "Birthday",
+      slug: "Birthday",
+      description: "Candid photography, whimsical theme décor, custom celebration cakes & party entertainment.",
+      image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800&auto=format&fit=crop",
+      tag: "Top Celebrated",
+    },
+    {
+      title: "Wedding",
+      slug: "Wedding",
+      description: "Grand mandap styling, royal banquet catering, bridal beauty & cinematic memories.",
+      image: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop",
+      tag: "Grand Milestones",
+    },
+    {
+      title: "Engagement",
+      slug: "Engagement",
+      description: "Floral ring ceremony backdrops, intimate cocktail dining & emotional family portraits.",
+      image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800&auto=format&fit=crop",
+      tag: "Romantic",
+    },
+    {
+      title: "Anniversary",
+      slug: "Anniversary",
+      description: "Candlelight dining spreads, live acoustic musicians, memory photo albums & floral arrangements.",
+      image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop",
+      tag: "Timeless",
+    },
+    {
+      title: "Baby Shower",
+      slug: "Baby Shower",
+      description: "Pastel balloon installations, custom dessert spreads & gentle mom-to-be pampering setups.",
+      image: "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop",
+      tag: "Cherished",
+    },
+    {
+      title: "Housewarming",
+      slug: "Housewarming",
+      description: "Auspicious traditional pooja florals, welcome dining catering & traditional welcoming décor.",
+      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop",
+      tag: "New Beginnings",
+    },
+    {
+      title: "Graduation",
+      slug: "Graduation",
+      description: "Milestone portraits, celebratory party buffets, sound & DJ setups, and customized graduation cakes.",
+      image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop",
+      tag: "Achievement",
+    },
+    {
+      title: "Corporate Celebration",
+      slug: "Corporate Event",
+      description: "Professional audio-visual staging, high-tea banquet catering & corporate event coverage.",
+      image: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop",
+      tag: "Professional",
+    },
+    {
+      title: "Festival Celebration",
+      slug: "Festival Celebration",
+      description: "Traditional festival lighting, authentic festive sweets and snacks, folk decor & vibrant celebrations.",
+      image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop",
+      tag: "Festive Joy",
+    },
+    {
+      title: "Other Special Occasion",
+      slug: "Special Occasion",
+      description: "Retirement, reunion, achievements, or bespoke family milestones tailored to your exact vision.",
+      image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=800&auto=format&fit=crop",
+      tag: "Bespoke",
+    },
+  ];
 
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
@@ -70,32 +159,45 @@ export default async function HomePage() {
 
       <main className="flex-1">
         {/* HERO SECTION */}
-        <section className="relative pt-16 pb-24 border-b border-stone-200/70 bg-gradient-to-b from-warm-100/60 to-warm-50">
+        <section className="relative pt-16 pb-24 border-b border-stone-200/70 bg-gradient-to-b from-warm-100/70 via-warm-50 to-warm-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Trust Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-stone-200 shadow-sm text-xs font-semibold text-stone-700 mb-6">
-              <span className="w-2 h-2 rounded-full bg-rose-600" />
-              India&apos;s Curated Milestone Celebration Marketplace
+            {/* Brand Promise Pill */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-stone-200 shadow-sm text-xs font-semibold text-stone-700 mb-6">
+              <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
+              You Imagine the Celebration. We Bring Everything Together.
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-6xl font-serif font-bold text-stone-900 tracking-tight leading-[1.15] max-w-4xl mx-auto">
-              Curated Event Artisans for Your Most{" "}
-              <span className="italic text-rose-700">Cherished Moments</span>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-stone-900 tracking-tight leading-[1.1] max-w-4xl mx-auto">
+              Every Celebration. <span className="italic text-rose-700">One Place.</span>
             </h1>
 
             {/* Subheading */}
-            <p className="mt-5 text-base sm:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed">
-              Book vetted candid cinematographers, royal dining caterers, bespoke patisseries, and luxury venue stylists with guaranteed 2-hour response commitments.
+            <p className="mt-6 text-base sm:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed">
+              From finding the perfect photographer to organizing décor, catering and every little detail, plan your celebration effortlessly with everything in one place.
             </p>
 
+            {/* Primary & Secondary CTAs */}
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/plan" className="w-full sm:w-auto">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto px-8 py-3.5 text-sm font-bold shadow-premium">
+                  <Sparkles className="w-4 h-4 mr-2" /> Plan My Celebration
+                </Button>
+              </Link>
+              <Link href="/explore" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3.5 text-sm font-semibold">
+                  Explore Services <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+
             {/* Quick Filter Search Bar */}
-            <div className="mt-10 max-w-3xl mx-auto bg-white p-2.5 rounded-2xl shadow-premium border border-stone-200 flex flex-col sm:flex-row items-center gap-2">
+            <div className="mt-12 max-w-3xl mx-auto bg-white p-2.5 rounded-2xl shadow-premium border border-stone-200/90 flex flex-col sm:flex-row items-center gap-2">
               <div className="flex-1 w-full flex items-center gap-3 px-3.5 py-2 border-b sm:border-b-0 sm:border-r border-stone-100">
                 <Search className="w-4 h-4 text-stone-400 shrink-0" />
                 <input
                   type="text"
-                  placeholder="Photography, floral decor, cakes..."
+                  placeholder="Photography, catering, theme décor, custom cakes..."
                   className="w-full text-sm text-stone-900 placeholder-stone-400 focus:outline-none bg-transparent"
                   readOnly
                 />
@@ -108,7 +210,7 @@ export default async function HomePage() {
 
               <Link href="/explore" className="w-full sm:w-auto">
                 <Button variant="primary" size="md" className="w-full sm:w-auto whitespace-nowrap">
-                  Find Artisans
+                  Find Vendors
                 </Button>
               </Link>
             </div>
@@ -116,7 +218,7 @@ export default async function HomePage() {
             {/* Trust Metric Badges */}
             <div className="mt-14 pt-10 border-t border-stone-200/60 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200/80 flex items-center justify-center text-stone-800 shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 shadow-sm flex items-center justify-center text-stone-800 shrink-0">
                   <ShieldCheck className="w-5 h-5 text-emerald-700" />
                 </div>
                 <div>
@@ -128,7 +230,7 @@ export default async function HomePage() {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200/80 flex items-center justify-center text-stone-800 shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 shadow-sm flex items-center justify-center text-stone-800 shrink-0">
                   <Clock className="w-5 h-5 text-rose-700" />
                 </div>
                 <div>
@@ -140,13 +242,13 @@ export default async function HomePage() {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200/80 flex items-center justify-center text-stone-800 shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 shadow-sm flex items-center justify-center text-stone-800 shrink-0">
                   <FileCheck2 className="w-5 h-5 text-amber-700" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-stone-900">Milestone Legal Invoices</h4>
                   <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">
-                    Clear transaction receipts for Advance (Doc 1) and Final balance (Doc 2).
+                    Separate transaction receipts for Advance (Doc 1) and Final balance (Doc 2).
                   </p>
                 </div>
               </div>
@@ -154,14 +256,162 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* CURATED CATEGORIES */}
+        {/* OCCASION DISCOVERY SECTION: "What are you celebrating?" */}
+        <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <p className="text-xs uppercase tracking-widest font-bold text-rose-700">Occasion-First Discovery</p>
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight mt-1.5">
+              What are you celebrating?
+            </h2>
+            <p className="text-sm text-stone-600 mt-2.5 leading-relaxed">
+              Every milestone has its own heartbeat. Select your celebration to explore tailored services, curated templates, and recommended vendors.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {OCCASIONS.map((occ) => (
+              <Link
+                key={occ.title}
+                href={`/plan?occasion=${encodeURIComponent(occ.slug)}`}
+                className="group relative rounded-2xl overflow-hidden border border-stone-200 bg-white hover:border-rose-300 hover:shadow-premium transition-all duration-300 flex flex-col justify-between"
+              >
+                {/* Occasion Image */}
+                <div className="h-44 w-full relative overflow-hidden bg-stone-100">
+                  <img
+                    src={occ.image}
+                    alt={occ.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/20 to-transparent" />
+                  <div className="absolute top-3 left-3">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/90 backdrop-blur-sm text-stone-800">
+                      {occ.tag}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <h3 className="font-serif font-bold text-lg text-white group-hover:text-amber-200 transition-colors">
+                      {occ.title}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Card Content */}
+                <div className="p-4 flex-1 flex flex-col justify-between">
+                  <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                    {occ.description}
+                  </p>
+                  <span className="mt-3 text-xs font-semibold text-rose-700 group-hover:text-rose-800 flex items-center gap-1 transition-colors">
+                    Plan this celebration <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* CELEBRATION PLANNING SECTION: 5 Steps */}
+        <section className="py-20 bg-stone-900 text-stone-100 border-y border-stone-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mb-16">
+              <p className="text-xs uppercase tracking-widest font-bold text-amber-300">
+                Centralized Celebration Management
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white tracking-tight mt-1.5">
+                Bring your celebration to life, one detail at a time.
+              </h2>
+              <p className="text-sm text-stone-400 mt-3 leading-relaxed">
+                Planning special moments shouldn&apos;t mean juggling ten different WhatsApp chats, unverified quotes, and uncertain bookings. Here is how Celebrating YOU simplifies your journey:
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+              <div className="p-5 rounded-2xl bg-stone-800/60 border border-stone-700/80 flex flex-col justify-between">
+                <div>
+                  <span className="font-serif text-3xl font-bold text-rose-500">01</span>
+                  <h4 className="text-base font-bold text-white mt-3">Tell us what you&apos;re celebrating</h4>
+                  <p className="text-xs text-stone-400 mt-2 leading-relaxed">
+                    Choose your occasion, celebration date, location, guest capacity, and overall target budget.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-stone-700/50 text-[11px] text-stone-500">
+                  Step 1: Occasion & Vision
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-stone-800/60 border border-stone-700/80 flex flex-col justify-between">
+                <div>
+                  <span className="font-serif text-3xl font-bold text-rose-500">02</span>
+                  <h4 className="text-base font-bold text-white mt-3">Discover matching services</h4>
+                  <p className="text-xs text-stone-400 mt-2 leading-relaxed">
+                    Select exactly what you need—photography, décor, catering, custom cake, or entertainment.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-stone-700/50 text-[11px] text-stone-500">
+                  Step 2: Service Selection
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-stone-800/60 border border-stone-700/80 flex flex-col justify-between">
+                <div>
+                  <span className="font-serif text-3xl font-bold text-rose-500">03</span>
+                  <h4 className="text-base font-bold text-white mt-3">Choose the vendors you love</h4>
+                  <p className="text-xs text-stone-400 mt-2 leading-relaxed">
+                    Review transparent package pricing, clear inclusions, verified portfolios, and authentic customer feedback.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-stone-700/50 text-[11px] text-stone-500">
+                  Step 3: Vendor Curation
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-stone-800/60 border border-stone-700/80 flex flex-col justify-between">
+                <div>
+                  <span className="font-serif text-3xl font-bold text-rose-500">04</span>
+                  <h4 className="text-base font-bold text-white mt-3">Manage bookings & payments</h4>
+                  <p className="text-xs text-stone-400 mt-2 leading-relaxed">
+                    Enjoy guaranteed 2-hour response commitments. Pay advance and final balances with official milestone receipts.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-stone-700/50 text-[11px] text-stone-500">
+                  Step 4: Milestone Contracts
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-stone-800/60 border border-stone-700/80 flex flex-col justify-between">
+                <div>
+                  <span className="font-serif text-3xl font-bold text-rose-500">05</span>
+                  <h4 className="text-base font-bold text-white mt-3">Enjoy your celebration</h4>
+                  <p className="text-xs text-stone-400 mt-2 leading-relaxed">
+                    Coordinate your celebration timeline with ease. Focus on your guests and cherished memories.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-stone-700/50 text-[11px] text-stone-500">
+                  Step 5: Celebration Day
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 text-center">
+              <Link href="/plan">
+                <Button variant="champagne" size="lg" className="shadow-premium">
+                  Start Planning Your Celebration <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* SERVICE DISCOVERY SECTION: "Everything your celebration needs." */}
         <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <p className="text-xs uppercase tracking-widest font-bold text-stone-500">Categories</p>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight mt-1">
-                Explore Event Disciplines
+              <p className="text-xs uppercase tracking-widest font-bold text-stone-500">Service Categories</p>
+              <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight mt-1.5">
+                Everything your celebration needs.
               </h2>
+              <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+                Book individual service specialists independently with zero forced packages.
+              </p>
             </div>
             <Link
               href="/explore"
@@ -171,65 +421,115 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {categories.length === 0 ? (
-            <div className="text-center py-10 bg-white rounded-2xl border border-stone-200/70 p-6 max-w-lg mx-auto">
-              <Sparkles className="w-6 h-6 text-stone-400 mx-auto mb-2" />
-              <p className="text-xs font-semibold text-stone-700">Artisan categories are currently being initialized.</p>
-              <p className="text-[11px] text-stone-500 mt-1">Please check back shortly or explore the directory.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-              {categories.map((cat) => {
-                const Icon = categoryIcons[cat.slug] || Sparkles;
-                return (
-                  <Link key={cat.id} href={`/explore?category=${cat.id}`} className="group">
-                    <Card hoverEffect className="h-full p-6 flex flex-col justify-between">
-                      <div>
-                        <div className="w-11 h-11 rounded-xl bg-stone-100 border border-stone-200/70 text-stone-800 flex items-center justify-center mb-4 transition-colors group-hover:bg-rose-50 group-hover:text-rose-700 group-hover:border-rose-200">
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <h3 className="font-bold text-stone-900 text-sm group-hover:text-rose-700 transition-colors">
-                          {cat.name}
-                        </h3>
-                        <p className="text-xs text-stone-500 mt-1 line-clamp-2 leading-relaxed">
-                          {cat.description}
-                        </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                title: "Photography & Videography",
+                description: "Candid portraits, traditional coverage, drone cinematography, and instant editing labs.",
+                icon: Camera,
+                slug: "photography-editing",
+              },
+              {
+                title: "Decoration",
+                description: "Theme balloon styling, floral mandaps, fairy lighting, backdrop stages, and entrance arches.",
+                icon: Palette,
+                slug: "decoration-services",
+              },
+              {
+                title: "Catering",
+                description: "Multi-cuisine buffets, royal dining spreads, live chaat counters, and regional delicacies.",
+                icon: UtensilsCrossed,
+                slug: "catering-services",
+              },
+              {
+                title: "Cakes & Desserts",
+                description: "Custom multi-tier fondant cakes, dessert tables, gourmet pastries, and sweet boxes.",
+                icon: Cake,
+                slug: "bakeries-cloud-kitchens",
+              },
+              {
+                title: "Venues",
+                description: "Intimate banquet halls, open lawn farms, boutique rooftops, and private party spaces.",
+                icon: Building2,
+                slug: "venues",
+              },
+              {
+                title: "Makeup & Beauty",
+                description: "Bridal makeovers, family grooming, pre-event spa packages, and hairstyling artists.",
+                icon: Sparkles,
+                slug: "makeup-beauty",
+              },
+              {
+                title: "Music & Entertainment",
+                description: "Live acoustic musicians, celebration DJs, emcees, magicians, and cultural performers.",
+                icon: Music,
+                slug: "music-entertainment",
+              },
+              {
+                title: "Invitations",
+                description: "Digital animated invites, luxury printed stationery, custom event websites, and save-the-dates.",
+                icon: Mail,
+                slug: "invitations",
+              },
+              {
+                title: "Celebration Essentials",
+                description: "Personalized party favors, return gifts, floral varmalas, photo props, and welcome kits.",
+                icon: Gift,
+                slug: "celebration-items",
+              },
+            ].map((cat) => {
+              const Icon = cat.icon;
+              return (
+                <Link key={cat.title} href={`/explore?category=${cat.slug}`} className="group">
+                  <Card hoverEffect className="h-full p-6 flex flex-col justify-between">
+                    <div>
+                      <div className="w-12 h-12 rounded-xl bg-warm-100 border border-stone-200/80 text-stone-800 flex items-center justify-center mb-4 transition-colors group-hover:bg-rose-50 group-hover:text-rose-700 group-hover:border-rose-200">
+                        <Icon className="w-6 h-6" />
                       </div>
-                      <span className="mt-4 text-[11px] font-semibold text-stone-400 group-hover:text-rose-600 transition-colors flex items-center gap-1">
-                        View Listings <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </Card>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+                      <h3 className="font-bold text-stone-900 text-base group-hover:text-rose-700 transition-colors">
+                        {cat.title}
+                      </h3>
+                      <p className="text-xs text-stone-500 mt-2 line-clamp-2 leading-relaxed">
+                        {cat.description}
+                      </p>
+                    </div>
+                    <span className="mt-5 text-xs font-semibold text-rose-700 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      Explore Vendors <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
         </section>
 
-        {/* FEATURED ARTISANS */}
+        {/* FEATURED VENDORS */}
         <section className="py-20 bg-warm-100/50 border-y border-stone-200/80">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
               <div>
                 <p className="text-xs uppercase tracking-widest font-bold text-stone-500">Verified Marketplace</p>
                 <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight mt-1">
-                  Premier Celebration Services
+                  Premier Celebration Vendors
                 </h2>
+                <p className="text-xs text-stone-500 mt-1">
+                  Vetted event specialists ready to accept your celebration date with 2-hour confirmation.
+                </p>
               </div>
               <Link
                 href="/explore"
                 className="text-sm font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1.5 transition-colors"
               >
-                View all available services <ArrowRight className="w-4 h-4" />
+                View all available vendors <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
             {featuredServices.length === 0 ? (
-              <div className="text-center py-12 bg-white/70 rounded-2xl border border-stone-200/70 p-8 max-w-lg mx-auto">
+              <div className="text-center py-12 bg-white/80 rounded-2xl border border-stone-200/70 p-8 max-w-lg mx-auto">
                 <Sparkles className="w-8 h-8 text-stone-400 mx-auto mb-2" />
-                <h3 className="font-serif font-bold text-stone-800 text-base">Curating Verified Artisans</h3>
+                <h3 className="font-serif font-bold text-stone-800 text-base">Curating Verified Vendors</h3>
                 <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto leading-relaxed">
-                  Our artisan partners are currently completing onboarding and verification.
+                  Our vendor partners are completing identity verification and portfolio review.
                 </p>
                 <div className="mt-4">
                   <Link href="/explore">
@@ -244,7 +544,7 @@ export default async function HomePage() {
                 {featuredServices.map((service) => (
                   <Card key={service.id} hoverEffect className="flex flex-col justify-between">
                     <div>
-                      {/* Media / Image placeholder */}
+                      {/* Media */}
                       <div className="h-48 w-full bg-stone-200 relative overflow-hidden">
                         {service.images[0] ? (
                           <img
@@ -255,7 +555,7 @@ export default async function HomePage() {
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400">
                             <Sparkles className="w-8 h-8 mb-1" />
-                            <span className="text-xs font-medium">Curated Artisan Portfolio</span>
+                            <span className="text-xs font-medium">Curated Vendor Portfolio</span>
                           </div>
                         )}
                         <div className="absolute top-3 left-3">
@@ -273,11 +573,15 @@ export default async function HomePage() {
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
                           <span className="font-semibold text-stone-800">{service.vendor.businessName}</span>
-                          <div className="flex items-center gap-1 text-amber-700 font-bold">
-                            <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                            <span>{service.vendor.rating.toFixed(1)}</span>
-                            <span className="text-stone-400 font-normal">({service.vendor.reviewCount})</span>
-                          </div>
+                          {service.vendor.reviewCount > 0 ? (
+                            <div className="flex items-center gap-1 text-amber-700 font-bold">
+                              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                              <span>{service.vendor.rating.toFixed(1)}</span>
+                              <span className="text-stone-400 font-normal">({service.vendor.reviewCount})</span>
+                            </div>
+                          ) : (
+                            <span className="text-[11px] text-stone-400">New Verified Vendor</span>
+                          )}
                         </div>
 
                         <h3 className="font-serif font-bold text-base text-stone-900 leading-snug line-clamp-1">
@@ -292,7 +596,7 @@ export default async function HomePage() {
                     <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex items-center justify-between">
                       <div>
                         <p className="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Packages From</p>
-                        <p className="text-base font-bold text-stone-900">
+                        <p className="text-base font-bold text-stone-900 font-mono">
                           {formatPrice(service.packages[0]?.price || service.basePrice)}
                         </p>
                       </div>
@@ -310,61 +614,64 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* CELEBRATION BLUEPRINTS */}
+        {/* BUDGET-CONSCIOUS INSPIRATION: Interactive Widget */}
+        <BudgetInspirationSection services={featuredServices} />
+
+        {/* CELEBRATION TEMPLATES */}
         <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mb-12">
-            <p className="text-xs uppercase tracking-widest font-bold text-stone-500">Structured Planning</p>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight mt-1">
+          <div className="max-w-3xl mb-12">
+            <p className="text-xs uppercase tracking-widest font-bold text-stone-500">Celebration Blueprints</p>
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight mt-1.5">
               Curated Celebration Blueprints
             </h2>
-            <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-              Skip decision fatigue. Use battle-tested milestone blueprints pre-configured with recommended budgets, service checklists, and milestone checkpoints.
+            <p className="text-sm text-stone-600 mt-2.5 leading-relaxed">
+              Battle-tested milestone templates pre-configured with recommended budgets, service checklists, and milestone checkpoints. Customize freely to match your exact vision.
             </p>
           </div>
 
           {templates.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-2xl border border-stone-200/70 p-8 max-w-lg mx-auto">
               <Sparkles className="w-8 h-8 text-stone-400 mx-auto mb-2" />
-              <h3 className="font-serif font-bold text-stone-800 text-base">Celebration Blueprints Preparing</h3>
+              <h3 className="font-serif font-bold text-stone-800 text-base">Blueprints Initializing</h3>
               <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto leading-relaxed">
-                Expert-designed milestone timelines and budget templates are currently being organized.
+                Expert celebration blueprints are being organized.
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {templates.map((tpl) => (
-                <Card key={tpl.id} hoverEffect className="p-7 flex flex-col justify-between">
+                <Card key={tpl.id} hoverEffect className="p-6 flex flex-col justify-between">
                   <div>
-                    <Badge variant="champagne" size="sm" className="mb-4">
+                    <Badge variant="champagne" size="sm" className="mb-3">
                       {tpl.category}
                     </Badge>
-                    <h3 className="text-lg font-serif font-bold text-stone-900 leading-snug">{tpl.name}</h3>
-                    <p className="text-xs text-stone-600 mt-2.5 leading-relaxed line-clamp-3">
+                    <h3 className="text-base font-serif font-bold text-stone-900 leading-snug">{tpl.name}</h3>
+                    <p className="text-xs text-stone-600 mt-2 leading-relaxed line-clamp-3">
                       {tpl.description}
                     </p>
 
-                    <div className="mt-6 pt-5 border-t border-stone-100 flex items-center justify-between text-xs">
+                    <div className="mt-5 pt-4 border-t border-stone-100 flex items-center justify-between text-xs">
                       <div>
                         <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
-                          Suggested Budget
+                          Budget Range
                         </span>
-                        <span className="font-bold text-stone-900">
+                        <span className="font-bold text-stone-900 font-mono">
                           {formatPrice(tpl.suggestedBudgetMin)} – {formatPrice(tpl.suggestedBudgetMax)}
                         </span>
                       </div>
                       <div className="text-right">
                         <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
-                          Guest Capacity
+                          Capacity
                         </span>
                         <span className="font-bold text-stone-900">~{tpl.defaultGuestCount} Guests</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-6">
-                    <Link href={`/customer/events?template=${tpl.slug}`}>
+                  <div className="mt-5">
+                    <Link href={`/plan?templateId=${tpl.id}`}>
                       <Button variant="secondary" size="sm" className="w-full">
-                        Use Blueprint
+                        Customize Blueprint
                       </Button>
                     </Link>
                   </div>
@@ -374,48 +681,103 @@ export default async function HomePage() {
           )}
         </section>
 
-        {/* HOW IT WORKS */}
-        <section className="py-20 bg-stone-900 text-stone-100 border-t border-stone-800">
+        {/* TRUST SECTION */}
+        <section className="py-20 bg-warm-100/60 border-t border-stone-200/80">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <p className="text-xs uppercase tracking-widest font-bold text-amber-300">Predictable Experience</p>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight mt-1">
-                How Celebrating YOU Protects Your Event
+            <div className="max-w-3xl mb-14 text-center mx-auto">
+              <p className="text-xs uppercase tracking-widest font-bold text-rose-700">Built On Integrity</p>
+              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight mt-1.5">
+                How Celebrating YOU Protects Your Special Day
               </h2>
+              <p className="text-sm text-stone-600 mt-2.5 leading-relaxed">
+                We believe peace of mind is the cornerstone of every joyful celebration. Our platform guarantees transparency, punctuality, and financial clarity at every step.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 text-center sm:text-left">
-              <div className="p-4">
-                <span className="font-serif text-3xl font-bold text-rose-500">01</span>
-                <h4 className="text-base font-bold text-white mt-2">Discover & Shortlist</h4>
-                <p className="text-xs text-stone-400 mt-2 leading-relaxed">
-                  Browse transparent service packages with explicit inclusions, exclusions, and verified photography.
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-5">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-stone-900">Rigorous Vendor Verification</h4>
+                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                  Every vendor is verified through Government identity checks, PAN validation, GST registration verification, and actual past event portfolio review before being listed.
                 </p>
               </div>
 
-              <div className="p-4">
-                <span className="font-serif text-3xl font-bold text-rose-500">02</span>
-                <h4 className="text-base font-bold text-white mt-2">2-Hour Vendor SLA</h4>
-                <p className="text-xs text-stone-400 mt-2 leading-relaxed">
-                  Vendors have an exact 2-hour window to review your dates and requirements before automated auto-expiry.
+              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center mb-5">
+                  <Clock className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-stone-900">Guaranteed 2-Hour SLA</h4>
+                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                  No waiting days for vendor replies. Every booking request is governed by a strict 2-hour vendor response window. If a vendor cannot commit, requests lapse cleanly so you can move forward immediately.
                 </p>
               </div>
 
-              <div className="p-4">
-                <span className="font-serif text-3xl font-bold text-rose-500">03</span>
-                <h4 className="text-base font-bold text-white mt-2">Advance Milestone</h4>
-                <p className="text-xs text-stone-400 mt-2 leading-relaxed">
-                  Lock your slot by clearing the advance deposit. Direct contact details unlock and Document 1 is generated.
+              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-5">
+                  <FileCheck2 className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-stone-900">Milestone Legal Invoices</h4>
+                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                  Never rely on informal bank slips. Each booking generates separate, official documents: Document 1 (Advance Payment Receipt) and Document 2 (Final Payment Tax Invoice) with verified transaction IDs.
                 </p>
               </div>
 
-              <div className="p-4">
-                <span className="font-serif text-3xl font-bold text-rose-500">04</span>
-                <h4 className="text-base font-bold text-white mt-2">Fulfillment & Final Invoice</h4>
-                <p className="text-xs text-stone-400 mt-2 leading-relaxed">
-                  Upon completion, settle the remaining balance and download Document 2 (Final Tax Invoice).
+              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-stone-100 text-stone-700 flex items-center justify-center mb-5">
+                  <FolderCheck className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-stone-900">Centralized Celebration Workspace</h4>
+                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                  Organize photography, catering, decor, and cakes under one single celebration event dashboard. Track individual contracts independently without forced package lock-ins.
                 </p>
               </div>
+
+              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-700 flex items-center justify-center mb-5">
+                  <Star className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-stone-900">Verified Customer Reviews</h4>
+                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                  Reviews can only be submitted by clients who completed a verified celebration booking. No fabricated reviews or arbitrary vendor removals are permitted.
+                </p>
+              </div>
+
+              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-5">
+                  <UserCheck className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-stone-900">Contact Privacy Protection</h4>
+                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                  Customer and vendor contact information remains protected until the booking is accepted and the advance payment is verified, preventing unsolicited marketing calls.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA SECTION */}
+        <section className="py-20 bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 text-white text-center">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight">
+              Your celebration deserves to be effortless.
+            </h2>
+            <p className="mt-4 text-sm sm:text-base text-stone-300 max-w-xl mx-auto leading-relaxed">
+              Start planning today. Bring together the photographers, decorators, caterers, and venues you love in one unified celebration marketplace.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/plan">
+                <Button variant="champagne" size="lg" className="px-8 py-3.5 shadow-premium">
+                  Start Planning <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+              <Link href="/explore">
+                <Button variant="outline" size="lg" className="border-stone-700 text-stone-200 hover:text-white hover:bg-stone-800 px-8 py-3.5">
+                  Explore Services
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -423,22 +785,57 @@ export default async function HomePage() {
 
       {/* FOOTER */}
       <footer className="bg-stone-950 text-stone-400 text-xs border-t border-stone-800/80 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-stone-900 text-amber-200 border border-stone-800 flex items-center justify-center font-serif font-bold text-xs">
-              CY
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-stone-800/60">
             <div>
-              <p className="font-serif font-bold text-stone-200 text-sm">Celebrating YOU</p>
-              <p className="text-[11px] text-stone-500">Curated Milestone Celebration Platform &copy; 2026</p>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-stone-900 text-amber-200 border border-stone-800 flex items-center justify-center font-serif font-bold text-xs">
+                  CY
+                </div>
+                <span className="font-serif font-bold text-stone-200 text-base">Celebrating YOU</span>
+              </div>
+              <p className="text-[11px] text-stone-400 mt-2.5 leading-relaxed">
+                Every Celebration. One Place. Connecting customers with verified event service providers through one unified celebration marketplace.
+              </p>
+            </div>
+
+            <div>
+              <h5 className="font-bold text-stone-200 text-xs uppercase tracking-wider mb-3">Plan Celebrations</h5>
+              <ul className="space-y-2 text-stone-400">
+                <li><Link href="/plan?occasion=Birthday" className="hover:text-stone-200">Birthday Celebrations</Link></li>
+                <li><Link href="/plan?occasion=Wedding" className="hover:text-stone-200">Weddings & Engagements</Link></li>
+                <li><Link href="/plan?occasion=Anniversary" className="hover:text-stone-200">Milestone Anniversaries</Link></li>
+                <li><Link href="/plan?occasion=Baby%20Shower" className="hover:text-stone-200">Baby Showers</Link></li>
+                <li><Link href="/plan?occasion=Housewarming" className="hover:text-stone-200">Housewarming Celebrations</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h5 className="font-bold text-stone-200 text-xs uppercase tracking-wider mb-3">Explore Marketplace</h5>
+              <ul className="space-y-2 text-stone-400">
+                <li><Link href="/explore?category=photography-editing" className="hover:text-stone-200">Photography & Film</Link></li>
+                <li><Link href="/explore?category=decoration-services" className="hover:text-stone-200">Celebration Décor</Link></li>
+                <li><Link href="/explore?category=catering-services" className="hover:text-stone-200">Catering & Dining</Link></li>
+                <li><Link href="/explore?category=bakeries-cloud-kitchens" className="hover:text-stone-200">Custom Cakes</Link></li>
+                <li><Link href="/templates" className="hover:text-stone-200">Celebration Blueprints</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h5 className="font-bold text-stone-200 text-xs uppercase tracking-wider mb-3">Portals & Trust</h5>
+              <ul className="space-y-2 text-stone-400">
+                <li><Link href="/login" className="hover:text-stone-200">Customer Sign In</Link></li>
+                <li><Link href="/login" className="hover:text-stone-200">Vendor Workspace</Link></li>
+                <li><Link href="/admin-portal/login" className="hover:text-stone-200">Admin Portal</Link></li>
+                <li><span className="text-stone-500">2-Hour Vendor Response SLA</span></li>
+                <li><span className="text-stone-500">Legal Milestone Invoices</span></li>
+              </ul>
             </div>
           </div>
 
-          <div className="flex items-center gap-6 text-stone-400">
-            <Link href="/explore" className="hover:text-stone-200 transition-colors">Artisan Directory</Link>
-            <Link href="/templates" className="hover:text-stone-200 transition-colors">Event Blueprints</Link>
-            <Link href="/login" className="hover:text-stone-200 transition-colors">Client Sign In</Link>
-            <Link href="/login" className="hover:text-stone-200 transition-colors">Vendor Access</Link>
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-stone-500 text-[11px] gap-3">
+            <p>&copy; 2026 Celebrating YOU Technologies. All rights reserved.</p>
+            <p>You Imagine the Celebration. We Bring Everything Together.</p>
           </div>
         </div>
       </footer>

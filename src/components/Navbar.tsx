@@ -43,21 +43,31 @@ export default function Navbar() {
             <span className="text-xl font-bold tracking-tight text-stone-900 font-serif">
               Celebrating <span className="text-rose-700 italic">YOU</span>
             </span>
-            <span className="block text-[9px] uppercase tracking-widest font-semibold text-stone-400">
-              Curated Event Marketplace
+            <span className="block text-[9px] uppercase tracking-widest font-semibold text-stone-500">
+              Every Celebration. One Place.
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
+        <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-stone-600">
+          <Link
+            href="/plan"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              pathname.startsWith("/plan")
+                ? "bg-rose-700 text-white shadow-sm"
+                : "bg-rose-50 text-rose-700 hover:bg-rose-100"
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" /> Plan Celebration
+          </Link>
           <Link
             href="/explore"
             className={`transition-colors hover:text-stone-900 ${
               pathname === "/explore" ? "text-rose-700 font-semibold" : ""
             }`}
           >
-            Explore Artisans
+            Explore Services
           </Link>
           <Link
             href="/templates"
@@ -75,7 +85,7 @@ export default function Navbar() {
                   pathname.startsWith("/customer/events") ? "text-rose-700 font-semibold" : ""
                 }`}
               >
-                My Events
+                My Celebrations
               </Link>
               <Link
                 href="/customer/bookings"
@@ -213,11 +223,18 @@ export default function Navbar() {
       {mobileNavOpen && (
         <div className="md:hidden border-t border-stone-200/80 bg-warm-50 px-4 pt-3 pb-6 space-y-3 animate-in fade-in duration-150">
           <Link
+            href="/plan"
+            onClick={() => setMobileNavOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold bg-rose-50 text-rose-700"
+          >
+            <Sparkles className="w-4 h-4" /> Plan Celebration
+          </Link>
+          <Link
             href="/explore"
             onClick={() => setMobileNavOpen(false)}
             className="block px-3 py-2 rounded-xl text-sm font-medium text-stone-700 hover:bg-stone-100"
           >
-            Explore Artisans
+            Explore Services
           </Link>
           <Link
             href="/templates"
@@ -233,7 +250,7 @@ export default function Navbar() {
                 onClick={() => setMobileNavOpen(false)}
                 className="block px-3 py-2 rounded-xl text-sm font-medium text-stone-700 hover:bg-stone-100"
               >
-                My Events
+                My Celebrations
               </Link>
               <Link
                 href="/customer/bookings"
