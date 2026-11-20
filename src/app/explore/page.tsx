@@ -116,7 +116,7 @@ export default async function ExplorePage({
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary transition-colors duration-200">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-1">
@@ -125,10 +125,10 @@ export default async function ExplorePage({
           <Badge variant="rose" size="sm" className="mb-2">
             Verified Celebration Marketplace
           </Badge>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
             Explore Celebration Services & Vendors
           </h1>
-          <p className="text-sm text-stone-600 mt-1.5 max-w-2xl">
+          <p className="text-sm text-stone-600 dark:text-dark-text-secondary mt-1.5 max-w-2xl">
             Browse through background-screened vendors bound by our mandatory 2-hour response guarantee. Book independently or combine services under one celebration workspace.
           </p>
         </div>
@@ -154,8 +154,8 @@ export default async function ExplorePage({
                 href={`/explore?${nextParams.toString()}`}
                 className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap border transition-all ${
                   active
-                    ? "bg-rose-700 text-white border-rose-700 shadow-sm"
-                    : "bg-white text-stone-700 border-stone-200 hover:border-stone-300 hover:bg-stone-50"
+                    ? "bg-rose-700 dark:bg-rose-600 text-white border-rose-700 dark:border-rose-600 shadow-sm"
+                    : "bg-white dark:bg-dark-surface text-stone-700 dark:text-dark-text-secondary border-stone-200 dark:border-dark-border hover:border-stone-300 dark:hover:border-stone-600 hover:bg-stone-50 dark:hover:bg-dark-elevated"
                 }`}
               >
                 {occ}
@@ -169,18 +169,18 @@ export default async function ExplorePage({
           {/* Filters Sidebar */}
           <aside className="lg:col-span-1 space-y-6">
             <Card className="p-6">
-              <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-                <span className="text-sm font-bold text-stone-900 flex items-center gap-2">
+              <div className="flex items-center justify-between pb-4 border-b border-stone-100 dark:border-dark-border">
+                <span className="text-sm font-bold text-stone-900 dark:text-dark-text-primary flex items-center gap-2">
                   <Filter className="w-4 h-4 text-stone-500" /> Filters
                 </span>
-                <Link href="/explore" className="text-xs text-rose-700 hover:text-rose-800 font-semibold">
+                <Link href="/explore" className="text-xs text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 font-semibold">
                   Reset
                 </Link>
               </div>
 
               {/* Service Categories */}
-              <div className="py-4 border-b border-stone-100">
-                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-3">
+              <div className="py-4 border-b border-stone-100 dark:border-dark-border">
+                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-dark-text-secondary mb-3">
                   Service Categories
                 </p>
                 <div className="space-y-1.5">
@@ -188,8 +188,8 @@ export default async function ExplorePage({
                     href={`/explore?${new URLSearchParams({ ...searchParams, category: "all" }).toString()}`}
                     className={`block px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
                       !searchParams.category || searchParams.category === "all"
-                        ? "bg-stone-900 text-white font-semibold"
-                        : "text-stone-600 hover:bg-stone-100"
+                        ? "bg-stone-900 dark:bg-dark-elevated text-white font-semibold"
+                        : "text-stone-600 dark:text-dark-text-secondary hover:bg-stone-100 dark:hover:bg-dark-elevated"
                     }`}
                   >
                     All Categories
@@ -202,8 +202,8 @@ export default async function ExplorePage({
                         href={`/explore?${new URLSearchParams({ ...searchParams, category: c.slug }).toString()}`}
                         className={`block px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
                           active
-                            ? "bg-stone-900 text-white font-semibold"
-                            : "text-stone-600 hover:bg-stone-100"
+                            ? "bg-stone-900 dark:bg-dark-elevated text-white font-semibold"
+                            : "text-stone-600 dark:text-dark-text-secondary hover:bg-stone-100 dark:hover:bg-dark-elevated"
                         }`}
                       >
                         {c.name}
@@ -214,8 +214,8 @@ export default async function ExplorePage({
               </div>
 
               {/* Location Filter */}
-              <div className="py-4 border-b border-stone-100">
-                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2.5">
+              <div className="py-4 border-b border-stone-100 dark:border-dark-border">
+                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-dark-text-secondary mb-2.5">
                   City Location
                 </p>
                 <div className="space-y-1 text-xs">
@@ -227,8 +227,8 @@ export default async function ExplorePage({
                         href={`/explore?${new URLSearchParams({ ...searchParams, city: active ? "all" : city }).toString()}`}
                         className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg ${
                           active
-                            ? "text-rose-700 font-bold bg-rose-50"
-                            : "text-stone-600 hover:text-stone-900 hover:bg-stone-50"
+                            ? "text-rose-700 dark:text-rose-400 font-bold bg-rose-50 dark:bg-rose-950/40"
+                            : "text-stone-600 dark:text-dark-text-secondary hover:text-stone-900 dark:hover:text-white hover:bg-stone-50 dark:hover:bg-dark-elevated"
                         }`}
                       >
                         <span>{city}</span>
@@ -240,8 +240,8 @@ export default async function ExplorePage({
               </div>
 
               {/* Minimum Rating Filter */}
-              <div className="py-4 border-b border-stone-100">
-                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2.5">
+              <div className="py-4 border-b border-stone-100 dark:border-dark-border">
+                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-dark-text-secondary mb-2.5">
                   Vendor Rating
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -253,8 +253,8 @@ export default async function ExplorePage({
                         href={`/explore?${new URLSearchParams({ ...searchParams, minRating: String(rate) }).toString()}`}
                         className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-colors ${
                           active
-                            ? "bg-amber-50 text-amber-900 border-amber-300 font-bold"
-                            : "bg-white text-stone-600 border-stone-200 hover:bg-stone-50"
+                            ? "bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-800 font-bold"
+                            : "bg-white dark:bg-dark-surface text-stone-600 dark:text-dark-text-secondary border-stone-200 dark:border-dark-border hover:bg-stone-50 dark:hover:bg-dark-elevated"
                         }`}
                       >
                         <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" /> {rate}+
@@ -266,7 +266,7 @@ export default async function ExplorePage({
 
               {/* Sort By */}
               <div className="pt-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
+                <p className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-dark-text-secondary mb-2">
                   Sort Order
                 </p>
                 <div className="space-y-1 text-xs">
@@ -274,8 +274,8 @@ export default async function ExplorePage({
                     href={`/explore?${new URLSearchParams({ ...searchParams, sort: "rating" }).toString()}`}
                     className={`block px-2.5 py-1.5 rounded-lg ${
                       !searchParams.sort || searchParams.sort === "rating"
-                        ? "text-rose-700 font-bold"
-                        : "text-stone-600 hover:text-stone-900"
+                        ? "text-rose-700 dark:text-rose-400 font-bold"
+                        : "text-stone-600 dark:text-dark-text-secondary hover:text-stone-900 dark:hover:text-white"
                     }`}
                   >
                     Top Rated First
@@ -284,8 +284,8 @@ export default async function ExplorePage({
                     href={`/explore?${new URLSearchParams({ ...searchParams, sort: "price_asc" }).toString()}`}
                     className={`block px-2.5 py-1.5 rounded-lg ${
                       searchParams.sort === "price_asc"
-                        ? "text-rose-700 font-bold"
-                        : "text-stone-600 hover:text-stone-900"
+                        ? "text-rose-700 dark:text-rose-400 font-bold"
+                        : "text-stone-600 dark:text-dark-text-secondary hover:text-stone-900 dark:hover:text-white"
                     }`}
                   >
                     Price: Low to High
@@ -294,8 +294,8 @@ export default async function ExplorePage({
                     href={`/explore?${new URLSearchParams({ ...searchParams, sort: "price_desc" }).toString()}`}
                     className={`block px-2.5 py-1.5 rounded-lg ${
                       searchParams.sort === "price_desc"
-                        ? "text-rose-700 font-bold"
-                        : "text-stone-600 hover:text-stone-900"
+                        ? "text-rose-700 dark:text-rose-400 font-bold"
+                        : "text-stone-600 dark:text-dark-text-secondary hover:text-stone-900 dark:hover:text-white"
                     }`}
                   >
                     Price: High to Low
@@ -304,9 +304,9 @@ export default async function ExplorePage({
               </div>
             </Card>
 
-            <div className="p-5 rounded-2xl bg-warm-100/60 border border-stone-200/80 text-xs text-stone-600">
-              <h5 className="font-bold text-stone-900 mb-1">Looking to plan an event?</h5>
-              <p className="text-[11px] text-stone-500 mb-3">
+            <div className="p-5 rounded-2xl bg-warm-100/60 dark:bg-dark-surface border border-stone-200/80 dark:border-dark-border text-xs text-stone-600 dark:text-dark-text-secondary">
+              <h5 className="font-bold text-stone-900 dark:text-dark-text-primary mb-1">Looking to plan an event?</h5>
+              <p className="text-[11px] text-stone-500 dark:text-dark-text-secondary mb-3">
                 Use our guided 5-step celebration planner to discover matching vendors across all your required categories.
               </p>
               <Link href="/plan">
@@ -319,9 +319,9 @@ export default async function ExplorePage({
 
           {/* Service Results Grid */}
           <div className="lg:col-span-3">
-            <div className="mb-4 flex items-center justify-between text-xs text-stone-500">
+            <div className="mb-4 flex items-center justify-between text-xs text-stone-500 dark:text-dark-text-secondary">
               <p>
-                Found <span className="font-bold text-stone-900">{services.length}</span> verified services
+                Found <span className="font-bold text-stone-900 dark:text-dark-text-primary">{services.length}</span> verified services
               </p>
             </div>
 

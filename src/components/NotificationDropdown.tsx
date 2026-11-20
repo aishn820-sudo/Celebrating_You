@@ -69,8 +69,9 @@ export default function NotificationDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
-        className="relative p-2 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-full transition"
+        className="relative p-2 text-stone-600 dark:text-dark-text-secondary hover:text-rose-600 dark:hover:text-rose-400 hover:bg-stone-100 dark:hover:bg-dark-elevated rounded-xl transition"
         title="Notifications"
+        aria-label="Notifications"
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -81,22 +82,22 @@ export default function NotificationDropdown() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 z-50 animate-in fade-in zoom-in-95 duration-100">
-          <div className="flex items-center justify-between px-4 pb-2 border-b border-slate-100">
-            <h4 className="font-semibold text-slate-900 text-sm">Notifications</h4>
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-dark-surface rounded-2xl shadow-premium border border-stone-200/90 dark:border-dark-border py-3 z-50 animate-in fade-in zoom-in-95 duration-100">
+          <div className="flex items-center justify-between px-4 pb-2 border-b border-stone-100 dark:border-dark-border">
+            <h4 className="font-semibold text-stone-900 dark:text-dark-text-primary text-sm">Notifications</h4>
             {unreadCount > 0 && (
               <button
                 onClick={markAllRead}
-                className="text-xs text-rose-600 hover:underline flex items-center gap-1 font-medium"
+                className="text-xs text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 font-medium"
               >
                 <Check className="w-3.5 h-3.5" /> Mark all read
               </button>
             )}
           </div>
 
-          <div className="max-h-80 overflow-y-auto divide-y divide-slate-50">
+          <div className="max-h-80 overflow-y-auto divide-y divide-stone-100 dark:divide-dark-border">
             {notifications.length === 0 ? (
-              <div className="p-6 text-center text-xs text-slate-400">
+              <div className="p-6 text-center text-xs text-stone-400 dark:text-stone-500">
                 No notifications right now
               </div>
             ) : (
@@ -104,22 +105,22 @@ export default function NotificationDropdown() {
                 <div
                   key={n.id}
                   onClick={() => markItemRead(n.id)}
-                  className={`p-3.5 text-xs transition hover:bg-slate-50 ${
-                    !n.isRead ? "bg-rose-50/50" : ""
+                  className={`p-3.5 text-xs transition cursor-pointer hover:bg-stone-50 dark:hover:bg-dark-elevated/60 ${
+                    !n.isRead ? "bg-rose-50/50 dark:bg-rose-950/20" : ""
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <p className="font-semibold text-slate-800">{n.title}</p>
-                    <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                    <p className="font-semibold text-stone-800 dark:text-dark-text-primary">{n.title}</p>
+                    <span className="text-[10px] text-stone-400 dark:text-stone-500 whitespace-nowrap">
                       {new Date(n.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </div>
-                  <p className="text-slate-600 mt-1 leading-relaxed">{n.message}</p>
+                  <p className="text-stone-600 dark:text-dark-text-secondary mt-1 leading-relaxed">{n.message}</p>
                   {n.link && (
                     <Link
                       href={n.link}
                       onClick={() => setOpen(false)}
-                      className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-rose-600 hover:underline"
+                      className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-rose-600 dark:text-rose-400 hover:underline"
                     >
                       View details <ExternalLink className="w-3 h-3" />
                     </Link>
@@ -133,4 +134,3 @@ export default function NotificationDropdown() {
     </div>
   );
 }
-

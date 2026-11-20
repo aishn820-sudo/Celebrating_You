@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Star, ShieldCheck, MapPin, ArrowRight, ExternalLink, Sparkles } from "lucide-react";
+import { Star, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -34,7 +34,7 @@ const DEMO_VENDORS = [
   {
     id: "demo-v1",
     title: "Cinematic Celebration & Portrait Coverage",
-    basePrice: 1500000, // ₹15,000
+    basePrice: 1500000,
     category: { name: "Photography & Cinema", slug: "photography-videography" },
     vendor: {
       id: "v-photo",
@@ -51,7 +51,7 @@ const DEMO_VENDORS = [
   {
     id: "demo-v2",
     title: "Thematic Birthday & Milestone Event Styling",
-    basePrice: 1200000, // ₹12,000
+    basePrice: 1200000,
     category: { name: "Thematic Event & Floral Décor", slug: "decoration-services" },
     vendor: {
       id: "v-decor",
@@ -68,7 +68,7 @@ const DEMO_VENDORS = [
   {
     id: "demo-v3",
     title: "Celebration Gourmet Feast & Live Counters",
-    basePrice: 2000000, // ₹20,000
+    basePrice: 2000000,
     category: { name: "Banquet & Buffet Catering", slug: "catering-services" },
     vendor: {
       id: "v-cater",
@@ -84,34 +84,34 @@ const DEMO_VENDORS = [
   },
   {
     id: "demo-v4",
-    title: "Custom Themed Tier Cakes & Dessert Grazing",
-    basePrice: 350000, // ₹3,500
+    title: "Artisan Multi-Tier Birthday & Fondant Cakes",
+    basePrice: 450000,
     category: { name: "Artisan Cakes & Desserts", slug: "cakes-bakeries" },
     vendor: {
       id: "v-cake",
-      businessName: "Sugarplum Celebration Cakes",
+      businessName: "Velvet Frost Bakery",
       city: "Bengaluru",
       rating: 4.9,
       reviewCount: 52,
       verificationStatus: "VERIFIED",
-      bio: "Handcrafted tiered milestone centerpieces, custom cakes and dessert grazing tables.",
+      bio: "Handcrafted milestone birthday cakes, bespoke dessert tables and themed confectionery.",
     },
     images: [{ imageUrl: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?q=80&w=800&auto=format&fit=crop" }],
     isDemo: true,
   },
   {
     id: "demo-v5",
-    title: "Boutique Garden & Open-Air Courtyard",
-    basePrice: 4500000, // ₹45,000
+    title: "Lush Garden Lawn & Intimate Celebration Hall",
+    basePrice: 4500000,
     category: { name: "Celebration Venues & Lawns", slug: "venues" },
     vendor: {
       id: "v-venue",
-      businessName: "The Celebration Courtyard",
+      businessName: "The Royal Orchid Lawns",
       city: "Bengaluru",
       rating: 4.8,
       reviewCount: 19,
       verificationStatus: "VERIFIED",
-      bio: "Intimate gatherings, sunset terrace parties, and special occasions surrounded by natural greenery.",
+      bio: "Private manicured garden lawns and climate-controlled banquet hall for family milestones.",
     },
     images: [{ imageUrl: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=800&auto=format&fit=crop" }],
     isDemo: true,
@@ -119,7 +119,7 @@ const DEMO_VENDORS = [
   {
     id: "demo-v6",
     title: "Live Acoustic & Celebration Party DJ",
-    basePrice: 1800000, // ₹18,000
+    basePrice: 1800000,
     category: { name: "Music, DJs & Performers", slug: "entertainment" },
     vendor: {
       id: "v-ent",
@@ -140,7 +140,6 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
 
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
-  // Combine real database services with demo examples to provide a rich catalog
   const realVendorIds = new Set(services.map((s) => s.vendor?.businessName?.toLowerCase()));
   const filteredDemo = DEMO_VENDORS.filter(
     (d) => !realVendorIds.has(d.vendor.businessName.toLowerCase())
@@ -167,7 +166,7 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
   }).slice(0, 6);
 
   return (
-    <section className="py-20 bg-white border-b border-stone-200/80">
+    <section className="py-20 bg-white dark:bg-dark-bg border-b border-stone-200/80 dark:border-dark-border transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
@@ -175,10 +174,10 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
             <Badge variant="rose" size="sm" className="mb-2">
               Curated Talent
             </Badge>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
               Premier Celebration Vendors
             </h2>
-            <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+            <p className="text-sm text-stone-600 dark:text-dark-text-secondary mt-2 leading-relaxed">
               Meet talented professionals who bring your special moments to life. Handpicked, background-screened, and bound by our 2-hour response guarantee.
             </p>
           </div>
@@ -198,8 +197,8 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
               onClick={() => setSelectedCategory(c.slug)}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedCategory === c.slug
-                  ? "bg-rose-700 text-white shadow-sm font-bold"
-                  : "bg-warm-100 text-stone-600 hover:bg-stone-200/80"
+                  ? "bg-rose-700 dark:bg-rose-600 text-white shadow-sm font-bold"
+                  : "bg-warm-100 dark:bg-dark-elevated text-stone-600 dark:text-dark-text-secondary hover:bg-stone-200/80 dark:hover:bg-dark-muted"
               }`}
             >
               {c.label}
@@ -218,7 +217,7 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
               <Card key={item.id} hoverEffect className="flex flex-col justify-between overflow-hidden">
                 <div>
                   {/* Card Image */}
-                  <div className="h-48 w-full bg-stone-200 relative overflow-hidden group">
+                  <div className="h-48 w-full bg-stone-200 dark:bg-dark-elevated relative overflow-hidden group">
                     <img
                       src={item.images[0]?.imageUrl || "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop"}
                       alt={item.title}
@@ -226,7 +225,7 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
                       loading="lazy"
                     />
                     <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                      <Badge variant="neutral" size="sm" className="bg-white/95 backdrop-blur-sm shadow-sm font-medium">
+                      <Badge variant="neutral" size="sm" className="bg-white/95 dark:bg-dark-surface/90 dark:text-dark-text-primary backdrop-blur-sm shadow-sm font-medium">
                         {item.category?.name || "Celebration Service"}
                       </Badge>
                       {item.isDemo && (
@@ -246,43 +245,43 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
 
                   {/* Card Content */}
                   <CardContent className="p-6">
-                    <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
+                    <div className="flex items-center justify-between text-xs text-stone-500 dark:text-dark-text-secondary mb-2">
                       <span className="flex items-center gap-1 font-medium">
-                        <MapPin className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+                        <MapPin className="w-3.5 h-3.5 text-stone-400 dark:text-stone-500 shrink-0" />
                         {item.vendor?.city || "Bengaluru"}
                       </span>
                       {hasVerifiedRating ? (
-                        <span className="flex items-center gap-1 font-bold text-stone-900 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/80">
+                        <span className="flex items-center gap-1 font-bold text-stone-900 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200/80 dark:border-amber-800/40">
                           <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                           {item.vendor.rating.toFixed(1)}{" "}
-                          <span className="text-stone-400 font-normal">({item.vendor.reviewCount})</span>
+                          <span className="text-stone-400 dark:text-stone-500 font-normal">({item.vendor.reviewCount})</span>
                         </span>
                       ) : (
-                        <span className="text-[11px] text-stone-400">Newly Onboarded</span>
+                        <span className="text-[11px] text-stone-400 dark:text-stone-500">Newly Onboarded</span>
                       )}
                     </div>
 
-                    <h3 className="font-serif font-bold text-lg text-stone-900 leading-snug line-clamp-1">
+                    <h3 className="font-serif font-bold text-lg text-stone-900 dark:text-dark-text-primary leading-snug line-clamp-1">
                       {item.vendor?.businessName}
                     </h3>
 
-                    <h4 className="text-xs font-semibold text-rose-700 mt-1 line-clamp-1">
+                    <h4 className="text-xs font-semibold text-rose-700 dark:text-rose-400 mt-1 line-clamp-1">
                       {item.title}
                     </h4>
 
-                    <p className="text-xs text-stone-600 mt-2 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2 line-clamp-2 leading-relaxed">
                       {item.vendor?.bio || item.description || "Dedicated celebration professionals providing customized services with verified quality benchmarks."}
                     </p>
                   </CardContent>
                 </div>
 
                 {/* Card Footer */}
-                <div className="px-6 py-4 bg-stone-50/70 border-t border-stone-100 flex items-center justify-between">
+                <div className="px-6 py-4 bg-stone-50/70 dark:bg-dark-elevated/40 border-t border-stone-100 dark:border-dark-border flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider block">
+                    <span className="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 tracking-wider block">
                       Starting From
                     </span>
-                    <span className="text-base font-bold text-stone-900 font-mono">
+                    <span className="text-base font-bold text-stone-900 dark:text-dark-text-primary font-mono">
                       {formatPrice(item.basePrice)}
                     </span>
                   </div>

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import NotificationDropdown from "./NotificationDropdown";
+import ThemeToggle from "./ThemeToggle";
 
 export default function VendorNav({ vendor }: { vendor?: any }) {
   const pathname = usePathname();
@@ -44,18 +45,20 @@ export default function VendorNav({ vendor }: { vendor?: any }) {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden bg-stone-900 text-stone-100 px-4 py-3 flex items-center justify-between border-b border-stone-800 sticky top-0 z-40">
+      <div className="md:hidden bg-stone-900 dark:bg-dark-surface text-stone-100 px-4 py-3 flex items-center justify-between border-b border-stone-800 dark:border-dark-border sticky top-0 z-40 transition-colors">
         <Link href="/vendor/dashboard" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-stone-800 text-amber-200 border border-stone-700 flex items-center justify-center font-serif font-bold text-sm">
+          <div className="w-8 h-8 rounded-lg bg-stone-800 dark:bg-dark-elevated text-amber-200 border border-stone-700 dark:border-dark-border flex items-center justify-center font-serif font-bold text-sm">
             CY
           </div>
-          <span className="font-bold text-sm tracking-tight">Vendor Workspace</span>
+          <span className="font-bold text-sm tracking-tight text-white">Vendor Workspace</span>
         </Link>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <NotificationDropdown />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-1.5 text-stone-300 hover:text-white rounded-lg hover:bg-stone-800"
+            className="p-1.5 text-stone-300 hover:text-white rounded-lg hover:bg-stone-800 dark:hover:bg-dark-elevated"
+            aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -64,15 +67,15 @@ export default function VendorNav({ vendor }: { vendor?: any }) {
 
       {/* Sidebar Desktop & Mobile */}
       <aside
-        className={`w-full md:w-64 bg-stone-900 text-stone-300 flex-shrink-0 flex flex-col justify-between border-r border-stone-800/90 min-h-screen ${
+        className={`w-full md:w-64 bg-stone-900 dark:bg-dark-surface text-stone-300 flex-shrink-0 flex flex-col justify-between border-r border-stone-800/90 dark:border-dark-border min-h-screen transition-colors ${
           mobileOpen ? "block" : "hidden md:flex"
         }`}
       >
         <div>
           {/* Brand */}
-          <div className="p-6 border-b border-stone-800">
+          <div className="p-6 border-b border-stone-800 dark:border-dark-border">
             <Link href="/vendor/dashboard" className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-stone-800 text-amber-200 border border-stone-700 flex items-center justify-center font-serif text-base font-bold shadow-sm">
+              <div className="w-9 h-9 rounded-xl bg-stone-800 dark:bg-dark-elevated text-amber-200 border border-stone-700 dark:border-dark-border flex items-center justify-center font-serif text-base font-bold shadow-sm">
                 CY
               </div>
               <div>
@@ -86,7 +89,7 @@ export default function VendorNav({ vendor }: { vendor?: any }) {
             </Link>
 
             {/* Verification Status */}
-            <div className="mt-4 pt-3.5 border-t border-stone-800/80 flex items-center justify-between text-xs">
+            <div className="mt-4 pt-3.5 border-t border-stone-800/80 dark:border-dark-border flex items-center justify-between text-xs">
               <span className="text-stone-400 text-[11px] font-medium">KYC Status:</span>
               {isVerified ? (
                 <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 px-2 py-0.5 rounded-full">
@@ -112,8 +115,8 @@ export default function VendorNav({ vendor }: { vendor?: any }) {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition-colors ${
                     active
-                      ? "bg-rose-700 text-white shadow-sm font-semibold"
-                      : "text-stone-400 hover:text-white hover:bg-stone-800/60"
+                      ? "bg-rose-700 dark:bg-rose-600 text-white shadow-sm font-semibold"
+                      : "text-stone-400 hover:text-white hover:bg-stone-800/60 dark:hover:bg-dark-elevated/60"
                   } ${item.highlight && !active ? "text-amber-300 font-semibold" : ""}`}
                 >
                   <Icon
@@ -128,8 +131,8 @@ export default function VendorNav({ vendor }: { vendor?: any }) {
           </nav>
         </div>
 
-        {/* Footer Profile & Logout */}
-        <div className="p-4 border-t border-stone-800">
+        {/* Footer Profile, ThemeToggle & Logout */}
+        <div className="p-4 border-t border-stone-800 dark:border-dark-border">
           <div className="flex items-center justify-between mb-3 px-2">
             <div className="truncate">
               <p className="text-xs font-bold text-white truncate">
@@ -139,14 +142,15 @@ export default function VendorNav({ vendor }: { vendor?: any }) {
                 {vendor?.vendorCode || "CY-VEND"}
               </p>
             </div>
-            <div className="hidden md:block">
+            <div className="hidden md:flex items-center gap-1.5">
+              <ThemeToggle />
               <NotificationDropdown />
             </div>
           </div>
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-stone-400 hover:text-rose-400 hover:bg-stone-800/70 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-stone-400 hover:text-rose-400 hover:bg-stone-800/70 dark:hover:bg-dark-elevated/70 transition-colors"
           >
             <LogOut className="w-3.5 h-3.5" /> Sign Out
           </button>

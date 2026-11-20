@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { X, Printer, Download, CheckCircle2, ShieldCheck, FileText } from "lucide-react";
+import { X, Printer, Download, CheckCircle2, FileText } from "lucide-react";
 import { jsPDF } from "jspdf";
 import Button from "@/components/ui/Button";
 
@@ -99,54 +99,45 @@ export default function InvoiceModal({
       doc.text(`Booking Ref: #${invoice.booking?.bookingCode || "N/A"}`, 14, 58);
       doc.text(`Transaction ID: ${invoice.transaction?.transactionRef || "N/A"}`, 14, 64);
 
-      doc.setFont("helvetica", "bold");
-      doc.text("VENDOR DETAILS:", 14, 76);
-      doc.setFont("helvetica", "normal");
-      doc.text(invoice.vendorBusinessName, 14, 82);
-      doc.text(
-        isGstRegistered ? `GSTIN: ${invoice.vendorGstin}` : "GST: Not Applicable (Unregistered)",
-        14,
-        88
-      );
-      doc.text(`PAN: ${invoice.vendorPan || "N/A"}`, 14, 94);
-      doc.text(`Location: ${invoice.vendorAddress || "N/A"}`, 14, 100);
+      doc.line(14, 70, 196, 70);
 
       doc.setFont("helvetica", "bold");
-      doc.text("BILLED TO (HOST):", 120, 76);
+      doc.text("FROM (VENDOR):", 14, 78);
       doc.setFont("helvetica", "normal");
-      doc.text(invoice.customerName, 120, 82);
-      doc.text(`Phone: ${invoice.customerPhone}`, 120, 88);
-      doc.text(`Email: ${invoice.customerEmail}`, 120, 94);
-      if (invoice.customerAddress) {
-        doc.text(`Address: ${invoice.customerAddress.slice(0, 32)}`, 120, 100);
-      }
-
-      doc.line(14, 106, 196, 106);
-
-      doc.setFont("helvetica", "bold");
-      doc.text("Milestone Deliverable / Service Description", 14, 114);
-      doc.text("Amount (INR)", 160, 114);
-      doc.line(14, 118, 196, 118);
-
-      doc.setFont("helvetica", "normal");
-      doc.text(`${invoice.serviceTitle} (${invoice.packageName || "Package"})`, 14, 126);
-      doc.text(formatINR(invoice.agreedServiceValue), 160, 126);
-
-      doc.line(14, 134, 196, 134);
-
-      doc.text("Agreed Contract Service Value:", 110, 144);
-      doc.text(formatINR(invoice.agreedServiceValue), 160, 144);
-
-      if (invoice.type === "FINAL") {
-        doc.text("Advance Previously Paid (Doc 1):", 110, 152);
-        doc.text(formatINR(invoice.advancePaid), 160, 152);
+      doc.text(invoice.vendorBusinessName, 14, 84);
+      doc.text(invoice.vendorAddress || "Bangalore, Karnataka", 14, 90);
+      doc.text(`PAN: ${invoice.vendorPan || "N/A"}`, 14, 96);
+      if (isGstRegistered) {
+        doc.text(`GSTIN: ${invoice.vendorGstin}`, 14, 102);
       }
 
       doc.setFont("helvetica", "bold");
+      doc.text("TO (CUSTOMER):", 110, 78);
+      doc.setFont("helvetica", "normal");
+      doc.text(invoice.customerName, 110, 84);
+      doc.text(invoice.customerEmail, 110, 90);
+      doc.text(invoice.customerPhone, 110, 96);
+
+      doc.line(14, 110, 196, 110);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Service & Deliverables", 14, 118);
+      doc.text("Amount (INR)", 160, 118);
+
+      doc.line(14, 122, 196, 122);
+      doc.setFont("helvetica", "normal");
+      doc.text(invoice.serviceTitle, 14, 130);
+      doc.text(`Tier: ${invoice.packageName || "Custom Package"}`, 14, 136);
+      doc.text(formatINR(invoice.agreedServiceValue), 160, 130);
+
+      doc.line(14, 144, 196, 144);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Total Agreed Service Value:", 110, 152);
+      doc.text(formatINR(invoice.agreedServiceValue), 160, 152);
+
       doc.text(
-        invoice.type === "ADVANCE"
-          ? "Advance Amount Paid (This Receipt):"
-          : "Final Balance Paid (This Receipt):",
+        invoice.type === "ADVANCE" ? "Advance Deposit Received:" : "Final Balance Received:",
         110,
         160
       );
@@ -190,10 +181,10 @@ export default function InvoiceModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-stone-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto print:p-0 print:bg-white">
-      <div className="bg-white rounded-3xl max-w-2xl w-full border border-stone-200 shadow-2xl my-8 overflow-hidden text-stone-900 animate-in fade-in zoom-in-95 duration-150 print:border-none print:shadow-none print:my-0">
+    <div className="fixed inset-0 bg-stone-950/70 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto print:p-0 print:bg-white">
+      <div className="bg-white dark:bg-dark-surface rounded-3xl max-w-2xl w-full border border-stone-200 dark:border-dark-border shadow-2xl my-8 overflow-hidden text-stone-900 dark:text-dark-text-primary animate-in fade-in zoom-in-95 duration-150 print:border-none print:shadow-none print:my-0">
         {/* Top Operational Bar (Hidden in print) */}
-        <div className="bg-stone-900 px-6 py-4 flex items-center justify-between text-white print:hidden">
+        <div className="bg-stone-900 dark:bg-dark-elevated px-6 py-4 flex items-center justify-between text-white print:hidden border-b border-transparent dark:border-dark-border">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-rose-400" />
             <span className="font-semibold text-xs tracking-wide">
@@ -204,7 +195,7 @@ export default function InvoiceModal({
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
+              className="px-3 py-1.5 bg-stone-800 dark:bg-dark-muted hover:bg-stone-700 dark:hover:bg-dark-border text-stone-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
             >
               <Printer className="w-3.5 h-3.5" /> Print
             </button>
@@ -217,7 +208,7 @@ export default function InvoiceModal({
             </Button>
             <button
               onClick={onClose}
-              className="p-1.5 text-stone-400 hover:text-white rounded-xl hover:bg-stone-800 transition"
+              className="p-1.5 text-stone-400 hover:text-white rounded-xl hover:bg-stone-800 dark:hover:bg-dark-muted transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -225,60 +216,60 @@ export default function InvoiceModal({
         </div>
 
         {/* Printable Invoice Body */}
-        <div ref={printRef} className="p-8 sm:p-10 space-y-6 text-stone-800 bg-white">
+        <div ref={printRef} className="p-8 sm:p-10 space-y-6 text-stone-800 dark:text-dark-text-primary bg-white dark:bg-dark-surface print:bg-white print:text-black">
           {/* Top Brand Banner */}
-          <div className="flex items-start justify-between border-b border-stone-200 pb-6">
+          <div className="flex items-start justify-between border-b border-stone-200 dark:border-dark-border pb-6 print:border-stone-200">
             <div>
-              <h1 className="text-2xl font-serif font-bold tracking-tight text-stone-900">
-                Celebrating <span className="text-rose-700">YOU</span>
+              <h1 className="text-2xl font-serif font-bold tracking-tight text-stone-900 dark:text-white print:text-black">
+                Celebrating <span className="text-rose-700 dark:text-rose-400">YOU</span>
               </h1>
-              <p className="text-xs font-semibold text-stone-800 mt-1 uppercase tracking-wide">
+              <p className="text-xs font-semibold text-stone-800 dark:text-dark-text-primary mt-1 uppercase tracking-wide print:text-black">
                 {docTitle}
               </p>
-              <p className="text-[11px] text-stone-500 mt-0.5">{docCategory}</p>
+              <p className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 print:text-stone-500">{docCategory}</p>
             </div>
             <div className="text-right">
-              <span className="inline-flex items-center gap-1 text-emerald-800 font-bold text-xs bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Payment Verified
+              <span className="inline-flex items-center gap-1 text-emerald-800 dark:text-emerald-300 font-bold text-xs bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/60 print:bg-white print:border-black">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Payment Verified
               </span>
-              <p className="text-xs font-mono font-semibold text-stone-700 mt-2">{invoice.invoiceNumber}</p>
+              <p className="text-xs font-mono font-semibold text-stone-700 dark:text-dark-text-secondary mt-2 print:text-black">{invoice.invoiceNumber}</p>
             </div>
           </div>
 
           {/* Meta Info Grid */}
-          <div className="grid grid-cols-2 gap-6 text-xs bg-warm-50 p-5 rounded-2xl border border-stone-200/80">
+          <div className="grid grid-cols-2 gap-6 text-xs bg-warm-50 dark:bg-dark-elevated p-5 rounded-2xl border border-stone-200/80 dark:border-dark-border print:bg-white print:border-stone-200">
             <div>
-              <p className="text-stone-500 font-bold uppercase tracking-wider text-[10px]">Vendor Details</p>
-              <p className="font-serif font-bold text-stone-900 text-sm mt-1">{invoice.vendorBusinessName}</p>
-              <p className="text-stone-600 mt-0.5">
+              <p className="text-stone-500 dark:text-dark-text-secondary font-bold uppercase tracking-wider text-[10px]">Vendor Details</p>
+              <p className="font-serif font-bold text-stone-900 dark:text-white text-sm mt-1 print:text-black">{invoice.vendorBusinessName}</p>
+              <p className="text-stone-600 dark:text-dark-text-secondary mt-0.5 print:text-stone-700">
                 {isGstRegistered ? `GSTIN: ${invoice.vendorGstin}` : "GST: Not Applicable (Unregistered)"}
               </p>
-              <p className="text-stone-600">PAN: {invoice.vendorPan || "N/A"}</p>
-              <p className="text-stone-600">{invoice.vendorAddress}</p>
+              <p className="text-stone-600 dark:text-dark-text-secondary print:text-stone-700">PAN: {invoice.vendorPan || "N/A"}</p>
+              <p className="text-stone-600 dark:text-dark-text-secondary print:text-stone-700">{invoice.vendorAddress}</p>
             </div>
 
             <div>
-              <p className="text-stone-500 font-bold uppercase tracking-wider text-[10px]">Billed To (Host)</p>
-              <p className="font-serif font-bold text-stone-900 text-sm mt-1">{invoice.customerName}</p>
-              <p className="text-stone-600 mt-0.5">{invoice.customerPhone}</p>
-              <p className="text-stone-600">{invoice.customerEmail}</p>
-              {invoice.customerAddress && <p className="text-stone-600">{invoice.customerAddress}</p>}
+              <p className="text-stone-500 dark:text-dark-text-secondary font-bold uppercase tracking-wider text-[10px]">Billed To (Host)</p>
+              <p className="font-serif font-bold text-stone-900 dark:text-white text-sm mt-1 print:text-black">{invoice.customerName}</p>
+              <p className="text-stone-600 dark:text-dark-text-secondary mt-0.5 print:text-stone-700">{invoice.customerPhone}</p>
+              <p className="text-stone-600 dark:text-dark-text-secondary print:text-stone-700">{invoice.customerEmail}</p>
+              {invoice.customerAddress && <p className="text-stone-600 dark:text-dark-text-secondary print:text-stone-700">{invoice.customerAddress}</p>}
             </div>
           </div>
 
           {/* Transaction Metadata */}
-          <div className="grid grid-cols-3 gap-3 text-xs border border-stone-200 rounded-xl p-3 bg-white">
+          <div className="grid grid-cols-3 gap-3 text-xs border border-stone-200 dark:border-dark-border rounded-xl p-3 bg-white dark:bg-dark-elevated print:bg-white">
             <div>
-              <span className="text-stone-500 block text-[10px] font-medium">Booking Code</span>
-              <span className="font-mono font-bold text-rose-700">#{invoice.booking?.bookingCode || "N/A"}</span>
+              <span className="text-stone-500 dark:text-dark-text-secondary block text-[10px] font-medium">Booking Code</span>
+              <span className="font-mono font-bold text-rose-700 dark:text-rose-400">#{invoice.booking?.bookingCode || "N/A"}</span>
             </div>
             <div>
-              <span className="text-stone-500 block text-[10px] font-medium">Transaction ID</span>
-              <span className="font-mono text-stone-900 font-semibold">{invoice.transaction?.transactionRef || "N/A"}</span>
+              <span className="text-stone-500 dark:text-dark-text-secondary block text-[10px] font-medium">Transaction ID</span>
+              <span className="font-mono text-stone-900 dark:text-dark-text-primary font-semibold">{invoice.transaction?.transactionRef || "N/A"}</span>
             </div>
             <div>
-              <span className="text-stone-500 block text-[10px] font-medium">Payment Date</span>
-              <span className="font-medium text-stone-900">
+              <span className="text-stone-500 dark:text-dark-text-secondary block text-[10px] font-medium">Payment Date</span>
+              <span className="font-medium text-stone-900 dark:text-dark-text-primary">
                 {new Date(invoice.paymentDate).toLocaleDateString("en-IN", {
                   day: "numeric",
                   month: "short",
@@ -289,49 +280,49 @@ export default function InvoiceModal({
           </div>
 
           {/* Line Items Table */}
-          <div className="border border-stone-200 rounded-xl overflow-hidden text-xs">
-            <div className="bg-warm-100/70 p-3 flex justify-between font-bold text-stone-800 text-[11px] uppercase tracking-wider">
+          <div className="border border-stone-200 dark:border-dark-border rounded-xl overflow-hidden text-xs">
+            <div className="bg-warm-100/70 dark:bg-dark-muted p-3 flex justify-between font-bold text-stone-800 dark:text-dark-text-primary text-[11px] uppercase tracking-wider">
               <span>Service & Package Deliverables</span>
               <span>Total Value</span>
             </div>
-            <div className="p-4 flex justify-between items-center border-t border-stone-200">
+            <div className="p-4 flex justify-between items-center border-t border-stone-200 dark:border-dark-border">
               <div>
-                <p className="font-semibold text-stone-900 text-sm">{invoice.serviceTitle}</p>
-                <span className="text-[11px] text-stone-500">Tier: {invoice.packageName || "Standard Package"}</span>
+                <p className="font-semibold text-stone-900 dark:text-white text-sm">{invoice.serviceTitle}</p>
+                <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary">Tier: {invoice.packageName || "Standard Package"}</span>
               </div>
-              <span className="font-bold text-stone-900 text-sm">{formatINR(invoice.agreedServiceValue)}</span>
+              <span className="font-bold text-stone-900 dark:text-white text-sm">{formatINR(invoice.agreedServiceValue)}</span>
             </div>
           </div>
 
           {/* Reconciled Financial Ledger */}
-          <div className="border-t border-stone-200 pt-4 space-y-2 text-xs">
-            <div className="flex justify-between text-stone-600">
+          <div className="border-t border-stone-200 dark:border-dark-border pt-4 space-y-2 text-xs">
+            <div className="flex justify-between text-stone-600 dark:text-dark-text-secondary">
               <span>Agreed Contract Service Value:</span>
-              <span className="font-semibold text-stone-900">{formatINR(invoice.agreedServiceValue)}</span>
+              <span className="font-semibold text-stone-900 dark:text-white">{formatINR(invoice.agreedServiceValue)}</span>
             </div>
 
             {invoice.type === "FINAL" && (
-              <div className="flex justify-between text-stone-600">
+              <div className="flex justify-between text-stone-600 dark:text-dark-text-secondary">
                 <span>Advance Previously Confirmed (Doc 1):</span>
-                <span className="font-semibold text-stone-900">{formatINR(invoice.advancePaid)}</span>
+                <span className="font-semibold text-stone-900 dark:text-white">{formatINR(invoice.advancePaid)}</span>
               </div>
             )}
 
-            <div className="flex justify-between text-sm font-bold text-stone-900 pt-1 border-t border-stone-100">
+            <div className="flex justify-between text-sm font-bold text-stone-900 dark:text-white pt-1 border-t border-stone-100 dark:border-dark-border">
               <span>
                 {invoice.type === "ADVANCE"
                   ? "Advance Paid Under This Receipt:"
                   : "Final Balance Paid Under This Receipt:"}
               </span>
-              <span className="text-emerald-700 font-bold">{formatINR(invoice.amountPaidThisDoc)}</span>
+              <span className="text-emerald-700 dark:text-emerald-400 font-bold">{formatINR(invoice.amountPaidThisDoc)}</span>
             </div>
 
-            <div className="flex justify-between text-stone-600 pt-1">
+            <div className="flex justify-between text-stone-600 dark:text-dark-text-secondary pt-1">
               <span>Remaining Balance Due:</span>
-              <span className="font-mono font-bold text-stone-800">{formatINR(invoice.remainingBalanceDue)}</span>
+              <span className="font-mono font-bold text-stone-800 dark:text-white">{formatINR(invoice.remainingBalanceDue)}</span>
             </div>
 
-            <div className="flex justify-between text-stone-500 text-[11px] pt-1 border-t border-stone-100">
+            <div className="flex justify-between text-stone-500 dark:text-dark-text-secondary text-[11px] pt-1 border-t border-stone-100 dark:border-dark-border">
               <span>
                 {isGstRegistered ? "Applicable GST (18% Component):" : "GST Applicability:"}
               </span>
@@ -342,8 +333,8 @@ export default function InvoiceModal({
           </div>
 
           {/* Footer & Disclaimer */}
-          <div className="border-t border-stone-200 pt-4 text-[10px] text-stone-500 leading-relaxed">
-            <p className="font-medium text-stone-600">
+          <div className="border-t border-stone-200 dark:border-dark-border pt-4 text-[10px] text-stone-500 dark:text-dark-text-secondary leading-relaxed">
+            <p className="font-medium text-stone-600 dark:text-dark-text-primary">
               {isGstRegistered
                 ? "Tax Invoice issued under Section 31 of Central Goods and Services Tax Act, 2017."
                 : "The supplier is not registered under GST. This document serves as a verified commercial payment receipt and booking voucher."}

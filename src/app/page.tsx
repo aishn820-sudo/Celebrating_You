@@ -177,26 +177,26 @@ export default async function HomePage() {
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary transition-colors duration-200">
       <Navbar />
 
       <main className="flex-1">
         {/* HERO SECTION */}
-        <section className="relative pt-16 pb-24 border-b border-stone-200/70 bg-gradient-to-b from-warm-100/70 via-warm-50 to-warm-50">
+        <section className="relative pt-16 pb-24 border-b border-stone-200/70 dark:border-dark-border bg-gradient-to-b from-warm-100/70 via-warm-50 to-warm-50 dark:from-dark-surface/60 dark:via-dark-bg dark:to-dark-bg transition-colors duration-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Brand Promise Pill */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-stone-200 shadow-sm text-xs font-semibold text-stone-700 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-dark-elevated border border-stone-200 dark:border-dark-border shadow-sm text-xs font-semibold text-stone-700 dark:text-dark-text-secondary mb-6">
               <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
               You Imagine the Celebration. We Bring Everything Together.
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-stone-900 tracking-tight leading-[1.1] max-w-4xl mx-auto">
-              Every Celebration. <span className="italic text-rose-700">One Place.</span>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight leading-[1.1] max-w-4xl mx-auto">
+              Every Celebration. <span className="italic text-rose-700 dark:text-rose-400">One Place.</span>
             </h1>
 
             {/* Subheading */}
-            <p className="mt-6 text-base sm:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-base sm:text-lg text-stone-600 dark:text-dark-text-secondary max-w-2xl mx-auto leading-relaxed">
               From finding the perfect photographer to organizing décor, catering and every little detail, plan your celebration effortlessly with everything in one place.
             </p>
 
@@ -215,20 +215,20 @@ export default async function HomePage() {
             </div>
 
             {/* Quick Filter Search Bar */}
-            <div className="mt-12 max-w-3xl mx-auto bg-white p-2.5 rounded-2xl shadow-premium border border-stone-200/90 flex flex-col sm:flex-row items-center gap-2">
-              <div className="flex-1 w-full flex items-center gap-3 px-3.5 py-2 border-b sm:border-b-0 sm:border-r border-stone-100">
-                <Search className="w-4 h-4 text-stone-400 shrink-0" />
+            <div className="mt-12 max-w-3xl mx-auto bg-white dark:bg-dark-surface p-2.5 rounded-2xl shadow-premium border border-stone-200/90 dark:border-dark-border flex flex-col sm:flex-row items-center gap-2">
+              <div className="flex-1 w-full flex items-center gap-3 px-3.5 py-2 border-b sm:border-b-0 sm:border-r border-stone-100 dark:border-dark-border">
+                <Search className="w-4 h-4 text-stone-400 dark:text-stone-500 shrink-0" />
                 <input
                   type="text"
                   placeholder="Photography, catering, theme décor, custom cakes..."
-                  className="w-full text-sm text-stone-900 placeholder-stone-400 focus:outline-none bg-transparent"
+                  className="w-full text-sm text-stone-900 dark:text-dark-text-primary placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none bg-transparent"
                   readOnly
                 />
               </div>
 
-              <div className="w-full sm:w-48 flex items-center gap-2 px-3 py-2 border-b sm:border-b-0 sm:border-r border-stone-100">
-                <MapPin className="w-4 h-4 text-stone-400 shrink-0" />
-                <span className="text-sm font-medium text-stone-700">Bangalore, IN</span>
+              <div className="w-full sm:w-48 flex items-center gap-2 px-3 py-2 border-b sm:border-b-0 sm:border-r border-stone-100 dark:border-dark-border">
+                <MapPin className="w-4 h-4 text-stone-400 dark:text-stone-500 shrink-0" />
+                <span className="text-sm font-medium text-stone-700 dark:text-dark-text-primary">Bangalore, IN</span>
               </div>
 
               <Link href="/explore" className="w-full sm:w-auto">
@@ -239,38 +239,38 @@ export default async function HomePage() {
             </div>
 
             {/* Trust Metric Badges */}
-            <div className="mt-14 pt-10 border-t border-stone-200/60 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
+            <div className="mt-14 pt-10 border-t border-stone-200/60 dark:border-dark-border grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 shadow-sm flex items-center justify-center text-stone-800 shrink-0">
-                  <ShieldCheck className="w-5 h-5 text-emerald-700" />
+                <div className="w-10 h-10 rounded-xl bg-white dark:bg-dark-surface border border-stone-200 dark:border-dark-border shadow-sm flex items-center justify-center text-stone-800 dark:text-dark-text-primary shrink-0">
+                  <ShieldCheck className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-stone-900">100% Verified Vendors</h4>
-                  <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">
+                  <h4 className="text-sm font-bold text-stone-900 dark:text-dark-text-primary">100% Verified Vendors</h4>
+                  <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5 leading-relaxed">
                     Identity, PAN, GSTIN and portfolio authenticity screened before activation.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 shadow-sm flex items-center justify-center text-stone-800 shrink-0">
-                  <Clock className="w-5 h-5 text-rose-700" />
+                <div className="w-10 h-10 rounded-xl bg-white dark:bg-dark-surface border border-stone-200 dark:border-dark-border shadow-sm flex items-center justify-center text-stone-800 dark:text-dark-text-primary shrink-0">
+                  <Clock className="w-5 h-5 text-rose-700 dark:text-rose-400" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-stone-900">2-Hour Response SLA</h4>
-                  <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">
+                  <h4 className="text-sm font-bold text-stone-900 dark:text-dark-text-primary">2-Hour Response SLA</h4>
+                  <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5 leading-relaxed">
                     Vendors are bound to respond within 2 hours or requests lapse cleanly.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 shadow-sm flex items-center justify-center text-stone-800 shrink-0">
-                  <FileCheck2 className="w-5 h-5 text-amber-700" />
+                <div className="w-10 h-10 rounded-xl bg-white dark:bg-dark-surface border border-stone-200 dark:border-dark-border shadow-sm flex items-center justify-center text-stone-800 dark:text-dark-text-primary shrink-0">
+                  <FileCheck2 className="w-5 h-5 text-amber-700 dark:text-amber-400" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-stone-900">Milestone Legal Invoices</h4>
-                  <p className="text-xs text-stone-500 mt-0.5 leading-relaxed">
+                  <h4 className="text-sm font-bold text-stone-900 dark:text-dark-text-primary">Milestone Legal Invoices</h4>
+                  <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5 leading-relaxed">
                     Separate transaction receipts for Advance (Doc 1) and Final balance (Doc 2).
                   </p>
                 </div>
@@ -282,11 +282,11 @@ export default async function HomePage() {
         {/* OCCASION DISCOVERY SECTION: "What are you celebrating?" */}
         <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
-            <p className="text-xs uppercase tracking-widest font-bold text-rose-700">Occasion-First Discovery</p>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight mt-1.5">
+            <p className="text-xs uppercase tracking-widest font-bold text-rose-700 dark:text-rose-400">Occasion-First Discovery</p>
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight mt-1.5">
               What are you celebrating?
             </h2>
-            <p className="text-sm text-stone-600 mt-2.5 leading-relaxed">
+            <p className="text-sm text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
               Every milestone has its own heartbeat. Select your celebration to explore tailored services, curated templates, and recommended vendors.
             </p>
           </div>
@@ -296,7 +296,7 @@ export default async function HomePage() {
               <Link
                 key={occ.title}
                 href={`/plan?occasion=${encodeURIComponent(occ.slug)}`}
-                className="group relative rounded-2xl overflow-hidden border border-stone-200 bg-white hover:border-rose-300 hover:shadow-premium transition-all duration-300 flex flex-col justify-between"
+                className="group relative rounded-2xl overflow-hidden border border-stone-200 dark:border-dark-border bg-white dark:bg-dark-surface hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-premium transition-all duration-300 flex flex-col justify-between"
               >
                 {/* Occasion Image */}
                 <div className="h-44 w-full relative overflow-hidden bg-stone-100">
@@ -320,10 +320,10 @@ export default async function HomePage() {
 
                 {/* Card Content */}
                 <div className="p-4 flex-1 flex flex-col justify-between">
-                  <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-stone-600 dark:text-dark-text-secondary line-clamp-2 leading-relaxed">
                     {occ.description}
                   </p>
-                  <span className="mt-3 text-xs font-semibold text-rose-700 group-hover:text-rose-800 flex items-center gap-1 transition-colors">
+                  <span className="mt-3 text-xs font-semibold text-rose-700 dark:text-rose-400 group-hover:text-rose-800 dark:group-hover:text-rose-300 flex items-center gap-1 transition-colors">
                     Plan this celebration <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -506,17 +506,17 @@ export default async function HomePage() {
                 <Link key={cat.title} href={`/explore?category=${cat.slug}`} className="group">
                   <Card hoverEffect className="h-full p-6 flex flex-col justify-between">
                     <div>
-                      <div className="w-12 h-12 rounded-xl bg-warm-100 border border-stone-200/80 text-stone-800 flex items-center justify-center mb-4 transition-colors group-hover:bg-rose-50 group-hover:text-rose-700 group-hover:border-rose-200">
+                      <div className="w-12 h-12 rounded-xl bg-warm-100 dark:bg-dark-elevated border border-stone-200/80 dark:border-dark-border text-stone-800 dark:text-dark-text-primary flex items-center justify-center mb-4 transition-colors group-hover:bg-rose-50 dark:group-hover:bg-rose-950/40 group-hover:text-rose-700 dark:group-hover:text-rose-400 group-hover:border-rose-200 dark:group-hover:border-rose-800">
                         <Icon className="w-6 h-6" />
                       </div>
-                      <h3 className="font-bold text-stone-900 text-base group-hover:text-rose-700 transition-colors">
+                      <h3 className="font-bold text-stone-900 dark:text-dark-text-primary text-base group-hover:text-rose-700 dark:group-hover:text-rose-400 transition-colors">
                         {cat.title}
                       </h3>
-                      <p className="text-xs text-stone-500 mt-2 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-2 line-clamp-2 leading-relaxed">
                         {cat.description}
                       </p>
                     </div>
-                    <span className="mt-5 text-xs font-semibold text-rose-700 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                    <span className="mt-5 text-xs font-semibold text-rose-700 dark:text-rose-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                       Explore Vendors <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </Card>
@@ -536,75 +536,75 @@ export default async function HomePage() {
         <BudgetInspirationSection services={featuredServices} />
 
         {/* TRUST SECTION */}
-        <section className="py-20 bg-warm-100/60 border-t border-stone-200/80">
+        <section className="py-20 bg-warm-100/60 dark:bg-dark-bg border-t border-stone-200/80 dark:border-dark-border transition-colors duration-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-14 text-center mx-auto">
-              <p className="text-xs uppercase tracking-widest font-bold text-rose-700">Built On Integrity</p>
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight mt-1.5">
+              <p className="text-xs uppercase tracking-widest font-bold text-rose-700 dark:text-rose-400">Built On Integrity</p>
+              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight mt-1.5">
                 How Celebrating YOU Protects Your Special Day
               </h2>
-              <p className="text-sm text-stone-600 mt-2.5 leading-relaxed">
+              <p className="text-sm text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
                 We believe peace of mind is the cornerstone of every joyful celebration. Our platform guarantees transparency, punctuality, and financial clarity at every step.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-5">
+              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-5">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-bold text-stone-900">Rigorous Vendor Verification</h4>
-                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Rigorous Vendor Verification</h4>
+                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
                   Every vendor is verified through Government identity checks, PAN validation, GST registration verification, and actual past event portfolio review before being listed.
                 </p>
               </div>
 
-              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center mb-5">
+              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 flex items-center justify-center mb-5">
                   <Clock className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-bold text-stone-900">Guaranteed 2-Hour SLA</h4>
-                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Guaranteed 2-Hour SLA</h4>
+                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
                   No waiting days for vendor replies. Every booking request is governed by a strict 2-hour vendor response window. If a vendor cannot commit, requests lapse cleanly so you can move forward immediately.
                 </p>
               </div>
 
-              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-5">
+              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 flex items-center justify-center mb-5">
                   <FileCheck2 className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-bold text-stone-900">Milestone Legal Invoices</h4>
-                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Milestone Legal Invoices</h4>
+                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
                   Never rely on informal bank slips. Each booking generates separate, official documents: Document 1 (Advance Payment Receipt) and Document 2 (Final Payment Tax Invoice) with verified transaction IDs.
                 </p>
               </div>
 
-              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-stone-100 text-stone-700 flex items-center justify-center mb-5">
+              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-stone-100 dark:bg-dark-elevated text-stone-700 dark:text-dark-text-secondary flex items-center justify-center mb-5">
                   <FolderCheck className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-bold text-stone-900">Centralized Celebration Workspace</h4>
-                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Centralized Celebration Workspace</h4>
+                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
                   Organize photography, catering, decor, and cakes under one single celebration event dashboard. Track individual contracts independently without forced package lock-ins.
                 </p>
               </div>
 
-              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-700 flex items-center justify-center mb-5">
+              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 flex items-center justify-center mb-5">
                   <Star className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-bold text-stone-900">Verified Customer Reviews</h4>
-                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Verified Customer Reviews</h4>
+                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
                   Reviews can only be submitted by clients who completed a verified celebration booking. No fabricated reviews or arbitrary vendor removals are permitted.
                 </p>
               </div>
 
-              <div className="bg-white p-7 rounded-2xl border border-stone-200 shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-5">
+              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
+                <div className="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 flex items-center justify-center mb-5">
                   <UserCheck className="w-6 h-6" />
                 </div>
-                <h4 className="text-base font-bold text-stone-900">Contact Privacy Protection</h4>
-                <p className="text-xs text-stone-600 mt-2.5 leading-relaxed">
+                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Contact Privacy Protection</h4>
+                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
                   Customer and vendor contact information remains protected until the booking is accepted and the advance payment is verified, preventing unsolicited marketing calls.
                 </p>
               </div>

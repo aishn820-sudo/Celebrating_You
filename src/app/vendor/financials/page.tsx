@@ -77,121 +77,121 @@ export default async function VendorFinancialsPage() {
   const totalCommission = settlements.reduce((sum, s) => sum + s.platformCommission, 0);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 text-stone-900 font-sans antialiased selection:bg-rose-100 selection:text-rose-900">
+    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 dark:bg-dark-bg text-stone-900 dark:text-dark-text-primary font-sans antialiased selection:bg-rose-100 selection:text-rose-900 transition-colors">
       <VendorNav vendor={vendor} />
 
       <main className="flex-1 p-6 sm:p-10 max-w-7xl overflow-y-auto">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
-            <span className="text-xs font-semibold tracking-wider uppercase text-rose-700">Financial Ledger</span>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 mt-1">
+            <span className="text-xs font-semibold tracking-wider uppercase text-rose-700 dark:text-rose-400">Financial Ledger</span>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-dark-text-primary mt-1">
               Earnings, Settlements & Payouts
             </h1>
-            <p className="text-xs text-stone-600 mt-1">
+            <p className="text-xs text-stone-600 dark:text-stone-400 mt-1">
               Real-time audit of contracted booking values, milestone collections, platform commissions, and bank disbursements.
             </p>
           </div>
 
           <Link
             href="/vendor/invoices"
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-stone-50 text-stone-800 rounded-xl border border-stone-200 shadow-soft text-xs font-semibold transition"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-dark-surface hover:bg-stone-50 dark:hover:bg-dark-elevated text-stone-800 dark:text-dark-text-primary rounded-xl border border-stone-200 dark:border-dark-border shadow-soft text-xs font-semibold transition"
           >
-            <FileText className="w-4 h-4 text-rose-700" /> View Invoices
+            <FileText className="w-4 h-4 text-rose-700 dark:text-rose-400" /> View Invoices
           </Link>
         </div>
 
         {/* Financial KPI Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-soft">
-            <span className="text-xs text-stone-500 font-medium block">Gross Booked Value</span>
-            <span className="text-2xl font-bold text-stone-900 mt-1 block">
+          <div className="bg-white dark:bg-dark-surface p-5 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft transition-colors">
+            <span className="text-xs text-stone-500 dark:text-stone-400 font-medium block">Gross Booked Value</span>
+            <span className="text-2xl font-bold text-stone-900 dark:text-dark-text-primary mt-1 block">
               ₹{(totalBookingValue / 100).toLocaleString("en-IN")}
             </span>
-            <span className="text-[11px] text-stone-500 mt-1 block">Total agreed bookings</span>
+            <span className="text-[11px] text-stone-500 dark:text-stone-400 mt-1 block">Total agreed bookings</span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-soft">
-            <span className="text-xs text-stone-500 font-medium block">Total Collected</span>
-            <span className="text-2xl font-bold text-emerald-700 mt-1 block">
+          <div className="bg-white dark:bg-dark-surface p-5 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft transition-colors">
+            <span className="text-xs text-stone-500 dark:text-stone-400 font-medium block">Total Collected</span>
+            <span className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mt-1 block">
               ₹{(totalCollected / 100).toLocaleString("en-IN")}
             </span>
-            <span className="text-[11px] text-stone-500 mt-1 block">Advance + Final received</span>
+            <span className="text-[11px] text-stone-500 dark:text-stone-400 mt-1 block">Advance + Final received</span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-soft">
-            <span className="text-xs text-stone-500 font-medium block">Disbursed to Bank</span>
-            <span className="text-2xl font-bold text-stone-900 mt-1 block">
+          <div className="bg-white dark:bg-dark-surface p-5 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft transition-colors">
+            <span className="text-xs text-stone-500 dark:text-stone-400 font-medium block">Disbursed to Bank</span>
+            <span className="text-2xl font-bold text-stone-900 dark:text-dark-text-primary mt-1 block">
               ₹{(settledTotal / 100).toLocaleString("en-IN")}
             </span>
-            <span className="text-[11px] text-emerald-700 font-medium mt-1 block">Transferred via NEFT/IMPS</span>
+            <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium mt-1 block">Transferred via NEFT/IMPS</span>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-soft">
-            <span className="text-xs text-stone-500 font-medium block">Settlement in Pipeline</span>
-            <span className="text-2xl font-bold text-amber-700 mt-1 block">
+          <div className="bg-white dark:bg-dark-surface p-5 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft transition-colors">
+            <span className="text-xs text-stone-500 dark:text-stone-400 font-medium block">Settlement in Pipeline</span>
+            <span className="text-2xl font-bold text-amber-700 dark:text-amber-400 mt-1 block">
               ₹{(dueTotal / 100).toLocaleString("en-IN")}
             </span>
-            <span className="text-[11px] text-stone-500 mt-1 block">Due upon completion</span>
+            <span className="text-[11px] text-stone-500 dark:text-stone-400 mt-1 block">Due upon completion</span>
           </div>
         </div>
 
         {/* Bank Details & Commission Settings */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-xs">
-          <div className="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-soft">
-            <h3 className="font-serif font-bold text-stone-900 text-base mb-4 flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-rose-700" /> Registered Payout Bank Account
+          <div className="bg-white dark:bg-dark-surface p-6 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft transition-colors">
+            <h3 className="font-serif font-bold text-stone-900 dark:text-dark-text-primary text-base mb-4 flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-rose-700 dark:text-rose-400" /> Registered Payout Bank Account
             </h3>
-            <div className="space-y-3 text-stone-700">
-              <div className="flex justify-between py-1.5 border-b border-stone-100">
-                <span className="text-stone-500">Account Holder:</span>
-                <span className="font-semibold text-stone-900">{vendor.accountHolderName || vendor.businessName}</span>
+            <div className="space-y-3 text-stone-700 dark:text-stone-300">
+              <div className="flex justify-between py-1.5 border-b border-stone-100 dark:border-dark-border">
+                <span className="text-stone-500 dark:text-stone-400">Account Holder:</span>
+                <span className="font-semibold text-stone-900 dark:text-dark-text-primary">{vendor.accountHolderName || vendor.businessName}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-stone-100">
-                <span className="text-stone-500">Bank Name:</span>
-                <span className="font-semibold text-stone-900">{vendor.bankName || "HDFC Bank"}</span>
+              <div className="flex justify-between py-1.5 border-b border-stone-100 dark:border-dark-border">
+                <span className="text-stone-500 dark:text-stone-400">Bank Name:</span>
+                <span className="font-semibold text-stone-900 dark:text-dark-text-primary">{vendor.bankName || "HDFC Bank"}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-stone-100">
-                <span className="text-stone-500">Account Number:</span>
-                <span className="font-mono text-stone-900 font-semibold">
+              <div className="flex justify-between py-1.5 border-b border-stone-100 dark:border-dark-border">
+                <span className="text-stone-500 dark:text-stone-400">Account Number:</span>
+                <span className="font-mono text-stone-900 dark:text-dark-text-primary font-semibold">
                   {vendor.bankAccountNumber
                     ? `•••• •••• ${vendor.bankAccountNumber.slice(-4)}`
                     : "Not configured"}
                 </span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-stone-500">IFSC Code:</span>
-                <span className="font-mono text-stone-900 font-semibold">{vendor.bankIfsc || "N/A"}</span>
+                <span className="text-stone-500 dark:text-stone-400">IFSC Code:</span>
+                <span className="font-mono text-stone-900 dark:text-dark-text-primary font-semibold">{vendor.bankIfsc || "N/A"}</span>
               </div>
             </div>
 
             <Link
               href="/vendor/profile"
-              className="mt-5 block text-center py-2.5 bg-warm-100 hover:bg-warm-200 text-stone-800 rounded-xl font-semibold transition"
+              className="mt-5 block text-center py-2.5 bg-warm-100 dark:bg-dark-elevated hover:bg-warm-200 dark:hover:bg-dark-border text-stone-800 dark:text-dark-text-primary rounded-xl font-semibold transition"
             >
               Update Payout Account in Profile
             </Link>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-soft">
-            <h3 className="font-serif font-bold text-stone-900 text-base mb-4 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-700" /> Platform Tier & Commission
+          <div className="bg-white dark:bg-dark-surface p-6 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft transition-colors">
+            <h3 className="font-serif font-bold text-stone-900 dark:text-dark-text-primary text-base mb-4 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-emerald-700 dark:text-emerald-400" /> Platform Tier & Commission
             </h3>
-            <div className="space-y-4 text-stone-700">
-              <p className="leading-relaxed text-stone-600 text-xs">
+            <div className="space-y-4 text-stone-700 dark:text-stone-300">
+              <p className="leading-relaxed text-stone-600 dark:text-stone-400 text-xs">
                 Your artisan account is enrolled on the standard <strong>{vendor.commissionRate || 10}% platform commission</strong> tier based on your verified category.
               </p>
-              <div className="p-4 bg-warm-50 rounded-xl space-y-2 border border-stone-200/80">
-                <div className="flex justify-between text-stone-600 text-xs">
+              <div className="p-4 bg-warm-50 dark:bg-dark-elevated rounded-xl space-y-2 border border-stone-200/80 dark:border-dark-border transition-colors">
+                <div className="flex justify-between text-stone-600 dark:text-stone-400 text-xs">
                   <span>Gross Value Invoiced:</span>
-                  <span className="font-semibold text-stone-900">₹{(totalCollected / 100).toLocaleString("en-IN")}</span>
+                  <span className="font-semibold text-stone-900 dark:text-dark-text-primary">₹{(totalCollected / 100).toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-stone-600 text-xs">
+                <div className="flex justify-between text-stone-600 dark:text-stone-400 text-xs">
                   <span>Commission Retained (10%):</span>
-                  <span className="font-semibold text-rose-700">₹{(totalCommission / 100).toLocaleString("en-IN")}</span>
+                  <span className="font-semibold text-rose-700 dark:text-rose-400">₹{(totalCommission / 100).toLocaleString("en-IN")}</span>
                 </div>
-                <div className="flex justify-between text-stone-800 pt-2 border-t border-stone-200 font-bold text-xs">
+                <div className="flex justify-between text-stone-800 dark:text-stone-200 pt-2 border-t border-stone-200 dark:border-dark-border font-bold text-xs">
                   <span>Net Artisan Entitlement:</span>
-                  <span className="text-emerald-700">₹{((totalCollected - totalCommission) / 100).toLocaleString("en-IN")}</span>
+                  <span className="text-emerald-700 dark:text-emerald-400">₹{((totalCollected - totalCommission) / 100).toLocaleString("en-IN")}</span>
                 </div>
               </div>
             </div>
@@ -199,17 +199,17 @@ export default async function VendorFinancialsPage() {
         </div>
 
         {/* Settlements Log */}
-        <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200/90 shadow-soft">
-          <h3 className="font-serif font-bold text-stone-900 text-base mb-4">Direct Bank Settlement Records</h3>
+        <div className="bg-white dark:bg-dark-surface p-6 sm:p-8 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft transition-colors">
+          <h3 className="font-serif font-bold text-stone-900 dark:text-dark-text-primary text-base mb-4">Direct Bank Settlement Records</h3>
 
           {settlements.length === 0 ? (
-            <p className="text-xs text-stone-500 py-8 text-center">
+            <p className="text-xs text-stone-500 dark:text-stone-400 py-8 text-center">
               No settlements logged yet. Settlements are calculated automatically upon full payment confirmation.
             </p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left text-stone-700">
-                <thead className="text-[11px] uppercase tracking-wider text-stone-500 border-b border-stone-200">
+              <table className="w-full text-xs text-left text-stone-700 dark:text-stone-300">
+                <thead className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 border-b border-stone-200 dark:border-dark-border">
                   <tr>
                     <th className="pb-3 font-semibold">Booking Code</th>
                     <th className="pb-3 font-semibold">Gross Amount</th>
@@ -220,13 +220,13 @@ export default async function VendorFinancialsPage() {
                     <th className="pb-3 text-right font-semibold">Settled Date</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100">
+                <tbody className="divide-y divide-stone-100 dark:divide-dark-border">
                   {settlements.map((s) => (
-                    <tr key={s.id} className="hover:bg-warm-50/60 transition">
-                      <td className="py-3 font-mono font-bold text-stone-900">#{s.booking.bookingCode}</td>
+                    <tr key={s.id} className="hover:bg-warm-50/60 dark:hover:bg-dark-elevated/60 transition">
+                      <td className="py-3 font-mono font-bold text-stone-900 dark:text-dark-text-primary">#{s.booking.bookingCode}</td>
                       <td className="py-3 font-medium">₹{(s.grossAmount / 100).toLocaleString("en-IN")}</td>
-                      <td className="py-3 text-rose-700 font-medium">₹{(s.platformCommission / 100).toLocaleString("en-IN")}</td>
-                      <td className="py-3 font-bold text-emerald-700">
+                      <td className="py-3 text-rose-700 dark:text-rose-400 font-medium">₹{(s.platformCommission / 100).toLocaleString("en-IN")}</td>
+                      <td className="py-3 font-bold text-emerald-700 dark:text-emerald-400">
                         ₹{(s.netSettlementAmount / 100).toLocaleString("en-IN")}
                       </td>
                       <td className="py-3">
@@ -234,8 +234,8 @@ export default async function VendorFinancialsPage() {
                           {s.status}
                         </Badge>
                       </td>
-                      <td className="py-3 font-mono text-stone-500">{s.settlementRef || "PENDING"}</td>
-                      <td className="py-3 text-right text-stone-500">
+                      <td className="py-3 font-mono text-stone-500 dark:text-stone-400">{s.settlementRef || "PENDING"}</td>
+                      <td className="py-3 text-right text-stone-500 dark:text-stone-400">
                         {s.settledAt
                           ? new Date(s.settledAt).toLocaleDateString("en-IN")
                           : "Processing"}

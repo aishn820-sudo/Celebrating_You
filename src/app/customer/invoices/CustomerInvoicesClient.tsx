@@ -56,61 +56,61 @@ export default function CustomerInvoicesClient({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-semibold tracking-wider uppercase text-rose-700">Financial Records</span>
-            <span className="text-stone-300">•</span>
-            <span className="text-xs font-medium text-stone-500">Host Ledger</span>
+            <span className="text-xs font-semibold tracking-wider uppercase text-rose-700 dark:text-rose-400">Financial Records</span>
+            <span className="text-stone-300 dark:text-stone-600">•</span>
+            <span className="text-xs font-medium text-stone-500 dark:text-dark-text-secondary">Host Ledger</span>
           </div>
-          <h1 className="text-3xl font-serif font-bold text-stone-900 tracking-tight">
+          <h1 className="text-3xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
             Transaction Invoices & Receipts
           </h1>
-          <p className="text-xs text-stone-600 mt-1 max-w-2xl leading-relaxed">
+          <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-1 max-w-2xl leading-relaxed">
             Every payment on Celebrating YOU generates an immutable, audit-compliant transaction document. Inspect milestone receipts and download formal PDF invoices.
           </p>
         </div>
 
         <Link
           href="/customer/bookings"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-stone-50 text-stone-800 rounded-xl border border-stone-200 shadow-soft text-xs font-semibold transition"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-dark-surface hover:bg-stone-50 dark:hover:bg-dark-elevated text-stone-800 dark:text-dark-text-primary rounded-xl border border-stone-200 dark:border-dark-border shadow-soft text-xs font-semibold transition"
         >
-          View Bookings <ArrowRight className="w-3.5 h-3.5 text-stone-500" />
+          View Bookings <ArrowRight className="w-3.5 h-3.5 text-stone-500 dark:text-stone-400" />
         </Link>
       </div>
 
       {/* KPI Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-soft">
-          <span className="text-xs text-stone-500 font-medium block">Total Paid Milestones</span>
-          <span className="text-2xl font-bold text-stone-900 mt-1 block">
+        <div className="bg-white dark:bg-dark-surface p-5 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft">
+          <span className="text-xs text-stone-500 dark:text-dark-text-secondary font-medium block">Total Paid Milestones</span>
+          <span className="text-2xl font-bold text-stone-900 dark:text-dark-text-primary mt-1 block">
             ₹{(totalInvested / 100).toLocaleString("en-IN")}
           </span>
-          <span className="text-[11px] text-stone-500 mt-1 block">
+          <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-1 block">
             Across {invoices.length} verified payment receipt(s)
           </span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-soft">
-          <span className="text-xs text-stone-500 font-medium block">Advance Commitments (Doc 1)</span>
-          <span className="text-2xl font-bold text-rose-700 mt-1 block">
+        <div className="bg-white dark:bg-dark-surface p-5 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft">
+          <span className="text-xs text-stone-500 dark:text-dark-text-secondary font-medium block">Advance Commitments (Doc 1)</span>
+          <span className="text-2xl font-bold text-rose-700 dark:text-rose-400 mt-1 block">
             ₹{(totalAdvancePaid / 100).toLocaleString("en-IN")}
           </span>
-          <span className="text-[11px] text-emerald-700 font-medium mt-1 block">
+          <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium mt-1 block">
             Unlocked artisan direct contacts
           </span>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-soft">
-          <span className="text-xs text-stone-500 font-medium block">Final Deliveries Settled (Doc 2)</span>
-          <span className="text-2xl font-bold text-emerald-700 mt-1 block">
+        <div className="bg-white dark:bg-dark-surface p-5 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft">
+          <span className="text-xs text-stone-500 dark:text-dark-text-secondary font-medium block">Final Deliveries Settled (Doc 2)</span>
+          <span className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mt-1 block">
             ₹{(totalFinalPaid / 100).toLocaleString("en-IN")}
           </span>
-          <span className="text-[11px] text-stone-500 mt-1 block">
+          <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-1 block">
             Fully discharged contracts
           </span>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-soft mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <div className="bg-white dark:bg-dark-surface p-4 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
         <div className="flex flex-wrap gap-1.5 w-full sm:w-auto">
           {[
             { label: "All Receipts", val: "ALL" },
@@ -123,7 +123,7 @@ export default function CustomerInvoicesClient({
               className={`px-3.5 py-2 rounded-xl font-semibold transition ${
                 typeFilter === tab.val
                   ? "bg-rose-700 text-white shadow-sm"
-                  : "bg-warm-100 text-stone-700 hover:bg-warm-200"
+                  : "bg-warm-100 dark:bg-dark-elevated text-stone-700 dark:text-stone-300 hover:bg-warm-200 dark:hover:bg-stone-700"
               }`}
             >
               {tab.label}
@@ -137,28 +137,28 @@ export default function CustomerInvoicesClient({
             placeholder="Search invoice number, artisan, service..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-warm-50 border border-stone-300 text-stone-900 text-xs placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
+            className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-warm-50 dark:bg-dark-elevated border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary text-xs placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
           />
-          <Search className="w-4 h-4 text-stone-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-stone-400 dark:text-stone-500 absolute left-3 top-2.5" />
         </div>
       </div>
 
       {/* Invoices List / Table */}
       {filteredInvoices.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-stone-200/90 shadow-soft">
-          <div className="w-12 h-12 rounded-2xl bg-warm-100 flex items-center justify-center mx-auto mb-4 text-stone-400">
+        <div className="bg-white dark:bg-dark-surface rounded-3xl p-12 text-center border border-stone-200/90 dark:border-dark-border shadow-soft">
+          <div className="w-12 h-12 rounded-2xl bg-warm-100 dark:bg-dark-elevated flex items-center justify-center mx-auto mb-4 text-stone-400">
             <FileText className="w-6 h-6" />
           </div>
-          <h3 className="text-base font-serif font-bold text-stone-900">No Invoices Found</h3>
-          <p className="text-xs text-stone-500 mt-1.5 max-w-sm mx-auto leading-relaxed">
+          <h3 className="text-base font-serif font-bold text-stone-900 dark:text-dark-text-primary">No Invoices Found</h3>
+          <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1.5 max-w-sm mx-auto leading-relaxed">
             Confirmed milestone advance and final payments will generate official receipts visible here.
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-stone-200/90 shadow-soft overflow-hidden">
+        <div className="bg-white dark:bg-dark-surface rounded-3xl border border-stone-200/90 dark:border-dark-border shadow-soft overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left text-stone-700">
-              <thead className="text-[11px] uppercase tracking-wider text-stone-500 bg-warm-50/70 border-b border-stone-200">
+            <table className="w-full text-xs text-left text-stone-700 dark:text-stone-300">
+              <thead className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 bg-warm-50/70 dark:bg-dark-elevated/70 border-b border-stone-200 dark:border-dark-border">
                 <tr>
                   <th className="py-4 px-6 font-semibold">Document No.</th>
                   <th className="py-4 px-4 font-semibold">Milestone Type</th>
@@ -169,14 +169,14 @@ export default function CustomerInvoicesClient({
                   <th className="py-4 px-6 text-right font-semibold">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-stone-100">
+              <tbody className="divide-y divide-stone-100 dark:divide-dark-border">
                 {filteredInvoices.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-warm-50/60 transition">
+                  <tr key={inv.id} className="hover:bg-warm-50/60 dark:hover:bg-dark-elevated/60 transition">
                     <td className="py-4 px-6">
-                      <span className="font-mono font-bold text-rose-700 text-xs block">
+                      <span className="font-mono font-bold text-rose-700 dark:text-rose-400 text-xs block">
                         {inv.invoiceNumber}
                       </span>
-                      <span className="font-mono text-[10px] text-stone-400">
+                      <span className="font-mono text-[10px] text-stone-400 dark:text-stone-500">
                         Ref: #{inv.booking?.bookingCode || "N/A"}
                       </span>
                     </td>
@@ -186,19 +186,19 @@ export default function CustomerInvoicesClient({
                       </Badge>
                     </td>
                     <td className="py-4 px-4">
-                      <strong className="text-stone-900 text-sm block">{inv.serviceTitle}</strong>
-                      <span className="text-[11px] text-stone-500 flex items-center gap-1">
-                        <Store className="w-3 h-3 text-stone-400" />
+                      <strong className="text-stone-900 dark:text-dark-text-primary text-sm block">{inv.serviceTitle}</strong>
+                      <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary flex items-center gap-1">
+                        <Store className="w-3 h-3 text-stone-400 dark:text-stone-500" />
                         {inv.vendorBusinessName}
                       </span>
                     </td>
-                    <td className="py-4 px-4 font-bold text-stone-900 text-sm">
+                    <td className="py-4 px-4 font-bold text-stone-900 dark:text-dark-text-primary text-sm">
                       ₹{(inv.amountPaidThisDoc / 100).toLocaleString("en-IN")}
                     </td>
-                    <td className="py-4 px-4 font-mono font-medium text-stone-600">
+                    <td className="py-4 px-4 font-mono font-medium text-stone-600 dark:text-dark-text-secondary">
                       ₹{(inv.remainingBalanceDue / 100).toLocaleString("en-IN")}
                     </td>
-                    <td className="py-4 px-4 text-stone-500">
+                    <td className="py-4 px-4 text-stone-500 dark:text-dark-text-secondary">
                       {new Date(inv.paymentDate).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
@@ -212,7 +212,7 @@ export default function CustomerInvoicesClient({
                         onClick={() => setSelectedInvoice(inv)}
                         className="gap-1.5 shadow-2xs text-xs"
                       >
-                        <Download className="w-3 h-3 text-rose-700" /> Inspect & PDF
+                        <Download className="w-3 h-3 text-rose-700 dark:text-rose-400" /> Inspect & PDF
                       </Button>
                     </td>
                   </tr>

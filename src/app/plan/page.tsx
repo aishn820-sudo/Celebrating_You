@@ -55,7 +55,7 @@ export default async function PlanPage({
   }
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary">
       <Navbar />
       <PlanCelebrationClient
         initialCategories={categories}

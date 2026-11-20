@@ -29,7 +29,7 @@ export default async function AdminServicesPage() {
   ]);
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 text-stone-900 font-sans antialiased selection:bg-rose-100 selection:text-rose-900">
+    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 dark:bg-dark-bg text-stone-900 dark:text-dark-text-primary font-sans antialiased selection:bg-rose-100 selection:text-rose-900 transition-colors">
       <AdminNav />
       <AdminServicesClient initialServices={services} initialCategories={categories} />
     </div>

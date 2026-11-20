@@ -150,22 +150,22 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
   const isCompleted = booking.status === "COMPLETED";
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-1">
         {/* Back Link */}
         <Link
           href="/customer/bookings"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 hover:text-stone-900 mb-6 transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 dark:text-dark-text-secondary hover:text-stone-900 dark:hover:text-dark-text-primary mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Back to My Bookings
         </Link>
 
         {/* Top Header Card */}
         <Card className="p-6 sm:p-8 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-stone-100">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-stone-100 dark:border-dark-border">
             <div>
               <div className="flex items-center gap-2.5 mb-2">
-                <span className="text-xs font-mono font-bold text-stone-400">
+                <span className="text-xs font-mono font-bold text-stone-400 dark:text-stone-500">
                   #{booking.bookingCode}
                 </span>
                 <Badge
@@ -185,12 +185,12 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
                 </Badge>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
                 {booking.service.title}
               </h1>
-              <p className="text-xs text-stone-500 mt-1">
-                Artisan: <strong className="text-stone-800">{booking.vendor.businessName}</strong> • Celebration:{" "}
-                <strong className="text-stone-800">{booking.event?.title}</strong> ({new Date(booking.eventDate).toLocaleDateString("en-IN")})
+              <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1">
+                Artisan: <strong className="text-stone-800 dark:text-dark-text-primary">{booking.vendor.businessName}</strong> • Celebration:{" "}
+                <strong className="text-stone-800 dark:text-dark-text-primary">{booking.event?.title}</strong> ({new Date(booking.eventDate).toLocaleDateString("en-IN")})
               </p>
             </div>
 
@@ -233,7 +233,7 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsDisputeOpen(true)}
-                className="text-stone-500 hover:text-stone-700"
+                className="text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
               >
                 Report Issue
               </Button>
@@ -243,33 +243,33 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
           {/* Contact Disclosure Banner */}
           <div className="mt-6 pt-2">
             {booking.isVendorContactRevealed ? (
-              <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-200/80 dark:border-emerald-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-5 h-5 text-emerald-700" />
+                  <div className="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-emerald-950 uppercase tracking-wide">
+                    <h4 className="text-xs font-bold text-emerald-950 dark:text-emerald-200 uppercase tracking-wide">
                       Direct Artisan Contact Unlocked
                     </h4>
-                    <p className="text-xs text-emerald-900 mt-0.5">
+                    <p className="text-xs text-emerald-900 dark:text-emerald-300 mt-0.5">
                       Advance deposit confirmed. You may now coordinate directly with the vendor.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 text-xs font-semibold text-emerald-950">
-                  <span className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-emerald-200">
-                    <Phone className="w-3.5 h-3.5 text-emerald-600" /> {booking.vendor.phone}
+                <div className="flex items-center gap-4 text-xs font-semibold text-emerald-950 dark:text-emerald-200">
+                  <span className="flex items-center gap-1.5 bg-white dark:bg-dark-elevated px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                    <Phone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> {booking.vendor.phone}
                   </span>
-                  <span className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg border border-emerald-200">
-                    <Mail className="w-3.5 h-3.5 text-emerald-600" /> {booking.vendor.email}
+                  <span className="flex items-center gap-1.5 bg-white dark:bg-dark-elevated px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                    <Mail className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> {booking.vendor.email}
                   </span>
                 </div>
               </div>
             ) : (
-              <div className="p-4 bg-warm-100/70 rounded-xl border border-stone-200 flex items-center gap-3 text-xs text-stone-600">
-                <Lock className="w-4 h-4 text-stone-500 shrink-0" />
+              <div className="p-4 bg-warm-100/70 dark:bg-dark-elevated rounded-xl border border-stone-200 dark:border-dark-border flex items-center gap-3 text-xs text-stone-600 dark:text-dark-text-secondary">
+                <Lock className="w-4 h-4 text-stone-500 dark:text-stone-400 shrink-0" />
                 <span>
                   <strong>Privacy Protected:</strong> Direct phone and email details are revealed immediately after vendor acceptance and advance deposit confirmation.
                 </span>
@@ -287,29 +287,29 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
               <CardTitle className="mb-4">Financial Ledger & Milestone Summary</CardTitle>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <div className="p-4 bg-stone-50 rounded-xl border border-stone-200/80">
-                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                <div className="p-4 bg-stone-50 dark:bg-dark-elevated rounded-xl border border-stone-200/80 dark:border-dark-border">
+                  <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
                     Agreed Package Value
                   </span>
-                  <span className="text-xl font-bold font-serif text-stone-900 mt-1 block">
+                  <span className="text-xl font-bold font-serif text-stone-900 dark:text-dark-text-primary mt-1 block">
                     {formatPrice(booking.agreedServiceValue)}
                   </span>
                 </div>
 
-                <div className="p-4 bg-stone-50 rounded-xl border border-stone-200/80">
-                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                <div className="p-4 bg-stone-50 dark:bg-dark-elevated rounded-xl border border-stone-200/80 dark:border-dark-border">
+                  <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
                     Advance Paid
                   </span>
-                  <span className={`text-xl font-bold font-serif mt-1 block ${booking.advancePaid > 0 ? "text-emerald-700" : "text-stone-500"}`}>
+                  <span className={`text-xl font-bold font-serif mt-1 block ${booking.advancePaid > 0 ? "text-emerald-700 dark:text-emerald-400" : "text-stone-500 dark:text-stone-400"}`}>
                     {formatPrice(booking.advancePaid)}
                   </span>
                 </div>
 
-                <div className="p-4 bg-stone-50 rounded-xl border border-stone-200/80">
-                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                <div className="p-4 bg-stone-50 dark:bg-dark-elevated rounded-xl border border-stone-200/80 dark:border-dark-border">
+                  <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
                     Remaining Balance Due
                   </span>
-                  <span className="text-xl font-bold font-serif text-rose-700 mt-1 block">
+                  <span className="text-xl font-bold font-serif text-rose-700 dark:text-rose-400 mt-1 block">
                     {formatPrice(booking.finalBalanceDue)}
                   </span>
                 </div>
@@ -317,11 +317,11 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
 
               {/* Invoices List */}
               <div>
-                <h4 className="text-xs font-bold text-stone-700 uppercase tracking-wider mb-3">
+                <h4 className="text-xs font-bold text-stone-700 dark:text-stone-300 uppercase tracking-wider mb-3">
                   Transaction Invoices & Receipts
                 </h4>
                 {booking.invoices.length === 0 ? (
-                  <p className="text-xs text-stone-400 italic">
+                  <p className="text-xs text-stone-400 dark:text-stone-500 italic">
                     No transaction receipts generated yet. Invoices generate instantly upon each confirmed milestone payment.
                   </p>
                 ) : (
@@ -329,24 +329,24 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
                     {booking.invoices.map((inv: any) => (
                       <div
                         key={inv.id}
-                        className="p-4 rounded-xl border border-stone-200 bg-white flex items-center justify-between"
+                        className="p-4 rounded-xl border border-stone-200 dark:border-dark-border bg-white dark:bg-dark-surface flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center text-stone-700">
-                            <FileText className="w-4 h-4 text-rose-700" />
+                          <div className="w-9 h-9 rounded-lg bg-stone-100 dark:bg-dark-elevated flex items-center justify-center text-stone-700 dark:text-stone-300">
+                            <FileText className="w-4 h-4 text-rose-700 dark:text-rose-400" />
                           </div>
                           <div>
-                            <span className="text-xs font-bold text-stone-900 block">
+                            <span className="text-xs font-bold text-stone-900 dark:text-dark-text-primary block">
                               {inv.type === "ADVANCE" ? "Document 1: Advance Receipt" : "Document 2: Final Tax Invoice"}
                             </span>
-                            <span className="text-[11px] font-mono text-stone-400">
+                            <span className="text-[11px] font-mono text-stone-400 dark:text-stone-500">
                               #{inv.invoiceNumber} • Paid on {new Date(inv.paymentDate).toLocaleDateString("en-IN")}
                             </span>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-4">
-                          <span className="text-sm font-bold text-stone-900">
+                          <span className="text-sm font-bold text-stone-900 dark:text-dark-text-primary">
                             {formatPrice(inv.amountPaidThisDoc)}
                           </span>
                           <Button
@@ -394,23 +394,23 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
               <CardTitle className="mb-3">Booking Package Details</CardTitle>
               <div className="space-y-3 text-xs">
                 <div>
-                  <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Tier</span>
-                  <span className="font-bold text-stone-900 text-sm">{booking.package?.name || "Standard Booking"}</span>
+                  <span className="text-stone-400 dark:text-stone-500 block text-[10px] uppercase font-bold tracking-wider">Tier</span>
+                  <span className="font-bold text-stone-900 dark:text-dark-text-primary text-sm">{booking.package?.name || "Standard Booking"}</span>
                 </div>
                 <div>
-                  <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Date</span>
-                  <span className="font-medium text-stone-800">{new Date(booking.eventDate).toLocaleDateString("en-IN")}</span>
+                  <span className="text-stone-400 dark:text-stone-500 block text-[10px] uppercase font-bold tracking-wider">Date</span>
+                  <span className="font-medium text-stone-800 dark:text-stone-200">{new Date(booking.eventDate).toLocaleDateString("en-IN")}</span>
                 </div>
                 {booking.guestCount && (
                   <div>
-                    <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Guest Count</span>
-                    <span className="font-medium text-stone-800">{booking.guestCount} Guests</span>
+                    <span className="text-stone-400 dark:text-stone-500 block text-[10px] uppercase font-bold tracking-wider">Guest Count</span>
+                    <span className="font-medium text-stone-800 dark:text-stone-200">{booking.guestCount} Guests</span>
                   </div>
                 )}
                 {booking.specialRequirements && (
                   <div>
-                    <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Special Requests</span>
-                    <p className="text-stone-600 mt-0.5 bg-stone-50 p-2.5 rounded-lg border border-stone-200/80">
+                    <span className="text-stone-400 dark:text-stone-500 block text-[10px] uppercase font-bold tracking-wider">Special Requests</span>
+                    <p className="text-stone-600 dark:text-dark-text-secondary mt-0.5 bg-stone-50 dark:bg-dark-elevated p-2.5 rounded-lg border border-stone-200/80 dark:border-dark-border">
                       {booking.specialRequirements}
                     </p>
                   </div>
@@ -419,12 +419,12 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
             </Card>
 
             {/* Response SLA reminder */}
-            <Card className="p-6 bg-warm-100/50">
+            <Card className="p-6 bg-warm-100/50 dark:bg-dark-elevated border-stone-200 dark:border-dark-border">
               <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-rose-700 shrink-0 mt-0.5" />
+                <Clock className="w-5 h-5 text-rose-700 dark:text-rose-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-bold text-stone-900 text-xs">2-Hour Guarantee</h4>
-                  <p className="text-[11px] text-stone-600 mt-0.5 leading-relaxed">
+                  <h4 className="font-bold text-stone-900 dark:text-dark-text-primary text-xs">2-Hour Guarantee</h4>
+                  <p className="text-[11px] text-stone-600 dark:text-dark-text-secondary mt-0.5 leading-relaxed">
                     Celebrating YOU guarantees that unconfirmed requests automatically expire to ensure your event planning timeline is protected.
                   </p>
                 </div>
@@ -450,12 +450,12 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
         >
           <form onSubmit={handleReviewSubmit} className="space-y-4 text-xs">
             {reviewError && (
-              <div className="p-3 bg-rose-50 text-rose-700 rounded-xl border border-rose-200">
+              <div className="p-3 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-900/40">
                 {reviewError}
               </div>
             )}
             <div>
-              <label className="font-bold text-stone-700 block mb-1">Star Rating (1 - 5)</label>
+              <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1">Star Rating (1 - 5)</label>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -468,7 +468,7 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
                       className={`w-6 h-6 ${
                         star <= rating
                           ? "fill-amber-500 text-amber-500"
-                          : "text-stone-200 fill-stone-200"
+                          : "text-stone-200 dark:text-stone-700 fill-stone-200 dark:fill-stone-700"
                       }`}
                     />
                   </button>
@@ -477,14 +477,14 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
             </div>
 
             <div>
-              <label className="font-bold text-stone-700 block mb-1">Feedback</label>
+              <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1">Feedback</label>
               <textarea
                 rows={4}
                 required
                 placeholder="How was the quality of service, punctuality, and professionalism?"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
               />
             </div>
 
@@ -509,33 +509,33 @@ export default function CustomerBookingDetailClient({ booking: initialBooking }:
         >
           {disputeSuccess ? (
             <div className="py-6 text-center text-xs">
-              <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto mb-2" />
-              <p className="font-bold text-stone-900 text-sm">Issue Ticket Logged</p>
-              <p className="text-stone-500 mt-1">Our resolution team will inspect this ticket.</p>
+              <CheckCircle2 className="w-10 h-10 text-emerald-600 dark:text-emerald-400 mx-auto mb-2" />
+              <p className="font-bold text-stone-900 dark:text-dark-text-primary text-sm">Issue Ticket Logged</p>
+              <p className="text-stone-500 dark:text-dark-text-secondary mt-1">Our resolution team will inspect this ticket.</p>
             </div>
           ) : (
             <form onSubmit={handleDisputeSubmit} className="space-y-4 text-xs">
               <div>
-                <label className="font-bold text-stone-700 block mb-1">Subject</label>
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1">Subject</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Delay in arrival, missing inclusions"
                   value={disputeSubject}
                   onChange={(e) => setDisputeSubject(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-stone-700 block mb-1">Description</label>
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1">Description</label>
                 <textarea
                   rows={4}
                   required
                   placeholder="Provide all relevant details..."
                   value={disputeDesc}
                   onChange={(e) => setDisputeDesc(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
 

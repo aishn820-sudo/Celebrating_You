@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function AdminNav() {
   const pathname = usePathname();
@@ -44,31 +45,35 @@ export default function AdminNav() {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden bg-stone-950 text-stone-100 px-4 py-3 flex items-center justify-between border-b border-stone-800 sticky top-0 z-40">
+      <div className="md:hidden bg-stone-950 dark:bg-dark-surface text-stone-100 px-4 py-3 flex items-center justify-between border-b border-stone-800 dark:border-dark-border sticky top-0 z-40 transition-colors">
         <Link href="/admin-portal/dashboard" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-stone-900 border border-stone-800 text-rose-400 flex items-center justify-center font-bold text-xs">
+          <div className="w-8 h-8 rounded-lg bg-stone-900 dark:bg-dark-elevated border border-stone-800 dark:border-dark-border text-rose-400 flex items-center justify-center font-bold text-xs">
             <ShieldAlert className="w-4 h-4" />
           </div>
-          <span className="font-bold text-sm tracking-tight">Admin Console</span>
+          <span className="font-bold text-sm tracking-tight text-white">Admin Console</span>
         </Link>
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-1.5 text-stone-400 hover:text-white rounded-lg hover:bg-stone-900"
-        >
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-1.5 text-stone-400 hover:text-white rounded-lg hover:bg-stone-900 dark:hover:bg-dark-elevated"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       <aside
-        className={`w-full md:w-64 bg-stone-950 text-stone-300 flex-shrink-0 flex flex-col justify-between border-r border-stone-800/90 min-h-screen ${
+        className={`w-full md:w-64 bg-stone-950 dark:bg-dark-surface text-stone-300 flex-shrink-0 flex flex-col justify-between border-r border-stone-800/90 dark:border-dark-border min-h-screen transition-colors ${
           mobileOpen ? "block" : "hidden md:flex"
         }`}
       >
         <div>
           {/* Brand */}
-          <div className="p-6 border-b border-stone-800/80">
+          <div className="p-6 border-b border-stone-800/80 dark:border-dark-border">
             <Link href="/admin-portal/dashboard" className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-stone-900 border border-stone-800 text-rose-500 flex items-center justify-center shadow-sm">
+              <div className="w-9 h-9 rounded-xl bg-stone-900 dark:bg-dark-elevated border border-stone-800 dark:border-dark-border text-rose-500 flex items-center justify-center shadow-sm">
                 <ShieldAlert className="w-5 h-5" />
               </div>
               <div>
@@ -80,7 +85,7 @@ export default function AdminNav() {
                 </span>
               </div>
             </Link>
-            <div className="mt-3 px-2.5 py-1 rounded-md bg-stone-900 border border-stone-800 text-[10px] font-mono text-stone-400 text-center">
+            <div className="mt-3 px-2.5 py-1 rounded-md bg-stone-900 dark:bg-dark-elevated border border-stone-800 dark:border-dark-border text-[10px] font-mono text-stone-400 text-center">
               SECURE OPERATIONAL ACCESS
             </div>
           </div>
@@ -97,8 +102,8 @@ export default function AdminNav() {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition-colors ${
                     active
-                      ? "bg-stone-800 text-white font-semibold border-l-2 border-rose-500"
-                      : "text-stone-400 hover:text-white hover:bg-stone-900"
+                      ? "bg-stone-800 dark:bg-dark-elevated text-white font-semibold border-l-2 border-rose-500"
+                      : "text-stone-400 hover:text-white hover:bg-stone-900 dark:hover:bg-dark-elevated/60"
                   }`}
                 >
                   <Icon className={`w-4 h-4 ${active ? "text-rose-400" : "text-stone-400"}`} />
@@ -109,11 +114,14 @@ export default function AdminNav() {
           </nav>
         </div>
 
-        {/* Footer Profile & Logout */}
-        <div className="p-4 border-t border-stone-800">
-          <div className="mb-3 px-2">
-            <p className="text-xs font-bold text-white">Super Administrator</p>
-            <p className="text-[10px] text-stone-400 font-mono">admin@celebratingyou.com</p>
+        {/* Footer Profile, ThemeToggle & Logout */}
+        <div className="p-4 border-t border-stone-800 dark:border-dark-border">
+          <div className="flex items-center justify-between mb-3 px-2">
+            <div>
+              <p className="text-xs font-bold text-white">Super Administrator</p>
+              <p className="text-[10px] text-stone-400 font-mono">admin@celebratingyou.com</p>
+            </div>
+            <ThemeToggle />
           </div>
 
           <button

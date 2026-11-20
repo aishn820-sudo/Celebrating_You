@@ -28,7 +28,7 @@ export default async function TemplatesPage() {
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 w-full">
@@ -36,10 +36,10 @@ export default async function TemplatesPage() {
           <Badge variant="rose" size="sm" className="mb-2">
             Structured Event Architecture
           </Badge>
-          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
             Celebration Blueprints & Timelines
           </h1>
-          <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+          <p className="text-sm text-stone-600 dark:text-dark-text-secondary mt-2 leading-relaxed">
             Eliminate planning chaos. Start with expert-curated timelines, automated milestone checkpoints, and recommended services tailored to your occasion.
           </p>
         </div>
@@ -85,30 +85,30 @@ export default async function TemplatesPage() {
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-serif font-bold text-stone-900 leading-snug">{tpl.name}</h3>
-                  <p className="text-xs text-stone-600 mt-2 leading-relaxed">{tpl.description}</p>
+                  <h3 className="text-xl font-serif font-bold text-stone-900 dark:text-dark-text-primary leading-snug">{tpl.name}</h3>
+                  <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2 leading-relaxed">{tpl.description}</p>
 
                   {/* Budget Range */}
-                  <div className="mt-5 p-3.5 bg-stone-50 rounded-xl border border-stone-200/70 text-xs">
-                    <span className="text-stone-400 block text-[10px] font-bold uppercase tracking-wider">
+                  <div className="mt-5 p-3.5 bg-stone-50 dark:bg-dark-elevated rounded-xl border border-stone-200/70 dark:border-dark-border text-xs">
+                    <span className="text-stone-400 dark:text-stone-400 block text-[10px] font-bold uppercase tracking-wider">
                       Suggested Budget Band
                     </span>
-                    <span className="font-bold text-stone-900 text-sm mt-0.5 block">
+                    <span className="font-bold text-stone-900 dark:text-dark-text-primary text-sm mt-0.5 block">
                       {formatPrice(tpl.suggestedBudgetMin)} – {formatPrice(tpl.suggestedBudgetMax)}
                     </span>
                   </div>
 
                   {/* Stages */}
                   {stages.length > 0 && (
-                    <div className="mt-5 pt-4 border-t border-stone-100">
-                      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Layers className="w-3.5 h-3.5 text-rose-700" /> Key Event Stages
+                    <div className="mt-5 pt-4 border-t border-stone-100 dark:border-dark-border">
+                      <p className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5 text-rose-700 dark:text-rose-400" /> Key Event Stages
                       </p>
                       <div className="flex flex-wrap gap-1.5">
                         {stages.map((stg, i) => (
                           <span
                             key={i}
-                            className="px-2.5 py-1 bg-white border border-stone-200 text-stone-700 rounded-lg text-[11px] font-medium"
+                            className="px-2.5 py-1 bg-white dark:bg-dark-surface border border-stone-200 dark:border-dark-border text-stone-700 dark:text-stone-300 rounded-lg text-[11px] font-medium"
                           >
                             {i + 1}. {stg}
                           </span>
@@ -119,14 +119,14 @@ export default async function TemplatesPage() {
 
                   {/* Checkpoints Checklist */}
                   {checkpoints.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-stone-100">
-                      <p className="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <CheckSquare className="w-3.5 h-3.5 text-emerald-700" /> Auto-Generated Checkpoints
+                    <div className="mt-4 pt-4 border-t border-stone-100 dark:border-dark-border">
+                      <p className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <CheckSquare className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" /> Auto-Generated Checkpoints
                       </p>
-                      <ul className="space-y-1.5 text-xs text-stone-600">
+                      <ul className="space-y-1.5 text-xs text-stone-600 dark:text-dark-text-secondary">
                         {checkpoints.slice(0, 3).map((cp: any, idx: number) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <span className="text-emerald-700 font-bold">•</span>
+                            <span className="text-emerald-700 dark:text-emerald-400 font-bold">•</span>
                             <span className="line-clamp-1">{cp.title}</span>
                           </li>
                         ))}
@@ -135,7 +135,7 @@ export default async function TemplatesPage() {
                   )}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-stone-100">
+                <div className="mt-6 pt-4 border-t border-stone-100 dark:border-dark-border">
                   <Link href={`/plan?templateId=${tpl.id}`}>
                     <Button variant="primary" size="md" className="w-full">
                       Use This Blueprint <ArrowRight className="w-4 h-4" />

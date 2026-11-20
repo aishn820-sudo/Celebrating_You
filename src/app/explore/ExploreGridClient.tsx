@@ -8,10 +8,7 @@ import {
   ArrowRight,
   Check,
   X,
-  Layers,
   Scale,
-  Sparkles,
-  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -48,7 +45,7 @@ export default function ExploreGridClient({
             <Card key={service.id} hoverEffect className="flex flex-col justify-between">
               <div>
                 {/* Image Thumbnail */}
-                <div className="h-44 w-full bg-stone-200 relative overflow-hidden">
+                <div className="h-44 w-full bg-stone-200 dark:bg-dark-elevated relative overflow-hidden">
                   {service.images[0] ? (
                     <img
                       src={service.images[0].imageUrl}
@@ -56,7 +53,7 @@ export default function ExploreGridClient({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400">
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-dark-elevated text-stone-400 dark:text-stone-500">
                       <span className="text-xs font-medium">Curated Vendor Portfolio</span>
                     </div>
                   )}
@@ -64,7 +61,7 @@ export default function ExploreGridClient({
                     <Badge
                       variant="neutral"
                       size="sm"
-                      className="bg-white/95 backdrop-blur-sm shadow-sm font-medium"
+                      className="bg-white/95 dark:bg-dark-surface/90 dark:text-dark-text-primary backdrop-blur-sm shadow-sm font-medium"
                     >
                       {service.category.name}
                     </Badge>
@@ -75,7 +72,7 @@ export default function ExploreGridClient({
                       className={`px-2.5 py-1 rounded-full text-[10px] font-bold shadow-sm transition flex items-center gap-1 ${
                         isSelected
                           ? "bg-rose-700 text-white"
-                          : "bg-white/95 backdrop-blur-sm text-stone-700 hover:bg-stone-100"
+                          : "bg-white/95 dark:bg-dark-surface/90 text-stone-700 dark:text-dark-text-primary hover:bg-stone-100 dark:hover:bg-dark-elevated"
                       }`}
                       title="Compare service side-by-side"
                     >
@@ -89,33 +86,33 @@ export default function ExploreGridClient({
                 </div>
 
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
-                    <span className="font-semibold text-stone-800">{service.vendor.businessName}</span>
-                    <div className="flex items-center gap-1 text-amber-700 font-bold">
+                  <div className="flex items-center justify-between text-xs text-stone-500 dark:text-dark-text-secondary mb-2">
+                    <span className="font-semibold text-stone-800 dark:text-dark-text-primary">{service.vendor.businessName}</span>
+                    <div className="flex items-center gap-1 text-amber-700 dark:text-amber-400 font-bold">
                       <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                       <span>{service.vendor.rating.toFixed(1)}</span>
-                      <span className="text-stone-400 font-normal">({service.vendor.reviewCount})</span>
+                      <span className="text-stone-400 dark:text-stone-500 font-normal">({service.vendor.reviewCount})</span>
                     </div>
                   </div>
 
-                  <h3 className="font-serif font-bold text-base text-stone-900 leading-snug line-clamp-1">
+                  <h3 className="font-serif font-bold text-base text-stone-900 dark:text-dark-text-primary leading-snug line-clamp-1">
                     {service.title}
                   </h3>
-                  <p className="text-xs text-stone-500 mt-2 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-2 line-clamp-2 leading-relaxed">
                     {service.description}
                   </p>
 
-                  <div className="mt-4 flex items-center gap-2 text-[11px] text-stone-500">
-                    <Clock className="w-3.5 h-3.5 text-rose-700 shrink-0" />
+                  <div className="mt-4 flex items-center gap-2 text-[11px] text-stone-500 dark:text-dark-text-secondary">
+                    <Clock className="w-3.5 h-3.5 text-rose-700 dark:text-rose-400 shrink-0" />
                     <span>Guaranteed 2-hour response window</span>
                   </div>
                 </CardContent>
               </div>
 
-              <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex items-center justify-between">
+              <div className="px-6 py-4 bg-stone-50/60 dark:bg-dark-elevated/40 border-t border-stone-100 dark:border-dark-border flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Starting At</p>
-                  <p className="text-base font-bold text-stone-900">
+                  <p className="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 tracking-wider">Starting At</p>
+                  <p className="text-base font-bold text-stone-900 dark:text-white">
                     {formatPrice(service.packages[0]?.price || service.basePrice)}
                   </p>
                 </div>
@@ -133,7 +130,7 @@ export default function ExploreGridClient({
 
       {/* Floating Compare Action Bar */}
       {selectedForCompare.length > 0 && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-stone-900/95 backdrop-blur-md text-white px-5 py-3 rounded-full shadow-2xl border border-stone-800 flex items-center gap-4 text-xs animate-in slide-in-from-bottom duration-200">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-stone-900/95 dark:bg-dark-elevated/95 backdrop-blur-md text-white px-5 py-3 rounded-full shadow-2xl border border-stone-800 dark:border-dark-border flex items-center gap-4 text-xs animate-in slide-in-from-bottom duration-200">
           <div className="flex items-center gap-2">
             <Scale className="w-4 h-4 text-rose-400" />
             <span className="font-semibold">
@@ -162,18 +159,18 @@ export default function ExploreGridClient({
 
       {/* Side-by-Side Comparison Modal */}
       {isCompareModalOpen && (
-        <div className="fixed inset-0 bg-stone-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-4xl w-full p-6 sm:p-8 border border-stone-200 shadow-2xl text-stone-900 my-8 text-xs animate-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-6">
+        <div className="fixed inset-0 bg-stone-950/70 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-dark-surface rounded-3xl max-w-4xl w-full p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-2xl text-stone-900 dark:text-dark-text-primary my-8 text-xs animate-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-4 border-b border-stone-100 dark:border-dark-border mb-6">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-rose-700">Vendor Comparison</span>
-                <h3 className="font-serif font-bold text-stone-900 text-xl mt-0.5">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-rose-700 dark:text-rose-400">Vendor Comparison</span>
+                <h3 className="font-serif font-bold text-stone-900 dark:text-white text-xl mt-0.5">
                   Service Feature & Pricing Comparison
                 </h3>
               </div>
               <button
                 onClick={() => setIsCompareModalOpen(false)}
-                className="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition"
+                className="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-dark-elevated transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -182,21 +179,21 @@ export default function ExploreGridClient({
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-stone-200">
-                    <th className="p-3 font-semibold text-stone-500 text-[11px] w-48">Feature</th>
+                  <tr className="border-b border-stone-200 dark:border-dark-border">
+                    <th className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary text-[11px] w-48">Feature</th>
                     {selectedForCompare.map((s) => (
-                      <th key={s.id} className="p-3 font-serif font-bold text-stone-900 text-sm">
+                      <th key={s.id} className="p-3 font-serif font-bold text-stone-900 dark:text-white text-sm">
                         {s.title}
-                        <span className="block font-sans font-medium text-[11px] text-stone-500 mt-0.5">
+                        <span className="block font-sans font-medium text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5">
                           by {s.vendor.businessName}
                         </span>
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100 text-stone-700">
+                <tbody className="divide-y divide-stone-100 dark:divide-dark-border text-stone-700 dark:text-dark-text-secondary">
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">Category</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">Category</td>
                     {selectedForCompare.map((s) => (
                       <td key={s.id} className="p-3 font-medium">
                         <Badge variant="rose" size="sm">
@@ -206,37 +203,37 @@ export default function ExploreGridClient({
                     ))}
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">Starting Price</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">Starting Price</td>
                     {selectedForCompare.map((s) => (
-                      <td key={s.id} className="p-3 font-bold text-stone-900 text-base">
+                      <td key={s.id} className="p-3 font-bold text-stone-900 dark:text-white text-base">
                         {formatPrice(s.packages[0]?.price || s.basePrice)}
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">Advance Deposit Required</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">Advance Deposit Required</td>
                     {selectedForCompare.map((s) => (
-                      <td key={s.id} className="p-3 font-medium text-stone-800">
+                      <td key={s.id} className="p-3 font-medium text-stone-800 dark:text-dark-text-primary">
                         {s.packages[0]?.advancePercent || 25}% of package price
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">Artisan Rating</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">Vendor Rating</td>
                     {selectedForCompare.map((s) => (
                       <td key={s.id} className="p-3 font-medium">
-                        <div className="flex items-center gap-1 text-amber-700 font-bold">
+                        <div className="flex items-center gap-1 text-amber-700 dark:text-amber-400 font-bold">
                           <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                           <span>{s.vendor.rating.toFixed(1)}</span>
-                          <span className="text-stone-400 font-normal">({s.vendor.reviewCount} reviews)</span>
+                          <span className="text-stone-400 dark:text-stone-500 font-normal">({s.vendor.reviewCount} reviews)</span>
                         </div>
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">Duration & Setup</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">Duration & Setup</td>
                     {selectedForCompare.map((s) => (
-                      <td key={s.id} className="p-3 text-stone-600">
+                      <td key={s.id} className="p-3 text-stone-600 dark:text-dark-text-secondary">
                         Duration: {s.duration || "Standard engagement"}
                         <br />
                         Setup: {s.setupTime || "1 hour prior"}
@@ -244,13 +241,13 @@ export default function ExploreGridClient({
                     ))}
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">Available Packages</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">Available Packages</td>
                     {selectedForCompare.map((s) => (
                       <td key={s.id} className="p-3">
                         <ul className="space-y-1">
                           {s.packages.map((pkg: any) => (
-                            <li key={pkg.id} className="text-stone-800 font-medium">
-                              • {pkg.name} — <strong className="text-stone-900">{formatPrice(pkg.price)}</strong>
+                            <li key={pkg.id} className="text-stone-800 dark:text-dark-text-primary font-medium">
+                              • {pkg.name} — <strong className="text-stone-900 dark:text-white">{formatPrice(pkg.price)}</strong>
                             </li>
                           ))}
                         </ul>
@@ -258,22 +255,22 @@ export default function ExploreGridClient({
                     ))}
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">SLA Guarantee</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">SLA Guarantee</td>
                     {selectedForCompare.map((s) => (
-                      <td key={s.id} className="p-3 text-stone-600">
-                        <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold">
-                          <Check className="w-3.5 h-3.5 text-emerald-600" /> 2-Hour Response Rule
+                      <td key={s.id} className="p-3 text-stone-600 dark:text-dark-text-secondary">
+                        <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold">
+                          <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> 2-Hour Response Rule
                         </span>
                       </td>
                     ))}
                   </tr>
                   <tr>
-                    <td className="p-3 font-semibold text-stone-500">Action</td>
+                    <td className="p-3 font-semibold text-stone-500 dark:text-dark-text-secondary">Action</td>
                     {selectedForCompare.map((s) => (
                       <td key={s.id} className="p-3">
                         <Link href={`/services/${s.id}`}>
                           <Button size="sm" className="w-full justify-center">
-                            Book Artisan <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                            Book Vendor <ArrowRight className="w-3.5 h-3.5 ml-1" />
                           </Button>
                         </Link>
                       </td>
@@ -288,4 +285,3 @@ export default function ExploreGridClient({
     </>
   );
 }
-

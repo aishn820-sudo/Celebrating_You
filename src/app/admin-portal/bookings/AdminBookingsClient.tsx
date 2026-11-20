@@ -76,20 +76,20 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
     <main className="flex-1 p-6 sm:p-10 max-w-7xl overflow-y-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <span className="text-xs font-semibold tracking-wider uppercase text-rose-700">
+          <span className="text-xs font-semibold tracking-wider uppercase text-rose-700 dark:text-rose-400">
             Booking Engine Operations
           </span>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-dark-text-primary mt-1">
             Bookings & Response Oversight
           </h1>
-          <p className="text-xs text-stone-600 mt-1">
+          <p className="text-xs text-stone-600 dark:text-stone-400 mt-1">
             Full auditability into booking state machines, 2-hour response windows, payment milestone receipts, and refunds.
           </p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-soft mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+      <div className="bg-white dark:bg-dark-surface p-4 rounded-2xl border border-stone-200/90 dark:border-dark-border shadow-soft mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs transition-colors">
         <div className="flex flex-wrap gap-1.5 w-full sm:w-auto">
           {[
             { label: "All Bookings", val: "ALL" },
@@ -106,7 +106,7 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
               className={`px-3 py-1.5 rounded-xl font-semibold transition ${
                 statusFilter === tab.val
                   ? "bg-rose-700 text-white shadow-sm"
-                  : "bg-warm-100 text-stone-700 hover:bg-warm-200"
+                  : "bg-warm-100 dark:bg-dark-elevated text-stone-700 dark:text-stone-300 hover:bg-warm-200 dark:hover:bg-dark-border"
               }`}
             >
               {tab.label}
@@ -120,17 +120,17 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
             placeholder="Search booking code, customer, vendor..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-warm-50 border border-stone-300 text-stone-900 text-xs placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
+            className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-warm-50 dark:bg-dark-elevated border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary text-xs placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500"
           />
-          <Search className="w-4 h-4 text-stone-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-stone-400 dark:text-stone-500 absolute left-3 top-2.5" />
         </div>
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-white rounded-3xl border border-stone-200/90 shadow-soft overflow-hidden">
+      <div className="bg-white dark:bg-dark-surface rounded-3xl border border-stone-200/90 dark:border-dark-border shadow-soft overflow-hidden transition-colors">
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left text-stone-700">
-            <thead className="text-[11px] uppercase tracking-wider text-stone-500 bg-warm-50/70 border-b border-stone-200">
+          <table className="w-full text-xs text-left text-stone-700 dark:text-stone-300">
+            <thead className="text-[11px] uppercase tracking-wider text-stone-500 dark:text-stone-400 bg-warm-50/70 dark:bg-dark-elevated border-b border-stone-200 dark:border-dark-border">
               <tr>
                 <th className="py-4 px-6 font-semibold">Booking Code</th>
                 <th className="py-4 px-4 font-semibold">Service & Artisan</th>
@@ -142,22 +142,22 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
                 <th className="py-4 px-6 text-right font-semibold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-100">
+            <tbody className="divide-y divide-stone-100 dark:divide-dark-border">
               {filtered.map((b) => (
-                <tr key={b.id} className="hover:bg-warm-50/60 transition">
-                  <td className="py-4 px-6 font-mono font-bold text-rose-700">
+                <tr key={b.id} className="hover:bg-warm-50/60 dark:hover:bg-dark-elevated/60 transition">
+                  <td className="py-4 px-6 font-mono font-bold text-rose-700 dark:text-rose-400">
                     #{b.bookingCode}
                   </td>
                   <td className="py-4 px-4">
-                    <strong className="text-stone-900 text-sm block">{b.service.title}</strong>
-                    <span className="text-[11px] text-stone-500">{b.vendor.businessName}</span>
+                    <strong className="text-stone-900 dark:text-dark-text-primary text-sm block">{b.service.title}</strong>
+                    <span className="text-[11px] text-stone-500 dark:text-stone-400">{b.vendor.businessName}</span>
                   </td>
                   <td className="py-4 px-4">
-                    <p className="font-semibold text-stone-900">{b.customer.name}</p>
-                    <p className="text-[11px] text-stone-500">{b.customer.phone}</p>
+                    <p className="font-semibold text-stone-900 dark:text-dark-text-primary">{b.customer.name}</p>
+                    <p className="text-[11px] text-stone-500 dark:text-stone-400">{b.customer.phone}</p>
                   </td>
                   <td className="py-4 px-4 font-medium">{b.eventDate}</td>
-                  <td className="py-4 px-4 font-bold text-stone-900">
+                  <td className="py-4 px-4 font-bold text-stone-900 dark:text-dark-text-primary">
                     ₹{(b.agreedServiceValue / 100).toLocaleString("en-IN")}
                   </td>
                   <td className="py-4 px-4">
@@ -177,16 +177,16 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
                   </td>
                   <td className="py-4 px-4">
                     {b.invoices?.length > 0 ? (
-                      <span className="text-emerald-700 font-semibold">{b.invoices.length} receipt(s)</span>
+                      <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{b.invoices.length} receipt(s)</span>
                     ) : (
-                      <span className="text-stone-400">None</span>
+                      <span className="text-stone-400 dark:text-stone-500">None</span>
                     )}
                   </td>
                   <td className="py-4 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => setInspectingBooking(b)}
-                        className="px-3 py-1.5 bg-warm-100 hover:bg-warm-200 text-stone-800 rounded-xl font-semibold text-[11px] transition"
+                        className="px-3 py-1.5 bg-warm-100 dark:bg-dark-elevated hover:bg-warm-200 dark:hover:bg-dark-border text-stone-800 dark:text-dark-text-primary rounded-xl font-semibold text-[11px] transition"
                       >
                         Audit
                       </button>
@@ -197,7 +197,7 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
                             setRefundBooking(b);
                             setRefundAmount((b.advancePaid / 100).toString());
                           }}
-                          className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-semibold text-[11px] transition"
+                          className="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900 rounded-xl font-semibold text-[11px] transition"
                         >
                           Refund
                         </button>
@@ -214,60 +214,60 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
       {/* INSPECT BOOKING MODAL */}
       {inspectingBooking && (
         <div className="fixed inset-0 bg-stone-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-stone-200 shadow-2xl text-xs text-stone-800 my-8">
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-5">
+          <div className="bg-white dark:bg-dark-surface rounded-3xl max-w-xl w-full p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-2xl text-xs text-stone-800 dark:text-dark-text-primary my-8 transition-colors">
+            <div className="flex items-center justify-between pb-4 border-b border-stone-100 dark:border-dark-border mb-5">
               <div>
-                <span className="font-mono text-stone-500 text-[10px] font-semibold">#{inspectingBooking.bookingCode}</span>
-                <h3 className="font-serif font-bold text-stone-900 text-lg">{inspectingBooking.service.title}</h3>
+                <span className="font-mono text-stone-500 dark:text-stone-400 text-[10px] font-semibold">#{inspectingBooking.bookingCode}</span>
+                <h3 className="font-serif font-bold text-stone-900 dark:text-dark-text-primary text-lg">{inspectingBooking.service.title}</h3>
               </div>
               <button
                 onClick={() => setInspectingBooking(null)}
-                className="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition"
+                className="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-dark-elevated transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-4 bg-warm-50 rounded-2xl border border-stone-200 mb-5 space-y-2">
+            <div className="p-4 bg-warm-50 dark:bg-dark-elevated rounded-2xl border border-stone-200 dark:border-dark-border mb-5 space-y-2 transition-colors">
               <div className="flex justify-between">
-                <span className="text-stone-500">Customer:</span>
-                <span className="font-semibold text-stone-900">{inspectingBooking.customer.name} ({inspectingBooking.customer.phone})</span>
+                <span className="text-stone-500 dark:text-stone-400">Customer:</span>
+                <span className="font-semibold text-stone-900 dark:text-dark-text-primary">{inspectingBooking.customer.name} ({inspectingBooking.customer.phone})</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-stone-500">Vendor:</span>
-                <span className="font-semibold text-stone-900">{inspectingBooking.vendor.businessName}</span>
+                <span className="text-stone-500 dark:text-stone-400">Vendor:</span>
+                <span className="font-semibold text-stone-900 dark:text-dark-text-primary">{inspectingBooking.vendor.businessName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-stone-500">Event Date:</span>
-                <span className="text-stone-900 font-medium">{inspectingBooking.eventDate}</span>
+                <span className="text-stone-500 dark:text-stone-400">Event Date:</span>
+                <span className="text-stone-900 dark:text-dark-text-primary font-medium">{inspectingBooking.eventDate}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-stone-500">Agreed Contract:</span>
-                <span className="font-bold text-stone-900">₹{(inspectingBooking.agreedServiceValue / 100).toLocaleString("en-IN")}</span>
+                <span className="text-stone-500 dark:text-stone-400">Agreed Contract:</span>
+                <span className="font-bold text-stone-900 dark:text-dark-text-primary">₹{(inspectingBooking.agreedServiceValue / 100).toLocaleString("en-IN")}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-stone-500">Advance Paid:</span>
-                <span className="font-bold text-emerald-700">₹{(inspectingBooking.advancePaid / 100).toLocaleString("en-IN")}</span>
+                <span className="text-stone-500 dark:text-stone-400">Advance Paid:</span>
+                <span className="font-bold text-emerald-700 dark:text-emerald-400">₹{(inspectingBooking.advancePaid / 100).toLocaleString("en-IN")}</span>
               </div>
             </div>
 
             {/* Invoices List */}
             {inspectingBooking.invoices.length > 0 && (
               <div className="mb-4">
-                <span className="font-semibold text-stone-900 block mb-2 text-xs">Generated Tax Invoices / Receipts</span>
+                <span className="font-semibold text-stone-900 dark:text-dark-text-primary block mb-2 text-xs">Generated Tax Invoices / Receipts</span>
                 <div className="space-y-2">
                   {inspectingBooking.invoices.map((inv: any) => (
                     <div
                       key={inv.id}
-                      className="p-3 bg-warm-50 rounded-xl border border-stone-200 flex items-center justify-between"
+                      className="p-3 bg-warm-50 dark:bg-dark-elevated rounded-xl border border-stone-200 dark:border-dark-border flex items-center justify-between transition-colors"
                     >
                       <div>
-                        <span className="font-mono text-rose-700 font-semibold">{inv.invoiceNumber}</span>
-                        <p className="text-[11px] text-stone-500">{inv.type} • ₹{(inv.amount / 100).toLocaleString("en-IN")}</p>
+                        <span className="font-mono text-rose-700 dark:text-rose-400 font-semibold">{inv.invoiceNumber}</span>
+                        <p className="text-[11px] text-stone-500 dark:text-stone-400">{inv.type} • ₹{(inv.amount / 100).toLocaleString("en-IN")}</p>
                       </div>
                       <button
                         onClick={() => setSelectedInvoice(inv)}
-                        className="px-3 py-1 bg-white hover:bg-stone-50 text-stone-800 border border-stone-200 rounded-lg font-semibold text-[11px] shadow-xs"
+                        className="px-3 py-1 bg-white dark:bg-dark-surface hover:bg-stone-50 dark:hover:bg-dark-border text-stone-800 dark:text-dark-text-primary border border-stone-200 dark:border-dark-border rounded-lg font-semibold text-[11px] shadow-xs"
                       >
                         View PDF
                       </button>
@@ -283,39 +283,39 @@ export default function AdminBookingsClient({ initialBookings }: { initialBookin
       {/* REFUND MODAL */}
       {refundBooking && (
         <div className="fixed inset-0 bg-stone-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 border border-stone-200 shadow-2xl text-xs text-stone-800">
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-5">
-              <h3 className="font-serif font-bold text-stone-900 text-lg">Process Administrative Refund</h3>
-              <button onClick={() => setRefundBooking(null)} className="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition">
+          <div className="bg-white dark:bg-dark-surface rounded-3xl max-w-md w-full p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-2xl text-xs text-stone-800 dark:text-dark-text-primary transition-colors">
+            <div className="flex items-center justify-between pb-4 border-b border-stone-100 dark:border-dark-border mb-5">
+              <h3 className="font-serif font-bold text-stone-900 dark:text-dark-text-primary text-lg">Process Administrative Refund</h3>
+              <button onClick={() => setRefundBooking(null)} className="p-1.5 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-dark-elevated transition">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleProcessRefund} className="space-y-4">
-              <p className="text-stone-600 leading-relaxed text-xs">
-                Refunding booking <strong className="font-mono text-stone-900">#{refundBooking.bookingCode}</strong> for{" "}
+              <p className="text-stone-600 dark:text-stone-400 leading-relaxed text-xs">
+                Refunding booking <strong className="font-mono text-stone-900 dark:text-dark-text-primary">#{refundBooking.bookingCode}</strong> for{" "}
                 {refundBooking.customer.name}.
               </p>
 
               <div>
-                <label className="block font-semibold text-stone-800 mb-1">Refund Amount (INR)</label>
+                <label className="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Refund Amount (INR)</label>
                 <input
                   type="number"
                   required
                   value={refundAmount}
                   onChange={(e) => setRefundAmount(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500 text-xs"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-dark-border bg-white dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500 text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-stone-800 mb-1">Reason for Refund</label>
+                <label className="block font-semibold text-stone-800 dark:text-stone-200 mb-1">Reason for Refund</label>
                 <input
                   type="text"
                   required
                   value={refundReason}
                   onChange={(e) => setRefundReason(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500 text-xs"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 dark:border-dark-border bg-white dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-rose-500 text-xs"
                 />
               </div>
 

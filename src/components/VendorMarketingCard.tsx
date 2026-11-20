@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Share2, Copy, Check, MessageSquare, ExternalLink, QrCode } from "lucide-react";
+import { Share2, Copy, Check, MessageSquare, ExternalLink } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 export default function VendorMarketingCard({
@@ -30,16 +30,16 @@ export default function VendorMarketingCard({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-stone-200/90 shadow-soft mb-8">
+    <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 border border-stone-200/90 dark:border-dark-border shadow-soft mb-8 transition-colors">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
         <div>
           <div className="flex items-center gap-2">
-            <Share2 className="w-4 h-4 text-rose-700" />
-            <span className="font-serif font-bold text-stone-900 text-base">
+            <Share2 className="w-4 h-4 text-rose-700 dark:text-rose-400" />
+            <span className="font-serif font-bold text-stone-900 dark:text-dark-text-primary text-base">
               Vendor Storefront & Direct Booking Link
             </span>
           </div>
-          <p className="text-xs text-stone-600 mt-1">
+          <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-1">
             Share your direct marketplace storefront with clients on WhatsApp, Instagram bio, or wedding cards.
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function VendorMarketingCard({
             onClick={handleCopy}
             className="text-xs gap-1.5"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
             {copied ? "Copied!" : "Copy Link"}
           </Button>
 
@@ -66,13 +66,13 @@ export default function VendorMarketingCard({
         </div>
       </div>
 
-      <div className="p-3 bg-warm-50 rounded-xl border border-stone-200/80 flex items-center justify-between gap-3 text-xs">
-        <span className="font-mono text-stone-700 truncate select-all">{directLink}</span>
+      <div className="p-3 bg-warm-50 dark:bg-dark-elevated rounded-xl border border-stone-200/80 dark:border-dark-border flex items-center justify-between gap-3 text-xs">
+        <span className="font-mono text-stone-700 dark:text-dark-text-secondary truncate select-all">{directLink}</span>
         <a
           href={directLink}
           target="_blank"
           rel="noreferrer"
-          className="text-rose-700 hover:text-rose-800 font-semibold shrink-0 flex items-center gap-1"
+          className="text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 font-semibold shrink-0 flex items-center gap-1"
         >
           Preview Storefront <ExternalLink className="w-3 h-3" />
         </a>
@@ -80,4 +80,3 @@ export default function VendorMarketingCard({
     </div>
   );
 }
-

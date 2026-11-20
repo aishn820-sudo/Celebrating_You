@@ -40,7 +40,7 @@ export default async function VendorInvoicesPage({
   });
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 text-stone-800 font-sans">
+    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 dark:bg-dark-bg text-stone-800 dark:text-dark-text-primary font-sans transition-colors">
       <VendorNav vendor={vendor} />
       <VendorInvoicesClient initialInvoices={invoices} vendor={vendor} />
     </div>

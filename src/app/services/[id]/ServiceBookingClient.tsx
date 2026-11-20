@@ -141,7 +141,7 @@ export default function ServiceBookingClient({ service }: { service: any }) {
   };
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-1">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* LEFT COLUMN: Service Details, Images, Packages, Reviews */}
@@ -157,28 +157,28 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                 </Badge>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
                 {service.title}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-4 text-xs text-stone-600 mt-3">
-                <span className="font-semibold text-stone-900">{service.vendor.businessName}</span>
-                <span className="flex items-center gap-1 font-bold text-amber-700">
+              <div className="flex flex-wrap items-center gap-4 text-xs text-stone-600 dark:text-dark-text-secondary mt-3">
+                <span className="font-semibold text-stone-900 dark:text-dark-text-primary">{service.vendor.businessName}</span>
+                <span className="flex items-center gap-1 font-bold text-amber-700 dark:text-amber-400">
                   <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                   {service.vendor.rating.toFixed(1)} ({service.vendor.reviewCount} verified reviews)
                 </span>
-                <span className="flex items-center gap-1 text-stone-500">
+                <span className="flex items-center gap-1 text-stone-500 dark:text-stone-400">
                   <MapPin className="w-3.5 h-3.5 text-stone-400" /> {service.vendor.city}, {service.vendor.state}
                 </span>
-                <span className="flex items-center gap-1 text-stone-500">
-                  <Clock className="w-3.5 h-3.5 text-rose-700" /> ~{service.vendor.responseTimeMinutes || 15}m response time
+                <span className="flex items-center gap-1 text-stone-500 dark:text-stone-400">
+                  <Clock className="w-3.5 h-3.5 text-rose-700 dark:text-rose-400" /> ~{service.vendor.responseTimeMinutes || 15}m response time
                 </span>
               </div>
             </div>
 
             {/* Image Gallery */}
             <div className="space-y-3">
-              <div className="h-80 sm:h-96 w-full rounded-2xl overflow-hidden bg-stone-200 border border-stone-200 shadow-sm relative">
+              <div className="h-80 sm:h-96 w-full rounded-2xl overflow-hidden bg-stone-200 dark:bg-dark-elevated border border-stone-200 dark:border-dark-border shadow-sm relative">
                 {service.images.length > 0 ? (
                   <img
                     src={service.images[selectedImageIndex]?.imageUrl || service.images[0]?.imageUrl}
@@ -186,7 +186,7 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400">
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-dark-elevated text-stone-400">
                     <Sparkles className="w-8 h-8 mb-2" />
                     <span className="text-sm font-medium">Curated Artisan Portfolio</span>
                   </div>
@@ -201,8 +201,8 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                       onClick={() => setSelectedImageIndex(idx)}
                       className={`h-16 w-20 rounded-xl overflow-hidden shrink-0 border-2 transition-all ${
                         selectedImageIndex === idx
-                          ? "border-rose-600 ring-2 ring-rose-200"
-                          : "border-stone-200 opacity-70 hover:opacity-100"
+                          ? "border-rose-600 dark:border-rose-400 ring-2 ring-rose-200 dark:ring-rose-900/40"
+                          : "border-stone-200 dark:border-dark-border opacity-70 hover:opacity-100"
                       }`}
                     >
                       <img src={img.imageUrl} alt="" className="w-full h-full object-cover" />
@@ -214,35 +214,35 @@ export default function ServiceBookingClient({ service }: { service: any }) {
 
             {/* Description Card */}
             <Card className="p-6 sm:p-8">
-              <h3 className="font-serif font-bold text-lg text-stone-900 mb-3">Service Overview</h3>
-              <p className="text-stone-600 text-sm leading-relaxed whitespace-pre-line">
+              <h3 className="font-serif font-bold text-lg text-stone-900 dark:text-dark-text-primary mb-3">Service Overview</h3>
+              <p className="text-stone-600 dark:text-dark-text-secondary text-sm leading-relaxed whitespace-pre-line">
                 {service.description}
               </p>
 
               {(service.duration || service.setupTime || service.capacity) && (
-                <div className="mt-6 pt-5 border-t border-stone-100 grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
+                <div className="mt-6 pt-5 border-t border-stone-100 dark:border-dark-border grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
                   {service.duration && (
                     <div>
-                      <span className="text-stone-400 block font-semibold uppercase tracking-wider text-[10px]">
+                      <span className="text-stone-400 dark:text-stone-500 block font-semibold uppercase tracking-wider text-[10px]">
                         Service Duration
                       </span>
-                      <span className="font-bold text-stone-800 text-sm mt-0.5 block">{service.duration}</span>
+                      <span className="font-bold text-stone-800 dark:text-dark-text-primary text-sm mt-0.5 block">{service.duration}</span>
                     </div>
                   )}
                   {service.setupTime && (
                     <div>
-                      <span className="text-stone-400 block font-semibold uppercase tracking-wider text-[10px]">
+                      <span className="text-stone-400 dark:text-stone-500 block font-semibold uppercase tracking-wider text-[10px]">
                         Setup Time
                       </span>
-                      <span className="font-bold text-stone-800 text-sm mt-0.5 block">{service.setupTime}</span>
+                      <span className="font-bold text-stone-800 dark:text-dark-text-primary text-sm mt-0.5 block">{service.setupTime}</span>
                     </div>
                   )}
                   {service.capacity && (
                     <div>
-                      <span className="text-stone-400 block font-semibold uppercase tracking-wider text-[10px]">
+                      <span className="text-stone-400 dark:text-stone-500 block font-semibold uppercase tracking-wider text-[10px]">
                         Capacity Cap
                       </span>
-                      <span className="font-bold text-stone-800 text-sm mt-0.5 block">{service.capacity}</span>
+                      <span className="font-bold text-stone-800 dark:text-dark-text-primary text-sm mt-0.5 block">{service.capacity}</span>
                     </div>
                   )}
                 </div>
@@ -251,38 +251,38 @@ export default function ServiceBookingClient({ service }: { service: any }) {
 
             {/* Inclusions & Exclusions */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="bg-emerald-50/60 p-6 rounded-2xl border border-emerald-100">
-                <h4 className="font-bold text-emerald-950 text-sm flex items-center gap-2 mb-3">
-                  <Check className="w-4 h-4 text-emerald-700" /> What&apos;s Included
+              <div className="bg-emerald-50/60 dark:bg-emerald-950/20 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-900/40">
+                <h4 className="font-bold text-emerald-950 dark:text-emerald-200 text-sm flex items-center gap-2 mb-3">
+                  <Check className="w-4 h-4 text-emerald-700 dark:text-emerald-400" /> What&apos;s Included
                 </h4>
-                <ul className="space-y-2 text-xs text-emerald-900">
+                <ul className="space-y-2 text-xs text-emerald-900 dark:text-emerald-300">
                   {inclusions.length > 0 ? (
                     inclusions.map((inc, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="text-emerald-700 font-bold">•</span>
+                        <span className="text-emerald-700 dark:text-emerald-400 font-bold">•</span>
                         <span>{inc}</span>
                       </li>
                     ))
                   ) : (
-                    <li className="text-stone-400">All standard equipment and artisan attendance.</li>
+                    <li className="text-stone-400 dark:text-stone-500">All standard equipment and artisan attendance.</li>
                   )}
                 </ul>
               </div>
 
-              <div className="bg-stone-50 p-6 rounded-2xl border border-stone-200">
-                <h4 className="font-bold text-stone-800 text-sm flex items-center gap-2 mb-3">
-                  <X className="w-4 h-4 text-stone-400" /> What&apos;s Excluded
+              <div className="bg-stone-50 dark:bg-dark-elevated p-6 rounded-2xl border border-stone-200 dark:border-dark-border">
+                <h4 className="font-bold text-stone-800 dark:text-dark-text-primary text-sm flex items-center gap-2 mb-3">
+                  <X className="w-4 h-4 text-stone-400 dark:text-stone-500" /> What&apos;s Excluded
                 </h4>
-                <ul className="space-y-2 text-xs text-stone-600">
+                <ul className="space-y-2 text-xs text-stone-600 dark:text-dark-text-secondary">
                   {exclusions.length > 0 ? (
                     exclusions.map((exc, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="text-stone-400 font-bold">•</span>
+                        <span className="text-stone-400 dark:text-stone-500 font-bold">•</span>
                         <span>{exc}</span>
                       </li>
                     ))
                   ) : (
-                    <li className="text-stone-400">Extra travel beyond local metropolitan limits.</li>
+                    <li className="text-stone-400 dark:text-stone-500">Extra travel beyond local metropolitan limits.</li>
                   )}
                 </ul>
               </div>
@@ -292,8 +292,8 @@ export default function ServiceBookingClient({ service }: { service: any }) {
             {service.packages.length > 0 && (
               <Card className="p-6 sm:p-8">
                 <div className="mb-5">
-                  <h3 className="font-serif font-bold text-lg text-stone-900">Available Packages</h3>
-                  <p className="text-xs text-stone-500 mt-0.5">Select your preferred tier for this celebration</p>
+                  <h3 className="font-serif font-bold text-lg text-stone-900 dark:text-dark-text-primary">Available Packages</h3>
+                  <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5">Select your preferred tier for this celebration</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -312,33 +312,33 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                         onClick={() => setSelectedPackage(pkg)}
                         className={`cursor-pointer p-5 rounded-2xl border-2 transition-all flex flex-col justify-between ${
                           isSelected
-                            ? "border-rose-700 bg-rose-50/40 shadow-sm"
-                            : "border-stone-200 hover:border-stone-300 bg-white"
+                            ? "border-rose-700 dark:border-rose-500 bg-rose-50/40 dark:bg-rose-950/20 shadow-sm"
+                            : "border-stone-200 dark:border-dark-border hover:border-stone-300 dark:hover:border-stone-600 bg-white dark:bg-dark-surface"
                         }`}
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-bold text-stone-900 text-sm">{pkg.name}</h4>
-                            <span className="text-base font-bold text-stone-900">
+                            <h4 className="font-bold text-stone-900 dark:text-dark-text-primary text-sm">{pkg.name}</h4>
+                            <span className="text-base font-bold text-stone-900 dark:text-dark-text-primary">
                               {formatPrice(pkg.price)}
                             </span>
                           </div>
                           {pkg.description && (
-                            <p className="text-xs text-stone-500 mb-3">{pkg.description}</p>
+                            <p className="text-xs text-stone-500 dark:text-dark-text-secondary mb-3">{pkg.description}</p>
                           )}
-                          <ul className="space-y-1.5 text-xs text-stone-600">
+                          <ul className="space-y-1.5 text-xs text-stone-600 dark:text-dark-text-secondary">
                             {features.map((feat, fIdx) => (
                               <li key={fIdx} className="flex items-center gap-1.5">
-                                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                                 <span>{feat}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-500">
+                        <div className="mt-4 pt-3 border-t border-stone-100 dark:border-dark-border flex items-center justify-between text-[11px] text-stone-500 dark:text-dark-text-secondary">
                           <span>Advance Deposit: {pkg.advancePercent}%</span>
-                          <span className={`font-semibold ${isSelected ? "text-rose-700" : "text-stone-400"}`}>
+                          <span className={`font-semibold ${isSelected ? "text-rose-700 dark:text-rose-400" : "text-stone-400 dark:text-stone-500"}`}>
                             {isSelected ? "Selected ✓" : "Click to select"}
                           </span>
                         </div>
@@ -353,26 +353,26 @@ export default function ServiceBookingClient({ service }: { service: any }) {
             <Card className="p-6 sm:p-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="font-serif font-bold text-lg text-stone-900">Verified Client Reviews</h3>
-                  <p className="text-xs text-stone-500 mt-0.5">Reviews submitted exclusively after completed services</p>
+                  <h3 className="font-serif font-bold text-lg text-stone-900 dark:text-dark-text-primary">Verified Client Reviews</h3>
+                  <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5">Reviews submitted exclusively after completed services</p>
                 </div>
-                <div className="flex items-center gap-1 px-3 py-1 bg-amber-50 rounded-xl border border-amber-200/80 text-amber-900 text-xs font-bold">
+                <div className="flex items-center gap-1 px-3 py-1 bg-amber-50 dark:bg-amber-950/30 rounded-xl border border-amber-200/80 dark:border-amber-900/40 text-amber-900 dark:text-amber-200 text-xs font-bold">
                   <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                   {service.vendor.rating.toFixed(1)} / 5.0
                 </div>
               </div>
 
               {service.reviews.length === 0 ? (
-                <div className="py-8 text-center text-xs text-stone-400">
-                  <MessageSquare className="w-8 h-8 text-stone-300 mx-auto mb-2" />
+                <div className="py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+                  <MessageSquare className="w-8 h-8 text-stone-300 dark:text-stone-600 mx-auto mb-2" />
                   No client reviews yet for this listing. Be the first to share your experience!
                 </div>
               ) : (
-                <div className="space-y-4 divide-y divide-stone-100">
+                <div className="space-y-4 divide-y divide-stone-100 dark:divide-dark-border">
                   {service.reviews.map((rev: any) => (
                     <div key={rev.id} className="pt-4 first:pt-0">
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-bold text-stone-900 text-xs">
+                        <span className="font-bold text-stone-900 dark:text-dark-text-primary text-xs">
                           {rev.customer?.name} • {rev.customer?.city || "Bangalore"}
                         </span>
                         <div className="flex items-center gap-0.5">
@@ -382,16 +382,16 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                               className={`w-3 h-3 ${
                                 i < rev.rating
                                   ? "fill-amber-500 text-amber-500"
-                                  : "text-stone-200 fill-stone-200"
+                                  : "text-stone-200 dark:text-stone-700 fill-stone-200 dark:fill-stone-700"
                               }`}
                             />
                           ))}
                         </div>
                       </div>
-                      <p className="text-xs text-stone-600 leading-relaxed">{rev.comment}</p>
+                      <p className="text-xs text-stone-600 dark:text-dark-text-secondary leading-relaxed">{rev.comment}</p>
                       {rev.vendorReply && (
-                        <div className="mt-2.5 ml-3 p-3 bg-stone-50 rounded-xl border-l-2 border-rose-600 text-xs text-stone-600">
-                          <span className="font-bold text-stone-800 block text-[11px] mb-0.5">
+                        <div className="mt-2.5 ml-3 p-3 bg-stone-50 dark:bg-dark-elevated rounded-xl border-l-2 border-rose-600 text-xs text-stone-600 dark:text-dark-text-secondary">
+                          <span className="font-bold text-stone-800 dark:text-dark-text-primary block text-[11px] mb-0.5">
                             Artisan Response:
                           </span>
                           {rev.vendorReply}
@@ -406,46 +406,46 @@ export default function ServiceBookingClient({ service }: { service: any }) {
 
           {/* RIGHT COLUMN: Sticky Pricing Box & Request Booking */}
           <div className="lg:col-span-1">
-            <div className="sticky top-28 bg-white p-6 rounded-2xl border border-stone-200 shadow-premium space-y-6">
+            <div className="sticky top-28 bg-white dark:bg-dark-surface p-6 rounded-2xl border border-stone-200 dark:border-dark-border shadow-premium space-y-6">
               <div>
-                <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                <span className="text-[11px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
                   Package Price
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-3xl font-bold font-serif text-stone-900">
+                  <span className="text-3xl font-bold font-serif text-stone-900 dark:text-dark-text-primary">
                     {formatPrice(agreedPrice)}
                   </span>
-                  <span className="text-xs text-stone-500">All-Inclusive</span>
+                  <span className="text-xs text-stone-500 dark:text-dark-text-secondary">All-Inclusive</span>
                 </div>
-                <p className="text-xs text-stone-500 mt-1 font-medium">
+                <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1 font-medium">
                   {selectedPackage?.name || "Standard Package"}
                 </p>
               </div>
 
               {/* Milestone Breakdown */}
-              <div className="space-y-2.5 p-4 bg-warm-50 rounded-xl text-xs border border-stone-200/80">
-                <div className="flex justify-between text-stone-600">
+              <div className="space-y-2.5 p-4 bg-warm-50 dark:bg-dark-elevated rounded-xl text-xs border border-stone-200/80 dark:border-dark-border">
+                <div className="flex justify-between text-stone-600 dark:text-dark-text-secondary">
                   <span>Agreed Service Package</span>
-                  <span className="font-semibold text-stone-900">{formatPrice(agreedPrice)}</span>
+                  <span className="font-semibold text-stone-900 dark:text-dark-text-primary">{formatPrice(agreedPrice)}</span>
                 </div>
-                <div className="flex justify-between text-stone-700 font-medium">
+                <div className="flex justify-between text-stone-700 dark:text-stone-300 font-medium">
                   <span>Advance Milestone ({advancePercent}%)</span>
-                  <span className="font-bold text-rose-700">{formatPrice(advanceRequired)}</span>
+                  <span className="font-bold text-rose-700 dark:text-rose-400">{formatPrice(advanceRequired)}</span>
                 </div>
-                <div className="flex justify-between text-stone-500 text-[11px] border-t border-stone-200 pt-2">
+                <div className="flex justify-between text-stone-500 dark:text-stone-400 text-[11px] border-t border-stone-200 dark:border-dark-border pt-2">
                   <span>Final Balance Due at Event</span>
                   <span>{formatPrice(balanceDue)}</span>
                 </div>
               </div>
 
               {/* Protection Guarantees */}
-              <div className="space-y-2.5 text-xs text-stone-600">
+              <div className="space-y-2.5 text-xs text-stone-600 dark:text-dark-text-secondary">
                 <div className="flex items-start gap-2">
-                  <Clock className="w-4 h-4 text-rose-700 shrink-0 mt-0.5" />
+                  <Clock className="w-4 h-4 text-rose-700 dark:text-rose-400 shrink-0 mt-0.5" />
                   <span>Vendor responds within <strong>2 Hours</strong> or request auto-expires.</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Lock className="w-4 h-4 text-stone-600 shrink-0 mt-0.5" />
+                  <Lock className="w-4 h-4 text-stone-600 dark:text-stone-400 shrink-0 mt-0.5" />
                   <span>Advance payment required <strong>only after</strong> vendor accepts.</span>
                 </div>
               </div>
@@ -471,18 +471,18 @@ export default function ServiceBookingClient({ service }: { service: any }) {
         >
           {success ? (
             <div className="py-8 text-center">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Check className="w-6 h-6" />
               </div>
-              <h4 className="font-bold text-stone-900 text-base">Booking Request Submitted!</h4>
-              <p className="text-xs text-stone-500 mt-1">
+              <h4 className="font-bold text-stone-900 dark:text-dark-text-primary text-base">Booking Request Submitted!</h4>
+              <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1">
                 Vendor has been notified. 2-Hour response countdown is active. Redirecting to your booking...
               </p>
             </div>
           ) : (
             <form onSubmit={handleBookingSubmit} className="space-y-4 text-xs">
               {error && (
-                <div className="p-3 bg-rose-50 text-rose-700 rounded-xl flex items-center gap-2 border border-rose-200">
+                <div className="p-3 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400 rounded-xl flex items-center gap-2 border border-rose-200 dark:border-rose-900/40">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{error}</span>
                 </div>
@@ -491,7 +491,7 @@ export default function ServiceBookingClient({ service }: { service: any }) {
               {/* Event Link */}
               {events.length > 0 ? (
                 <div>
-                  <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                  <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                     Select Your Celebration Event
                   </label>
                   <select
@@ -501,7 +501,7 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                       const ev = events.find((x) => x.id === e.target.value);
                       if (ev) setEventDate(ev.eventDate);
                     }}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900 bg-white"
+                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                   >
                     {events.map((ev) => (
                       <option key={ev.id} value={ev.id}>
@@ -512,7 +512,7 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                 </div>
               ) : (
                 <div>
-                  <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                  <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                     Create New Event Name
                   </label>
                   <input
@@ -521,14 +521,14 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                     value={newEventTitle}
                     onChange={(e) => setNewEventTitle(e.target.value)}
                     required
-                    className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                   />
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                  <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                     Event Date
                   </label>
                   <input
@@ -536,24 +536,24 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                     value={eventDate}
                     onChange={(e) => setEventDate(e.target.value)}
                     required
-                    className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                   />
                 </div>
                 <div>
-                  <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                  <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                     Guest Count
                   </label>
                   <input
                     type="number"
                     value={guestCount}
                     onChange={(e) => setGuestCount(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                    className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                   Special Instructions & Requirements
                 </label>
                 <textarea
@@ -561,11 +561,11 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                   placeholder="Provide timing details, themes, specific shots or dietary preferences..."
                   value={specialRequirements}
                   onChange={(e) => setSpecialRequirements(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
 
-              <div className="p-3 bg-amber-50 rounded-xl text-amber-900 text-[11px] leading-relaxed border border-amber-200/80">
+              <div className="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl text-amber-900 dark:text-amber-200 text-[11px] leading-relaxed border border-amber-200/80 dark:border-amber-900/40">
                 <strong>Notice:</strong> Submitting begins a <strong>2-hour response window</strong> for the vendor. If accepted, you will confirm the booking by paying the advance of <strong>{formatPrice(advanceRequired)}</strong>.
               </div>
 

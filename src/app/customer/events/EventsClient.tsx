@@ -97,7 +97,7 @@ export default function EventsClient({
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-1">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
@@ -105,10 +105,10 @@ export default function EventsClient({
             <Badge variant="rose" size="sm" className="mb-2">
               Event Planner
             </Badge>
-            <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
               My Celebration Events
             </h1>
-            <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-stone-600 dark:text-dark-text-secondary mt-1 max-w-2xl">
               Organize multi-vendor celebrations with custom timelines, checkpoints, and budget tracking.
             </p>
           </div>
@@ -171,13 +171,13 @@ export default function EventsClient({
                       </Badge>
                     </div>
 
-                    <h3 className="text-xl font-serif font-bold text-stone-900 leading-snug">
+                    <h3 className="text-xl font-serif font-bold text-stone-900 dark:text-dark-text-primary leading-snug">
                       {event.title}
                     </h3>
 
-                    <div className="space-y-2 mt-4 text-xs text-stone-600">
+                    <div className="space-y-2 mt-4 text-xs text-stone-600 dark:text-dark-text-secondary">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-stone-400 shrink-0" />
+                        <Calendar className="w-4 h-4 text-stone-400 dark:text-stone-500 shrink-0" />
                         <span>
                           {new Date(event.eventDate).toLocaleDateString("en-IN", {
                             weekday: "short",
@@ -188,41 +188,41 @@ export default function EventsClient({
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-stone-400 shrink-0" />
+                        <MapPin className="w-4 h-4 text-stone-400 dark:text-stone-500 shrink-0" />
                         <span>
                           {event.locationAddress}, {event.city}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-stone-400 shrink-0" />
+                        <Users className="w-4 h-4 text-stone-400 dark:text-stone-500 shrink-0" />
                         <span>~{event.guestCount} Guests</span>
                       </div>
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="mt-5 pt-4 border-t border-stone-100">
-                      <div className="flex items-center justify-between text-xs text-stone-500 mb-1.5">
-                        <span className="font-semibold text-stone-700">Milestone Checkpoints</span>
+                    <div className="mt-5 pt-4 border-t border-stone-100 dark:border-dark-border">
+                      <div className="flex items-center justify-between text-xs text-stone-500 dark:text-dark-text-secondary mb-1.5">
+                        <span className="font-semibold text-stone-700 dark:text-stone-300">Milestone Checkpoints</span>
                         <span>
                           {completedCheckpoints}/{totalCheckpoints} ({progress}%)
                         </span>
                       </div>
-                      <div className="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-stone-200 dark:bg-dark-border rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-rose-700 rounded-full transition-all"
+                          className="h-full bg-rose-700 dark:bg-rose-500 rounded-full transition-all"
                           style={{ width: `${progress}%` }}
                         />
                       </div>
                     </div>
 
                     {/* Bookings Count */}
-                    <div className="mt-4 flex items-center justify-between text-xs text-stone-500">
+                    <div className="mt-4 flex items-center justify-between text-xs text-stone-500 dark:text-dark-text-secondary">
                       <span>Vendor Bookings</span>
-                      <span className="font-bold text-stone-800">{event.bookings?.length || 0} Linked</span>
+                      <span className="font-bold text-stone-800 dark:text-dark-text-primary">{event.bookings?.length || 0} Linked</span>
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-stone-100">
+                  <div className="mt-6 pt-4 border-t border-stone-100 dark:border-dark-border">
                     <Link href={`/customer/events/${event.id}`}>
                       <Button variant="secondary" size="sm" className="w-full">
                         Open Celebration Dashboard <ArrowRight className="w-3.5 h-3.5" />
@@ -245,7 +245,7 @@ export default function EventsClient({
         >
           <form onSubmit={handleCreateEvent} className="space-y-4 text-xs">
             {error && (
-              <div className="p-3 bg-rose-50 text-rose-700 rounded-xl flex items-center gap-2 border border-rose-200">
+              <div className="p-3 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400 rounded-xl flex items-center gap-2 border border-rose-200 dark:border-rose-900/40">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -253,13 +253,13 @@ export default function EventsClient({
 
             {/* Template Selector */}
             <div>
-              <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+              <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                 Start with a Celebration Blueprint (Optional)
               </label>
               <select
                 value={selectedTemplateId}
                 onChange={(e) => handleTemplateSelect(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900 bg-white"
+                className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
               >
                 <option value="">Custom Planning (From Scratch)</option>
                 {templates.map((t) => (
@@ -271,7 +271,7 @@ export default function EventsClient({
             </div>
 
             <div>
-              <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+              <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                 Event Title
               </label>
               <input
@@ -280,19 +280,19 @@ export default function EventsClient({
                 placeholder="e.g. Maya's 1st Birthday Gala, Roy & Priya's Sangeet"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                   Occasion Type
                 </label>
                 <select
                   value={formData.eventType}
                   onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900 bg-white"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 >
                   <option value="Birthday">Birthday</option>
                   <option value="Wedding">Wedding</option>
@@ -304,7 +304,7 @@ export default function EventsClient({
               </div>
 
               <div>
-                <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                   Event Date
                 </label>
                 <input
@@ -312,14 +312,14 @@ export default function EventsClient({
                   required
                   value={formData.eventDate}
                   onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                   Location / Venue Address
                 </label>
                 <input
@@ -328,12 +328,12 @@ export default function EventsClient({
                   placeholder="e.g. The Leela Palace, Old Airport Rd"
                   value={formData.locationAddress}
                   onChange={(e) => setFormData({ ...formData, locationAddress: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                   City
                 </label>
                 <input
@@ -342,33 +342,33 @@ export default function EventsClient({
                   placeholder="e.g. Bangalore"
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                   Guest Count
                 </label>
                 <input
                   type="number"
                   value={formData.guestCount}
                   onChange={(e) => setFormData({ ...formData, guestCount: Number(e.target.value) })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-stone-700 block mb-1 uppercase tracking-wider text-[11px]">
+                <label className="font-bold text-stone-700 dark:text-stone-300 block mb-1 uppercase tracking-wider text-[11px]">
                   Overall Planned Budget (₹ INR)
                 </label>
                 <input
                   type="number"
                   value={formData.overallBudget}
                   onChange={(e) => setFormData({ ...formData, overallBudget: Number(e.target.value) })}
-                  className="w-full p-2.5 rounded-xl border border-stone-300 text-stone-900"
+                  className="w-full p-2.5 rounded-xl border border-stone-300 dark:border-dark-border text-stone-900 dark:text-dark-text-primary bg-white dark:bg-dark-elevated"
                 />
               </div>
             </div>

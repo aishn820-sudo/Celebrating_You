@@ -64,23 +64,23 @@ export default async function CustomerDashboardPage() {
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   return (
-    <div className="min-h-screen bg-warm-50 flex flex-col font-sans text-stone-800">
+    <div className="min-h-screen bg-warm-50 dark:bg-dark-bg flex flex-col font-sans text-stone-800 dark:text-dark-text-primary">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-1">
         {/* Welcome Header */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/90 shadow-soft mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 sm:p-8 border border-stone-200/90 dark:border-dark-border shadow-soft mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="champagne" size="sm" className="font-mono">
                 {customer?.customerCode || "CY-CUST"}
               </Badge>
-              <span className="text-xs text-stone-500 font-medium">Celebration Hub</span>
+              <span className="text-xs text-stone-500 dark:text-dark-text-secondary font-medium">Celebration Hub</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
               Welcome back, {customer?.name || "Friend"}
             </h1>
-            <p className="text-xs sm:text-sm text-stone-500 mt-1 max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-500 dark:text-dark-text-secondary mt-1 max-w-xl leading-relaxed">
               Track your upcoming celebrations, manage vendor contracts, review milestone checkpoints, and access official tax invoices.
             </p>
           </div>
@@ -92,7 +92,7 @@ export default async function CustomerDashboardPage() {
               </Button>
             </Link>
             <Link href="/explore">
-              <Button variant="outline" size="sm" leftIcon={<Calendar className="w-4 h-4 text-stone-600" />}>
+              <Button variant="outline" size="sm" leftIcon={<Calendar className="w-4 h-4 text-stone-600 dark:text-stone-400" />}>
                 Explore Services
               </Button>
             </Link>
@@ -101,16 +101,16 @@ export default async function CustomerDashboardPage() {
 
         {/* Action Required Alert: Vendor Accepted, Awaiting Advance */}
         {awaitingAdvanceBookings.length > 0 && (
-          <div className="mb-8 p-5 bg-amber-50/90 rounded-2xl border border-amber-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="mb-8 p-5 bg-amber-50/90 dark:bg-amber-950/40 rounded-2xl border border-amber-200 dark:border-amber-900/50 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start sm:items-center gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-5 h-5 text-amber-700" />
+              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5 text-amber-700 dark:text-amber-400" />
               </div>
               <div>
-                <h4 className="font-bold text-amber-950 text-sm">
+                <h4 className="font-bold text-amber-950 dark:text-amber-200 text-sm">
                   Action Required: Vendor Accepted Booking Request
                 </h4>
-                <p className="text-xs text-amber-800 mt-0.5 leading-relaxed">
+                <p className="text-xs text-amber-800 dark:text-amber-300 mt-0.5 leading-relaxed">
                   <strong>{awaitingAdvanceBookings[0].vendor.businessName}</strong> accepted your request for &quot;{awaitingAdvanceBookings[0].service.title}&quot;. Clear the advance deposit to lock your event date and unlock vendor direct contact.
                 </p>
               </div>
@@ -127,43 +127,43 @@ export default async function CustomerDashboardPage() {
         {/* Metrics Row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card className="p-5">
-            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
               Upcoming Celebrations
             </span>
-            <span className="text-2xl font-serif font-bold text-stone-900 mt-1 block">
+            <span className="text-2xl font-serif font-bold text-stone-900 dark:text-dark-text-primary mt-1 block">
               {upcomingEvents.length}
             </span>
-            <span className="text-[11px] text-stone-500 mt-0.5 block">Events in progress</span>
+            <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 block">Events in progress</span>
           </Card>
 
           <Card className="p-5">
-            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
               Confirmed Vendors
             </span>
-            <span className="text-2xl font-serif font-bold text-stone-900 mt-1 block">
+            <span className="text-2xl font-serif font-bold text-stone-900 dark:text-dark-text-primary mt-1 block">
               {confirmedBookings.length}
             </span>
-            <span className="text-[11px] text-stone-500 mt-0.5 block">Locked service contracts</span>
+            <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 block">Locked service contracts</span>
           </Card>
 
           <Card className="p-5">
-            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
               Pending Actions
             </span>
-            <span className="text-2xl font-serif font-bold text-amber-700 mt-1 block">
+            <span className="text-2xl font-serif font-bold text-amber-700 dark:text-amber-400 mt-1 block">
               {awaitingAdvanceBookings.length}
             </span>
-            <span className="text-[11px] text-stone-500 mt-0.5 block">Awaiting advance payment</span>
+            <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 block">Awaiting advance payment</span>
           </Card>
 
           <Card className="p-5">
-            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
               Outstanding Balances
             </span>
-            <span className="text-2xl font-serif font-bold text-stone-900 mt-1 block font-mono">
+            <span className="text-2xl font-serif font-bold text-stone-900 dark:text-dark-text-primary mt-1 block font-mono">
               {formatPrice(totalOutstandingBalance)}
             </span>
-            <span className="text-[11px] text-stone-500 mt-0.5 block">Due on final fulfillment</span>
+            <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 block">Due on final fulfillment</span>
           </Card>
         </div>
 
@@ -207,14 +207,14 @@ export default async function CustomerDashboardPage() {
 
                     return (
                       <Link key={event.id} href={`/customer/events/${event.id}`} className="block group">
-                        <div className="p-4 rounded-xl border border-stone-200/80 bg-stone-50/50 hover:bg-stone-50 transition-colors">
+                        <div className="p-4 rounded-xl border border-stone-200/80 dark:border-dark-border bg-stone-50/50 dark:bg-dark-elevated hover:bg-stone-50 dark:hover:bg-dark-elevated/80 transition-colors">
                           <div className="flex items-center justify-between mb-1.5">
-                            <span className="text-sm font-bold text-stone-900 group-hover:text-rose-700 transition-colors">
+                            <span className="text-sm font-bold text-stone-900 dark:text-dark-text-primary group-hover:text-rose-700 dark:group-hover:text-rose-400 transition-colors">
                               {event.title}
                             </span>
                             <div className="flex items-center gap-1.5">
                               {daysLeft >= 0 && daysLeft <= 60 && (
-                                <span className="text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full">
+                                <span className="text-[10px] font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded-full">
                                   {daysLeft === 0 ? "Today" : `${daysLeft} days away`}
                                 </span>
                               )}
@@ -224,7 +224,7 @@ export default async function CustomerDashboardPage() {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4 text-xs text-stone-500 mb-3">
+                          <div className="flex items-center gap-4 text-xs text-stone-500 dark:text-dark-text-secondary mb-3">
                             <span>{new Date(event.eventDate).toLocaleDateString("en-IN", { dateStyle: "medium" })}</span>
                             <span>•</span>
                             <span>{event.guestCount} Guests</span>
@@ -234,15 +234,15 @@ export default async function CustomerDashboardPage() {
 
                           {/* Checkpoint Progress */}
                           <div>
-                            <div className="flex justify-between text-[11px] text-stone-500 mb-1">
+                            <div className="flex justify-between text-[11px] text-stone-500 dark:text-dark-text-secondary mb-1">
                               <span>Checkpoints Completed</span>
-                              <span className="font-semibold text-stone-800">
+                              <span className="font-semibold text-stone-800 dark:text-dark-text-primary">
                                 {completedCheckpoints}/{event.checkpoints.length} ({progress}%)
                               </span>
                             </div>
-                            <div className="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                            <div className="w-full h-1.5 bg-stone-200 dark:bg-dark-border rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-rose-700 rounded-full transition-all"
+                                className="h-full bg-rose-700 dark:bg-rose-500 rounded-full transition-all"
                                 style={{ width: `${progress}%` }}
                               />
                             </div>
@@ -255,11 +255,11 @@ export default async function CustomerDashboardPage() {
               </CardContent>
             </div>
 
-            <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex justify-between items-center">
-              <Link href="/plan" className="text-xs font-semibold text-stone-600 hover:text-stone-900 flex items-center gap-1">
+            <div className="px-6 py-4 bg-stone-50/60 dark:bg-dark-elevated/50 border-t border-stone-100 dark:border-dark-border flex justify-between items-center">
+              <Link href="/plan" className="text-xs font-semibold text-stone-600 dark:text-dark-text-secondary hover:text-stone-900 dark:hover:text-dark-text-primary flex items-center gap-1">
                 <Plus className="w-3.5 h-3.5" /> Plan New Celebration
               </Link>
-              <Link href="/customer/events" className="text-xs font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1">
+              <Link href="/customer/events" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 flex items-center gap-1">
                 Manage all events <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -270,7 +270,7 @@ export default async function CustomerDashboardPage() {
             <div>
               <CardHeader>
                 <CardTitle>Recent Service Bookings</CardTitle>
-                <Link href="/customer/bookings" className="text-xs font-semibold text-rose-700 hover:text-rose-800">
+                <Link href="/customer/bookings" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800">
                   View All
                 </Link>
               </CardHeader>
@@ -292,9 +292,9 @@ export default async function CustomerDashboardPage() {
                 ) : (
                   bookings.slice(0, 4).map((b) => (
                     <Link key={b.id} href={`/customer/bookings/${b.id}`} className="block group">
-                      <div className="p-4 rounded-xl border border-stone-200/80 bg-stone-50/50 hover:bg-stone-50 transition-colors">
+                      <div className="p-4 rounded-xl border border-stone-200/80 dark:border-dark-border bg-stone-50/50 dark:bg-dark-elevated hover:bg-stone-50 dark:hover:bg-dark-elevated/80 transition-colors">
                         <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-sm font-bold text-stone-900 group-hover:text-rose-700 transition-colors">
+                          <span className="text-sm font-bold text-stone-900 dark:text-dark-text-primary group-hover:text-rose-700 dark:group-hover:text-rose-400 transition-colors">
                             {b.service.title}
                           </span>
                           <Badge
@@ -313,18 +313,18 @@ export default async function CustomerDashboardPage() {
                           </Badge>
                         </div>
 
-                        <div className="flex items-center justify-between text-xs text-stone-500">
+                        <div className="flex items-center justify-between text-xs text-stone-500 dark:text-dark-text-secondary">
                           <div>
-                            <span className="font-semibold text-stone-800">{b.vendor.businessName}</span>
-                            <span className="text-stone-400 block text-[11px] mt-0.5">
+                            <span className="font-semibold text-stone-800 dark:text-dark-text-primary">{b.vendor.businessName}</span>
+                            <span className="text-stone-400 dark:text-stone-500 block text-[11px] mt-0.5">
                               Event: {new Date(b.eventDate).toLocaleDateString("en-IN")}
                             </span>
                           </div>
 
                           <div className="text-right">
-                            <span className="font-bold text-stone-900 block font-mono">{formatPrice(b.agreedServiceValue)}</span>
+                            <span className="font-bold text-stone-900 dark:text-dark-text-primary block font-mono">{formatPrice(b.agreedServiceValue)}</span>
                             {b.invoices.length > 0 && (
-                              <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1 justify-end mt-0.5">
+                              <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1 justify-end mt-0.5">
                                 <FileText className="w-3 h-3" /> {b.invoices.length} Receipt(s)
                               </span>
                             )}
@@ -337,8 +337,8 @@ export default async function CustomerDashboardPage() {
               </CardContent>
             </div>
 
-            <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex justify-end">
-              <Link href="/customer/bookings" className="text-xs font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1">
+            <div className="px-6 py-4 bg-stone-50/60 dark:bg-dark-elevated/50 border-t border-stone-100 dark:border-dark-border flex justify-end">
+              <Link href="/customer/bookings" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 flex items-center gap-1">
                 View all bookings & receipts <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>

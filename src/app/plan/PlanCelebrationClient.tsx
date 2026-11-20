@@ -274,16 +274,16 @@ export default function PlanCelebrationClient({
         <Badge variant="champagne" size="sm" className="mb-2">
           Guided Celebration Planner
         </Badge>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
           Plan My Celebration
         </h1>
-        <p className="text-xs sm:text-sm text-stone-500 mt-2">
+        <p className="text-xs sm:text-sm text-stone-500 dark:text-dark-text-secondary mt-2">
           Bring your celebration to life one detail at a time. Tell us what you are imagining, and discover verified vendors tailored to your vision.
         </p>
       </div>
 
       {/* 5-Step Progress Stepper */}
-      <div className="mb-10 bg-white rounded-2xl p-4 sm:p-5 border border-stone-200/90 shadow-soft">
+      <div className="mb-10 bg-white dark:bg-dark-surface rounded-2xl p-4 sm:p-5 border border-stone-200/90 dark:border-dark-border shadow-soft">
         <div className="grid grid-cols-5 gap-2 sm:gap-4 text-center">
           {[
             { num: 1, label: "Occasion" },
@@ -299,17 +299,17 @@ export default function PlanCelebrationClient({
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
                     isCurrent
-                      ? "bg-rose-700 text-white shadow-sm ring-4 ring-rose-100"
+                      ? "bg-rose-700 text-white shadow-sm ring-4 ring-rose-100 dark:ring-rose-900/40"
                       : isCompleted
                       ? "bg-emerald-600 text-white"
-                      : "bg-stone-100 text-stone-400"
+                      : "bg-stone-100 dark:bg-dark-elevated text-stone-400 dark:text-stone-500"
                   }`}
                 >
                   {isCompleted ? <Check className="w-4 h-4" /> : s.num}
                 </div>
                 <span
                   className={`text-[10px] sm:text-xs font-semibold mt-1.5 hidden sm:block ${
-                    isCurrent ? "text-stone-900" : isCompleted ? "text-emerald-700" : "text-stone-400"
+                    isCurrent ? "text-stone-900 dark:text-dark-text-primary" : isCompleted ? "text-emerald-700 dark:text-emerald-400" : "text-stone-400 dark:text-stone-500"
                   }`}
                 >
                   {s.label}
@@ -321,7 +321,7 @@ export default function PlanCelebrationClient({
       </div>
 
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center justify-between">
+        <div className="mb-6 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 text-rose-800 dark:text-rose-300 text-xs flex items-center justify-between">
           <span>{error}</span>
           <button onClick={() => setError("")} className="font-bold ml-2">×</button>
         </div>
@@ -329,12 +329,12 @@ export default function PlanCelebrationClient({
 
       {/* STEP 1: OCCASION SELECTION */}
       {step === 1 && (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-soft animate-in fade-in duration-200">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-soft animate-in fade-in duration-200">
           <div className="mb-6">
-            <h2 className="text-xl font-serif font-bold text-stone-900">
+            <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-dark-text-primary">
               Step 1 — What are you celebrating?
             </h2>
-            <p className="text-xs text-stone-500 mt-1">
+            <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1">
               Select the milestone occasion to begin tailored planning.
             </p>
           </div>
@@ -349,21 +349,21 @@ export default function PlanCelebrationClient({
                   onClick={() => handleOccasionSelect(occ.name)}
                   className={`p-4 rounded-xl text-left border transition-all flex items-start gap-3.5 ${
                     isSelected
-                      ? "border-rose-600 bg-rose-50/50 shadow-sm ring-1 ring-rose-600/30"
-                      : "border-stone-200 hover:border-stone-300 hover:bg-stone-50/60"
+                      ? "border-rose-600 dark:border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 shadow-sm ring-1 ring-rose-600/30"
+                      : "border-stone-200 dark:border-dark-border hover:border-stone-300 dark:hover:border-stone-600 hover:bg-stone-50/60 dark:hover:bg-dark-elevated/60"
                   }`}
                 >
-                  <span className="text-2xl shrink-0 p-1 bg-white rounded-lg border border-stone-100 shadow-xs">
+                  <span className="text-2xl shrink-0 p-1 bg-white dark:bg-dark-elevated rounded-lg border border-stone-100 dark:border-dark-border shadow-xs">
                     {occ.icon}
                   </span>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <h4 className={`text-sm font-bold ${isSelected ? "text-rose-800" : "text-stone-900"}`}>
+                      <h4 className={`text-sm font-bold ${isSelected ? "text-rose-800 dark:text-rose-300" : "text-stone-900 dark:text-dark-text-primary"}`}>
                         {occ.name}
                       </h4>
-                      {isSelected && <Check className="w-4 h-4 text-rose-700" />}
+                      {isSelected && <Check className="w-4 h-4 text-rose-700 dark:text-rose-400" />}
                     </div>
-                    <p className="text-xs text-stone-500 mt-0.5 line-clamp-1">
+                    <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5 line-clamp-1">
                       {occ.tagline}
                     </p>
                   </div>
@@ -372,7 +372,7 @@ export default function PlanCelebrationClient({
             })}
           </div>
 
-          <div className="flex justify-end pt-4 border-t border-stone-100">
+          <div className="flex justify-end pt-4 border-t border-stone-100 dark:border-dark-border">
             <Button
               variant="primary"
               size="md"
@@ -387,19 +387,19 @@ export default function PlanCelebrationClient({
 
       {/* STEP 2: EVENT DETAILS */}
       {step === 2 && (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-soft animate-in fade-in duration-200">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-soft animate-in fade-in duration-200">
           <div className="mb-6">
-            <h2 className="text-xl font-serif font-bold text-stone-900">
+            <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-dark-text-primary">
               Step 2 — Celebration Details
             </h2>
-            <p className="text-xs text-stone-500 mt-1">
+            <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1">
               Give your event a name and specify key parameters like date, guest count, and estimated budget.
             </p>
           </div>
 
           <div className="space-y-5 mb-8">
             <div>
-              <label className="block text-xs font-bold text-stone-700 mb-1">
+              <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                 Celebration Name *
               </label>
               <input
@@ -407,47 +407,47 @@ export default function PlanCelebrationClient({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Rohan's 30th Birthday Celebration"
-                className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50"
+                className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary"
                 required
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">
+                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                   Celebration Date *
                 </label>
                 <input
                   type="date"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
-                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50"
+                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">
+                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                   Target Start Time
                 </label>
                 <input
                   type="time"
                   value={eventTime}
                   onChange={(e) => setEventTime(e.target.value)}
-                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50"
+                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">
+                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                   City *
                 </label>
                 <select
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50"
+                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary"
                 >
                   <option value="Bangalore">Bangalore</option>
                   <option value="Mumbai">Mumbai</option>
@@ -459,7 +459,7 @@ export default function PlanCelebrationClient({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">
+                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                   Venue / Area Address *
                 </label>
                 <input
@@ -467,7 +467,7 @@ export default function PlanCelebrationClient({
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="e.g., Indiranagar Club or Home Lawn"
-                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50"
+                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary"
                   required
                 />
               </div>
@@ -475,7 +475,7 @@ export default function PlanCelebrationClient({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">
+                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                   Estimated Guest Count (~{guestCount} guests)
                 </label>
                 <input
@@ -487,13 +487,13 @@ export default function PlanCelebrationClient({
                   onChange={(e) => setGuestCount(Number(e.target.value))}
                   className="w-full accent-rose-600"
                 />
-                <span className="text-[11px] text-stone-500">
+                <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary">
                   Approx. {guestCount} attendees
                 </span>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">
+                <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                   Target Celebration Budget (₹)
                 </label>
                 <input
@@ -502,16 +502,16 @@ export default function PlanCelebrationClient({
                   onChange={(e) => setBudget(Number(e.target.value))}
                   step="5000"
                   min="10000"
-                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 font-mono font-bold text-stone-900"
+                  className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 dark:bg-dark-elevated font-mono font-bold text-stone-900 dark:text-dark-text-primary"
                 />
-                <span className="text-[11px] text-stone-500">
+                <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary">
                   Allocated: {formatRupees(budget)}
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-stone-700 mb-1">
+              <label className="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
                 Description & Special Preferences (Optional)
               </label>
               <textarea
@@ -519,12 +519,12 @@ export default function PlanCelebrationClient({
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
                 placeholder="Specific color themes, dietary preferences, surprise element notes..."
-                className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50"
+                className="w-full text-sm px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-warm-50/50 dark:bg-dark-elevated text-stone-900 dark:text-dark-text-primary"
               />
             </div>
           </div>
 
-          <div className="flex justify-between pt-4 border-t border-stone-100">
+          <div className="flex justify-between pt-4 border-t border-stone-100 dark:border-dark-border">
             <Button
               variant="outline"
               size="md"
@@ -554,12 +554,12 @@ export default function PlanCelebrationClient({
 
       {/* STEP 3: WHAT DO YOU NEED? CATEGORY MULTI-SELECT */}
       {step === 3 && (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-soft animate-in fade-in duration-200">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-soft animate-in fade-in duration-200">
           <div className="mb-6">
-            <h2 className="text-xl font-serif font-bold text-stone-900">
+            <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-dark-text-primary">
               Step 3 — What does your celebration need?
             </h2>
-            <p className="text-xs text-stone-500 mt-1">
+            <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1">
               Select only the service categories you want to book. You are never forced into a package.
             </p>
           </div>
@@ -573,16 +573,16 @@ export default function PlanCelebrationClient({
                   onClick={() => toggleCategory(cat.slug)}
                   className={`p-4 rounded-xl border cursor-pointer transition-all flex items-start gap-3.5 ${
                     isChecked
-                      ? "border-rose-600 bg-rose-50/40 shadow-xs ring-1 ring-rose-600/30"
-                      : "border-stone-200 hover:border-stone-300 hover:bg-stone-50/50"
+                      ? "border-rose-600 dark:border-rose-500 bg-rose-50/40 dark:bg-rose-950/20 shadow-xs ring-1 ring-rose-600/30"
+                      : "border-stone-200 dark:border-dark-border hover:border-stone-300 dark:hover:border-stone-600 hover:bg-stone-50/50 dark:hover:bg-dark-elevated/50"
                   }`}
                 >
-                  <span className="text-2xl shrink-0 p-1 bg-white rounded-lg border border-stone-100">
+                  <span className="text-2xl shrink-0 p-1 bg-white dark:bg-dark-elevated rounded-lg border border-stone-100 dark:border-dark-border">
                     {cat.icon}
                   </span>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <h4 className={`text-sm font-bold ${isChecked ? "text-rose-800" : "text-stone-900"}`}>
+                      <h4 className={`text-sm font-bold ${isChecked ? "text-rose-800 dark:text-rose-300" : "text-stone-900 dark:text-dark-text-primary"}`}>
                         {cat.name}
                       </h4>
                       <input
@@ -592,7 +592,7 @@ export default function PlanCelebrationClient({
                         className="rounded text-rose-600 focus:ring-rose-500 w-4 h-4"
                       />
                     </div>
-                    <p className="text-[11px] text-stone-500 mt-0.5 leading-relaxed">
+                    <p className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 leading-relaxed">
                       {cat.desc}
                     </p>
                   </div>
@@ -601,7 +601,7 @@ export default function PlanCelebrationClient({
             })}
           </div>
 
-          <div className="flex justify-between pt-4 border-t border-stone-100">
+          <div className="flex justify-between pt-4 border-t border-stone-100 dark:border-dark-border">
             <Button
               variant="outline"
               size="md"
@@ -631,29 +631,29 @@ export default function PlanCelebrationClient({
 
       {/* STEP 4: RECOMMENDATIONS & DISCOVERY */}
       {step === 4 && (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-soft animate-in fade-in duration-200">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-100 mb-6 gap-2">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-soft animate-in fade-in duration-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-100 dark:border-dark-border mb-6 gap-2">
             <div>
-              <h2 className="text-xl font-serif font-bold text-stone-900">
+              <h2 className="text-xl font-serif font-bold text-stone-900 dark:text-dark-text-primary">
                 Step 4 — Recommended Vendors for Your Celebration
               </h2>
-              <p className="text-xs text-stone-500 mt-0.5">
+              <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5">
                 Filtered transparently by: Occasion ({occasion}), City ({city}), and {selectedCategories.length} selected categories.
               </p>
             </div>
             <div className="text-right">
-              <span className="text-[10px] uppercase font-bold text-stone-400 block">Shortlisted</span>
-              <span className="text-sm font-bold text-rose-700">
+              <span className="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 block">Shortlisted</span>
+              <span className="text-sm font-bold text-rose-700 dark:text-rose-400">
                 {shortlistedServices.length} Services ({formatRupees(totalEstimatedCostRupees)})
               </span>
             </div>
           </div>
 
           {recommendedServices.length === 0 ? (
-            <div className="py-12 text-center bg-warm-50 rounded-2xl border border-stone-200 mb-8 p-6">
+            <div className="py-12 text-center bg-warm-50 dark:bg-dark-elevated rounded-2xl border border-stone-200 dark:border-dark-border mb-8 p-6">
               <Sparkles className="w-8 h-8 text-stone-400 mx-auto mb-2" />
-              <h4 className="font-bold text-stone-800 text-sm">No specific vendor listings found for this exact filter</h4>
-              <p className="text-xs text-stone-500 mt-1 max-w-md mx-auto">
+              <h4 className="font-bold text-stone-800 dark:text-dark-text-primary text-sm">No specific vendor listings found for this exact filter</h4>
+              <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1 max-w-md mx-auto">
                 You can proceed to save your celebration blueprint now and browse the directory as new verified vendors activate their listings.
               </p>
             </div>
@@ -668,8 +668,8 @@ export default function PlanCelebrationClient({
                     key={service.id}
                     className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
                       isShortlisted
-                        ? "border-emerald-500 bg-emerald-50/30 ring-1 ring-emerald-500/30"
-                        : "border-stone-200 bg-white hover:border-stone-300"
+                        ? "border-emerald-500 dark:border-emerald-600 bg-emerald-50/30 dark:bg-emerald-950/20 ring-1 ring-emerald-500/30"
+                        : "border-stone-200 dark:border-dark-border bg-white dark:bg-dark-surface hover:border-stone-300 dark:hover:border-stone-600"
                     }`}
                   >
                     <div>
@@ -677,29 +677,29 @@ export default function PlanCelebrationClient({
                         <Badge variant="champagne" size="sm">
                           {service.category?.name}
                         </Badge>
-                        <div className="flex items-center gap-1 text-emerald-700 font-semibold text-[11px]">
+                        <div className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold text-[11px]">
                           <ShieldCheck className="w-3.5 h-3.5" /> Verified
                         </div>
                       </div>
 
-                      <h4 className="text-sm font-bold text-stone-900 leading-snug">
+                      <h4 className="text-sm font-bold text-stone-900 dark:text-dark-text-primary leading-snug">
                         {service.title}
                       </h4>
-                      <p className="text-xs text-stone-500 mt-0.5">
+                      <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5">
                         by <strong>{service.vendor?.businessName}</strong> • {service.vendor?.city || city}
                       </p>
 
-                      <p className="text-xs text-stone-600 mt-2 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2 line-clamp-2 leading-relaxed">
                         {service.description}
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-stone-100 dark:border-dark-border flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] text-stone-400 block uppercase font-bold">
+                        <span className="text-[10px] text-stone-400 dark:text-stone-500 block uppercase font-bold">
                           Starting From
                         </span>
-                        <span className="text-sm font-bold text-stone-900 font-mono">
+                        <span className="text-sm font-bold text-stone-900 dark:text-dark-text-primary font-mono">
                           {formatPrice(startingPrice)}
                         </span>
                       </div>
@@ -709,7 +709,7 @@ export default function PlanCelebrationClient({
                           variant="outline"
                           size="sm"
                           onClick={() => removeServiceFromCelebration(service.id)}
-                          className="text-rose-700 hover:bg-rose-50 border-rose-200 text-xs"
+                          className="text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 border-rose-200 dark:border-rose-900/40 text-xs"
                         >
                           <Trash2 className="w-3.5 h-3.5 mr-1" /> Remove
                         </Button>
@@ -730,7 +730,7 @@ export default function PlanCelebrationClient({
             </div>
           )}
 
-          <div className="flex justify-between pt-4 border-t border-stone-100">
+          <div className="flex justify-between pt-4 border-t border-stone-100 dark:border-dark-border">
             <Button
               variant="outline"
               size="md"
@@ -753,61 +753,61 @@ export default function PlanCelebrationClient({
 
       {/* STEP 5: CELEBRATION SUMMARY & SAVE */}
       {step === 5 && (
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-soft animate-in fade-in duration-200">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 sm:p-8 border border-stone-200 dark:border-dark-border shadow-soft animate-in fade-in duration-200">
           <div className="mb-6">
             <Badge variant="champagne" size="sm" className="mb-1">
               Final Blueprint
             </Badge>
-            <h2 className="text-2xl font-serif font-bold text-stone-900">
+            <h2 className="text-2xl font-serif font-bold text-stone-900 dark:text-dark-text-primary">
               Step 5 — Celebration Summary
             </h2>
-            <p className="text-xs text-stone-500 mt-1">
+            <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-1">
               Review your customized celebration blueprint. Once saved, your celebration dashboard will track your milestones, check vendor availability, and manage contracts independently.
             </p>
           </div>
 
           {/* Event Overview Box */}
-          <div className="p-5 rounded-2xl bg-warm-50 border border-stone-200/90 mb-6 grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+          <div className="p-5 rounded-2xl bg-warm-50 dark:bg-dark-elevated border border-stone-200/90 dark:border-dark-border mb-6 grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
             <div>
-              <span className="text-[10px] uppercase font-bold text-stone-400 block">Celebration</span>
-              <span className="font-bold text-stone-900 text-sm mt-0.5 block">{title}</span>
-              <span className="text-[11px] text-rose-700 font-semibold">{occasion}</span>
+              <span className="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 block">Celebration</span>
+              <span className="font-bold text-stone-900 dark:text-dark-text-primary text-sm mt-0.5 block">{title}</span>
+              <span className="text-[11px] text-rose-700 dark:text-rose-400 font-semibold">{occasion}</span>
             </div>
 
             <div>
-              <span className="text-[10px] uppercase font-bold text-stone-400 block">Date & Venue</span>
-              <span className="font-bold text-stone-900 mt-0.5 block">
+              <span className="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 block">Date & Venue</span>
+              <span className="font-bold text-stone-900 dark:text-dark-text-primary mt-0.5 block">
                 {eventDate || "Date TBD"} ({eventTime})
               </span>
-              <span className="text-stone-500">{address || city}</span>
+              <span className="text-stone-500 dark:text-dark-text-secondary">{address || city}</span>
             </div>
 
             <div>
-              <span className="text-[10px] uppercase font-bold text-stone-400 block">Guests & Scale</span>
-              <span className="font-bold text-stone-900 mt-0.5 block">~{guestCount} Guests</span>
-              <span className="text-stone-500">{selectedCategories.length} categories chosen</span>
+              <span className="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 block">Guests & Scale</span>
+              <span className="font-bold text-stone-900 dark:text-dark-text-primary mt-0.5 block">~{guestCount} Guests</span>
+              <span className="text-stone-500 dark:text-dark-text-secondary">{selectedCategories.length} categories chosen</span>
             </div>
 
             <div>
-              <span className="text-[10px] uppercase font-bold text-stone-400 block">Target Budget</span>
-              <span className="font-bold text-stone-900 text-sm mt-0.5 block font-mono">
+              <span className="text-[10px] uppercase font-bold text-stone-400 dark:text-stone-500 block">Target Budget</span>
+              <span className="font-bold text-stone-900 dark:text-dark-text-primary text-sm mt-0.5 block font-mono">
                 {formatRupees(budget)}
               </span>
-              <span className="text-[11px] text-stone-500">
+              <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary">
                 Allocated Spend: {formatRupees(totalEstimatedCostRupees)}
               </span>
             </div>
           </div>
 
           {/* Budget Comparison Bar */}
-          <div className="mb-8 p-4 rounded-xl border border-stone-200 bg-white">
+          <div className="mb-8 p-4 rounded-xl border border-stone-200 dark:border-dark-border bg-white dark:bg-dark-surface">
             <div className="flex items-center justify-between text-xs mb-2">
-              <span className="font-semibold text-stone-700">Estimated Budget Utilization</span>
-              <span className="font-bold font-mono text-stone-900">
+              <span className="font-semibold text-stone-700 dark:text-stone-300">Estimated Budget Utilization</span>
+              <span className="font-bold font-mono text-stone-900 dark:text-dark-text-primary">
                 {Math.round((totalEstimatedCostRupees / (budget || 1)) * 100)}% of {formatRupees(budget)}
               </span>
             </div>
-            <div className="w-full h-2.5 bg-stone-100 rounded-full overflow-hidden">
+            <div className="w-full h-2.5 bg-stone-100 dark:bg-dark-border rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-300 ${
                   totalEstimatedCostRupees > budget ? "bg-amber-600" : "bg-emerald-600"
@@ -821,18 +821,18 @@ export default function PlanCelebrationClient({
 
           {/* Selected Services Table */}
           <div className="mb-8">
-            <h3 className="text-sm font-bold text-stone-900 mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-bold text-stone-900 dark:text-dark-text-primary mb-3 flex items-center justify-between">
               <span>Shortlisted Services & Contracts ({shortlistedServices.length})</span>
               <button
                 onClick={() => setStep(4)}
-                className="text-xs font-semibold text-rose-700 hover:text-rose-800"
+                className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800"
               >
                 + Add More Services
               </button>
             </h3>
 
             {shortlistedServices.length === 0 ? (
-              <div className="p-6 text-center text-xs text-stone-400 bg-stone-50 rounded-xl border border-stone-200">
+              <div className="p-6 text-center text-xs text-stone-400 dark:text-stone-500 bg-stone-50 dark:bg-dark-elevated rounded-xl border border-stone-200 dark:border-dark-border">
                 No individual vendors shortlisted yet. You can still save this celebration and explore vendors anytime from your dashboard.
               </div>
             ) : (
@@ -845,32 +845,32 @@ export default function PlanCelebrationClient({
                   return (
                     <div
                       key={service.id}
-                      className="p-4 rounded-xl border border-stone-200 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                      className="p-4 rounded-xl border border-stone-200 dark:border-dark-border bg-white dark:bg-dark-surface flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                     >
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <Badge variant="neutral" size="sm">
                             {service.category?.name}
                           </Badge>
-                          <span className="text-xs font-bold text-stone-900">{service.title}</span>
+                          <span className="text-xs font-bold text-stone-900 dark:text-dark-text-primary">{service.title}</span>
                         </div>
-                        <p className="text-xs text-stone-500">
+                        <p className="text-xs text-stone-500 dark:text-dark-text-secondary">
                           Vendor: <strong>{service.vendor?.businessName}</strong> ({service.vendor?.city})
                         </p>
                       </div>
 
                       <div className="flex items-center gap-5 text-xs">
                         <div className="text-right">
-                          <span className="font-bold text-stone-900 font-mono block">
+                          <span className="font-bold text-stone-900 dark:text-dark-text-primary font-mono block">
                             {formatPrice(agreedVal)}
                           </span>
-                          <span className="text-[10px] text-stone-500">
+                          <span className="text-[10px] text-stone-500 dark:text-dark-text-secondary">
                             Advance deposit: {formatPrice(advancePaise)}
                           </span>
                         </div>
                         <button
                           onClick={() => removeServiceFromCelebration(service.id)}
-                          className="p-1.5 text-stone-400 hover:text-rose-700 rounded-lg hover:bg-stone-50"
+                          className="p-1.5 text-stone-400 dark:text-stone-500 hover:text-rose-700 dark:hover:text-rose-400 rounded-lg hover:bg-stone-50 dark:hover:bg-dark-elevated"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -882,14 +882,14 @@ export default function PlanCelebrationClient({
             )}
           </div>
 
-          <div className="p-4 rounded-xl bg-warm-50 border border-stone-200/80 mb-8 text-xs text-stone-600 flex items-start gap-3">
-            <Info className="w-4 h-4 text-rose-700 shrink-0 mt-0.5" />
+          <div className="p-4 rounded-xl bg-warm-50 dark:bg-dark-elevated border border-stone-200/80 dark:border-dark-border mb-8 text-xs text-stone-600 dark:text-dark-text-secondary flex items-start gap-3">
+            <Info className="w-4 h-4 text-rose-700 dark:text-rose-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
               <strong>Zero Lock-in Guarantee:</strong> Saving this celebration does not commit you to immediate payments. You can review vendor portfolios, adjust checklist milestones, and request dates individually from your celebration dashboard.
             </p>
           </div>
 
-          <div className="flex justify-between pt-4 border-t border-stone-100">
+          <div className="flex justify-between pt-4 border-t border-stone-100 dark:border-dark-border">
             <Button
               variant="outline"
               size="md"

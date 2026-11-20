@@ -92,20 +92,20 @@ export default async function VendorDashboardPage() {
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 text-stone-800 font-sans">
+    <div className="flex flex-col md:flex-row min-h-screen bg-warm-50 dark:bg-dark-bg text-stone-800 dark:text-dark-text-primary font-sans">
       <VendorNav vendor={vendor} />
 
       <main className="flex-1 p-6 sm:p-10 max-w-7xl overflow-y-auto">
         {/* Verification Alert if not verified */}
         {!vendor.isVerified && (
-          <div className="mb-8 p-5 bg-amber-50 rounded-2xl border border-amber-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="mb-8 p-5 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border border-amber-200/90 dark:border-amber-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-5 h-5 text-amber-700" />
+              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5 text-amber-700 dark:text-amber-400" />
               </div>
               <div>
-                <h4 className="font-bold text-amber-950 text-sm">KYC Verification In Progress</h4>
-                <p className="text-xs text-amber-800 mt-0.5">
+                <h4 className="font-bold text-amber-950 dark:text-amber-200 text-sm">KYC Verification In Progress</h4>
+                <p className="text-xs text-amber-800 dark:text-amber-300 mt-0.5">
                   Your business documents are being screened. Once approved by administration, your listings will go live.
                 </p>
               </div>
@@ -120,19 +120,19 @@ export default async function VendorDashboardPage() {
         )}
 
         {/* Dashboard Top Header */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/90 shadow-soft mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="bg-white dark:bg-dark-surface rounded-2xl p-6 sm:p-8 border border-stone-200/90 dark:border-dark-border shadow-soft mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="rose" size="sm">
                 {vendor.category?.name || "Artisan Business"}
               </Badge>
-              <span className="text-xs text-stone-400 font-mono">{vendor.vendorCode}</span>
+              <span className="text-xs text-stone-400 dark:text-stone-500 font-mono">{vendor.vendorCode}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
               {vendor.businessName}
             </h1>
-            <p className="text-xs sm:text-sm text-stone-500 mt-1">
-              Rating: <strong className="text-stone-800">{vendor.rating.toFixed(1)} ★</strong> ({vendor.reviewCount} reviews) • Contact: {vendor.contactPerson}
+            <p className="text-xs sm:text-sm text-stone-500 dark:text-dark-text-secondary mt-1">
+              Rating: <strong className="text-stone-800 dark:text-dark-text-primary">{vendor.rating.toFixed(1)} ★</strong> ({vendor.reviewCount} reviews) • Contact: {vendor.contactPerson}
             </p>
           </div>
 
@@ -202,15 +202,15 @@ export default async function VendorDashboardPage() {
 
         {/* Pending Requests Queue (Urgent 2-Hour SLA) */}
         {pendingRequests.length > 0 && (
-          <Card className="mb-8 p-6 border-amber-300/80 bg-amber-50/20">
-            <div className="flex items-center justify-between pb-4 border-b border-amber-200/60 mb-4">
+          <Card className="mb-8 p-6 border-amber-300/80 dark:border-amber-900/40 bg-amber-50/20 dark:bg-amber-950/20">
+            <div className="flex items-center justify-between pb-4 border-b border-amber-200/60 dark:border-amber-900/50 mb-4">
               <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-rose-700" />
-                <h3 className="font-serif font-bold text-base text-stone-900">
+                <Clock className="w-5 h-5 text-rose-700 dark:text-rose-400" />
+                <h3 className="font-serif font-bold text-base text-stone-900 dark:text-dark-text-primary">
                   Incoming Booking Requests (2-Hour Mandatory SLA)
                 </h3>
               </div>
-              <Link href="/vendor/bookings" className="text-xs font-semibold text-rose-700 hover:text-rose-800">
+              <Link href="/vendor/bookings" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800">
                 Go to Queue
               </Link>
             </div>
@@ -219,17 +219,17 @@ export default async function VendorDashboardPage() {
               {pendingRequests.map((b) => (
                 <div
                   key={b.id}
-                  className="p-4 rounded-xl border border-stone-200 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="p-4 rounded-xl border border-stone-200 dark:border-dark-border bg-white dark:bg-dark-surface flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-mono font-bold text-stone-400">#{b.bookingCode}</span>
+                      <span className="text-xs font-mono font-bold text-stone-400 dark:text-stone-500">#{b.bookingCode}</span>
                       <Badge variant="warning" size="sm" dot>
                         2h Countdown Active
                       </Badge>
                     </div>
-                    <h4 className="text-sm font-bold text-stone-900">{b.service.title}</h4>
-                    <p className="text-xs text-stone-500 mt-0.5">
+                    <h4 className="text-sm font-bold text-stone-900 dark:text-dark-text-primary">{b.service.title}</h4>
+                    <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5">
                       Event Date: <strong>{new Date(b.eventDate).toLocaleDateString("en-IN")}</strong> • Value:{" "}
                       <strong>{formatPrice(b.agreedServiceValue)}</strong>
                     </p>
@@ -253,40 +253,40 @@ export default async function VendorDashboardPage() {
             <div>
               <CardHeader>
                 <CardTitle>Upcoming Confirmed Engagements</CardTitle>
-                <Link href="/vendor/bookings" className="text-xs font-semibold text-rose-700 hover:text-rose-800">
+                <Link href="/vendor/bookings" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800">
                   View All
                 </Link>
               </CardHeader>
 
               <CardContent className="space-y-3">
                 {confirmedBookings.length === 0 ? (
-                  <p className="text-xs text-stone-400 py-6 text-center italic">
+                  <p className="text-xs text-stone-400 dark:text-stone-500 py-6 text-center italic">
                     No confirmed bookings currently active.
                   </p>
                 ) : (
                   confirmedBookings.slice(0, 4).map((b) => (
                     <div
                       key={b.id}
-                      className="p-4 rounded-xl border border-stone-200/80 bg-stone-50/50 flex items-center justify-between"
+                      className="p-4 rounded-xl border border-stone-200/80 dark:border-dark-border bg-stone-50/50 dark:bg-dark-elevated flex items-center justify-between"
                     >
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-mono font-bold text-stone-400">#{b.bookingCode}</span>
+                          <span className="text-xs font-mono font-bold text-stone-400 dark:text-stone-500">#{b.bookingCode}</span>
                           <Badge variant="success" size="sm">
                             {b.status}
                           </Badge>
                         </div>
-                        <h4 className="text-xs font-bold text-stone-900">{b.service.title}</h4>
-                        <p className="text-[11px] text-stone-500 mt-0.5">
+                        <h4 className="text-xs font-bold text-stone-900 dark:text-dark-text-primary">{b.service.title}</h4>
+                        <p className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5">
                           Event Date: {new Date(b.eventDate).toLocaleDateString("en-IN")}
                         </p>
                       </div>
 
                       <div className="text-right">
-                        <span className="font-bold text-stone-900 text-xs block">
+                        <span className="font-bold text-stone-900 dark:text-dark-text-primary text-xs block">
                           {formatPrice(b.agreedServiceValue)}
                         </span>
-                        <span className="text-[10px] text-emerald-700 block font-semibold mt-0.5">
+                        <span className="text-[10px] text-emerald-700 dark:text-emerald-400 block font-semibold mt-0.5">
                           Advance: {formatPrice(b.advancePaid)}
                         </span>
                       </div>
@@ -296,8 +296,8 @@ export default async function VendorDashboardPage() {
               </CardContent>
             </div>
 
-            <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex justify-end">
-              <Link href="/vendor/bookings" className="text-xs font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1">
+            <div className="px-6 py-4 bg-stone-50/60 dark:bg-dark-elevated/50 border-t border-stone-100 dark:border-dark-border flex justify-end">
+              <Link href="/vendor/bookings" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 flex items-center gap-1">
                 Manage all bookings <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -308,41 +308,41 @@ export default async function VendorDashboardPage() {
             <div>
               <CardHeader>
                 <CardTitle>Recent Transaction Documents</CardTitle>
-                <Link href="/vendor/invoices" className="text-xs font-semibold text-rose-700 hover:text-rose-800">
+                <Link href="/vendor/invoices" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800">
                   Open Ledger
                 </Link>
               </CardHeader>
 
               <CardContent className="space-y-3">
                 {invoices.length === 0 ? (
-                  <p className="text-xs text-stone-400 py-6 text-center italic">
+                  <p className="text-xs text-stone-400 dark:text-stone-500 py-6 text-center italic">
                     No transaction invoices recorded yet.
                   </p>
                 ) : (
                   invoices.slice(0, 4).map((inv) => (
                     <div
                       key={inv.id}
-                      className="p-4 rounded-xl border border-stone-200/80 bg-stone-50/50 flex items-center justify-between"
+                      className="p-4 rounded-xl border border-stone-200/80 dark:border-dark-border bg-stone-50/50 dark:bg-dark-elevated flex items-center justify-between"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center text-stone-700">
-                          <FileText className="w-4 h-4 text-rose-700" />
+                        <div className="w-8 h-8 rounded-lg bg-stone-100 dark:bg-dark-surface flex items-center justify-center text-stone-700 dark:text-stone-300">
+                          <FileText className="w-4 h-4 text-rose-700 dark:text-rose-400" />
                         </div>
                         <div>
-                          <span className="text-xs font-bold text-stone-900 block">
+                          <span className="text-xs font-bold text-stone-900 dark:text-dark-text-primary block">
                             {inv.type === "ADVANCE" ? "Doc 1 (Advance)" : "Doc 2 (Final)"}
                           </span>
-                          <span className="text-[10px] font-mono text-stone-400">
+                          <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500">
                             #{inv.invoiceNumber}
                           </span>
                         </div>
                       </div>
 
                       <div className="text-right">
-                        <span className="font-bold text-stone-900 text-xs block">
+                        <span className="font-bold text-stone-900 dark:text-dark-text-primary text-xs block">
                           {formatPrice(inv.amountPaidThisDoc)}
                         </span>
-                        <span className="text-[10px] text-stone-500 block">
+                        <span className="text-[10px] text-stone-500 dark:text-dark-text-secondary block">
                           {new Date(inv.paymentDate).toLocaleDateString("en-IN")}
                         </span>
                       </div>
@@ -352,8 +352,8 @@ export default async function VendorDashboardPage() {
               </CardContent>
             </div>
 
-            <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex justify-end">
-              <Link href="/vendor/invoices" className="text-xs font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1">
+            <div className="px-6 py-4 bg-stone-50/60 dark:bg-dark-elevated/50 border-t border-stone-100 dark:border-dark-border flex justify-end">
+              <Link href="/vendor/invoices" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 flex items-center gap-1">
                 View all invoices & download PDFs <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
