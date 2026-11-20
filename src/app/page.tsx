@@ -29,6 +29,9 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
 import BudgetInspirationSection from "@/components/BudgetInspirationSection";
+import PremierVendorsSection from "@/components/PremierVendorsSection";
+import CelebrationBlueprintsSection from "@/components/CelebrationBlueprintsSection";
+import { ensureDemoData } from "@/lib/ensureDemoData";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +41,7 @@ export default async function HomePage() {
   let templates: any[] = [];
 
   try {
-    const [fetchedCategories, fetchedServices, fetchedTemplates] = await Promise.all([
+    let [fetchedCategories, fetchedServices, fetchedTemplates] = await Promise.all([
       prisma.vendorCategory.findMany({ where: { isActive: true } }),
       prisma.service.findMany({
         where: { status: "PUBLISHED", vendor: { verificationStatus: "VERIFIED" } },
@@ -50,8 +53,28 @@ export default async function HomePage() {
         },
         take: 6,
       }),
-      prisma.eventTemplate.findMany({ where: { isActive: true }, take: 4 }),
+      prisma.eventTemplate.findMany({ where: { isActive: true }, take: 8 }),
     ]);
+
+    // If production database has 0 templates or categories, auto-seed idempotently
+    if (fetchedCategories.length === 0 || fetchedTemplates.length === 0) {
+      await ensureDemoData();
+      [fetchedCategories, fetchedServices, fetchedTemplates] = await Promise.all([
+        prisma.vendorCategory.findMany({ where: { isActive: true } }),
+        prisma.service.findMany({
+          where: { status: "PUBLISHED", vendor: { verificationStatus: "VERIFIED" } },
+          include: {
+            category: true,
+            vendor: true,
+            packages: true,
+            images: { take: 1 },
+          },
+          take: 6,
+        }),
+        prisma.eventTemplate.findMany({ where: { isActive: true }, take: 8 }),
+      ]);
+    }
+
     categories = fetchedCategories;
     featuredServices = fetchedServices;
     templates = fetchedTemplates;
@@ -503,183 +526,14 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* FEATURED VENDORS */}
-        <section className="py-20 bg-warm-100/50 border-y border-stone-200/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-widest font-bold text-stone-500">Verified Marketplace</p>
-                <h2 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight mt-1">
-                  Premier Celebration Vendors
-                </h2>
-                <p className="text-xs text-stone-500 mt-1">
-                  Vetted event specialists ready to accept your celebration date with 2-hour confirmation.
-                </p>
-              </div>
-              <Link
-                href="/explore"
-                className="text-sm font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1.5 transition-colors"
-              >
-                View all available vendors <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+        {/* PREMIER CELEBRATION VENDORS */}
+        <PremierVendorsSection services={featuredServices} />
 
-            {featuredServices.length === 0 ? (
-              <div className="text-center py-12 bg-white/80 rounded-2xl border border-stone-200/70 p-8 max-w-lg mx-auto">
-                <Sparkles className="w-8 h-8 text-stone-400 mx-auto mb-2" />
-                <h3 className="font-serif font-bold text-stone-800 text-base">Curating Verified Vendors</h3>
-                <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto leading-relaxed">
-                  Our vendor partners are completing identity verification and portfolio review.
-                </p>
-                <div className="mt-4">
-                  <Link href="/explore">
-                    <Button variant="outline" size="sm">
-                      Explore Directory
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {featuredServices.map((service) => (
-                  <Card key={service.id} hoverEffect className="flex flex-col justify-between">
-                    <div>
-                      {/* Media */}
-                      <div className="h-48 w-full bg-stone-200 relative overflow-hidden">
-                        {service.images[0] ? (
-                          <img
-                            src={service.images[0].imageUrl}
-                            alt={service.title}
-                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 text-stone-400">
-                            <Sparkles className="w-8 h-8 mb-1" />
-                            <span className="text-xs font-medium">Curated Vendor Portfolio</span>
-                          </div>
-                        )}
-                        <div className="absolute top-3 left-3">
-                          <Badge variant="neutral" size="sm" className="bg-white/95 backdrop-blur-sm shadow-sm font-medium">
-                            {service.category.name}
-                          </Badge>
-                        </div>
-                        <div className="absolute top-3 right-3">
-                          <Badge variant="success" size="sm" dot>
-                            Verified
-                          </Badge>
-                        </div>
-                      </div>
-
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
-                          <span className="font-semibold text-stone-800">{service.vendor.businessName}</span>
-                          {service.vendor.reviewCount > 0 ? (
-                            <div className="flex items-center gap-1 text-amber-700 font-bold">
-                              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                              <span>{service.vendor.rating.toFixed(1)}</span>
-                              <span className="text-stone-400 font-normal">({service.vendor.reviewCount})</span>
-                            </div>
-                          ) : (
-                            <span className="text-[11px] text-stone-400">New Verified Vendor</span>
-                          )}
-                        </div>
-
-                        <h3 className="font-serif font-bold text-base text-stone-900 leading-snug line-clamp-1">
-                          {service.title}
-                        </h3>
-                        <p className="text-xs text-stone-500 mt-2 line-clamp-2 leading-relaxed">
-                          {service.description}
-                        </p>
-                      </CardContent>
-                    </div>
-
-                    <div className="px-6 py-4 bg-stone-50/60 border-t border-stone-100 flex items-center justify-between">
-                      <div>
-                        <p className="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Packages From</p>
-                        <p className="text-base font-bold text-stone-900 font-mono">
-                          {formatPrice(service.packages[0]?.price || service.basePrice)}
-                        </p>
-                      </div>
-
-                      <Link href={`/services/${service.id}`}>
-                        <Button variant="outline" size="sm">
-                          View Details
-                        </Button>
-                      </Link>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+        {/* CURATED CELEBRATION BLUEPRINTS */}
+        <CelebrationBlueprintsSection templates={templates} />
 
         {/* BUDGET-CONSCIOUS INSPIRATION: Interactive Widget */}
         <BudgetInspirationSection services={featuredServices} />
-
-        {/* CELEBRATION TEMPLATES */}
-        <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mb-12">
-            <p className="text-xs uppercase tracking-widest font-bold text-stone-500">Celebration Blueprints</p>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight mt-1.5">
-              Curated Celebration Blueprints
-            </h2>
-            <p className="text-sm text-stone-600 mt-2.5 leading-relaxed">
-              Battle-tested milestone templates pre-configured with recommended budgets, service checklists, and milestone checkpoints. Customize freely to match your exact vision.
-            </p>
-          </div>
-
-          {templates.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-2xl border border-stone-200/70 p-8 max-w-lg mx-auto">
-              <Sparkles className="w-8 h-8 text-stone-400 mx-auto mb-2" />
-              <h3 className="font-serif font-bold text-stone-800 text-base">Blueprints Initializing</h3>
-              <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto leading-relaxed">
-                Expert celebration blueprints are being organized.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {templates.map((tpl) => (
-                <Card key={tpl.id} hoverEffect className="p-6 flex flex-col justify-between">
-                  <div>
-                    <Badge variant="champagne" size="sm" className="mb-3">
-                      {tpl.category}
-                    </Badge>
-                    <h3 className="text-base font-serif font-bold text-stone-900 leading-snug">{tpl.name}</h3>
-                    <p className="text-xs text-stone-600 mt-2 leading-relaxed line-clamp-3">
-                      {tpl.description}
-                    </p>
-
-                    <div className="mt-5 pt-4 border-t border-stone-100 flex items-center justify-between text-xs">
-                      <div>
-                        <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
-                          Budget Range
-                        </span>
-                        <span className="font-bold text-stone-900 font-mono">
-                          {formatPrice(tpl.suggestedBudgetMin)} – {formatPrice(tpl.suggestedBudgetMax)}
-                        </span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-stone-400 block text-[10px] uppercase tracking-wider font-semibold">
-                          Capacity
-                        </span>
-                        <span className="font-bold text-stone-900">~{tpl.defaultGuestCount} Guests</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-5">
-                    <Link href={`/plan?templateId=${tpl.id}`}>
-                      <Button variant="secondary" size="sm" className="w-full">
-                        Customize Blueprint
-                      </Button>
-                    </Link>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
-        </section>
 
         {/* TRUST SECTION */}
         <section className="py-20 bg-warm-100/60 border-t border-stone-200/80">

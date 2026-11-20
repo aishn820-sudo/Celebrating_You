@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { ensureDemoData } from "@/lib/ensureDemoData";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,13 @@ export async function GET() {
   try {
     // 1. Verify connectivity
     await prisma.$queryRawUnsafe("SELECT 1;");
+
+    // Auto-seed demo accounts and core data if not yet seeded
+    try {
+      await ensureDemoData();
+    } catch (e) {
+      console.warn("Health check auto-seed note:", e);
+    }
 
     // 2. Check table count in public schema
     const tables: any[] = await prisma.$queryRawUnsafe(`

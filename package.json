@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "next build",
+    "build": "node scripts/seed-production-demo.mjs && next build",
     "start": "next start -p 3000",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
@@ -14,7 +14,8 @@
     "db:inspect": "node scripts/inspect-db.mjs",
     "db:restore": "node scripts/migrate-to-postgres.mjs --restore",
     "db:export": "node scripts/migrate-to-postgres.mjs",
-    "seed": "node scripts/seed.mjs"
+    "seed": "node scripts/seed.mjs",
+    "seed:demo": "node scripts/seed-production-demo.mjs"
   },
   "engines": {
     "node": ">=20.0.0"

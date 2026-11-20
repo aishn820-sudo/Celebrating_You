@@ -139,17 +139,48 @@ function LoginForm() {
 
       {/* Quick Demo Credentials Assistant */}
       <div className="mt-6 pt-5 border-t border-stone-100 text-[11px] text-stone-500">
-        <span className="font-semibold text-stone-700 block mb-1">Pre-configured Demo Credentials:</span>
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="font-semibold text-stone-700">Demonstration Credentials:</span>
+          <button
+            type="button"
+            onClick={() => {
+              if (role === "CUSTOMER") {
+                setEmail("priya@example.com");
+                setPassword("Customer@12345");
+              } else {
+                setEmail("studio@memories.com");
+                setPassword("Vendor@12345");
+              }
+            }}
+            className="text-[10px] font-bold text-rose-700 hover:text-rose-800 underline uppercase tracking-wider"
+          >
+            Auto-fill credentials
+          </button>
+        </div>
         {role === "CUSTOMER" ? (
-          <p className="bg-warm-50 p-2.5 rounded-xl font-mono text-[11px] text-stone-700 border border-stone-200">
-            Email: priya@example.com <br />
-            Password: Customer@12345
-          </p>
+          <div
+            onClick={() => {
+              setEmail("priya@example.com");
+              setPassword("Customer@12345");
+            }}
+            className="bg-warm-50 hover:bg-warm-100/80 cursor-pointer transition p-2.5 rounded-xl font-mono text-[11px] text-stone-700 border border-stone-200"
+          >
+            <div>Email: <strong className="text-stone-900">priya@example.com</strong></div>
+            <div>Password: <strong className="text-stone-900">Customer@12345</strong></div>
+            <div className="text-[10px] text-stone-400 mt-1 font-sans">Role: Verified Demo Customer (Click to auto-fill)</div>
+          </div>
         ) : (
-          <p className="bg-warm-50 p-2.5 rounded-xl font-mono text-[11px] text-stone-700 border border-stone-200">
-            Email: studio@memories.com <br />
-            Password: Vendor@12345
-          </p>
+          <div
+            onClick={() => {
+              setEmail("studio@memories.com");
+              setPassword("Vendor@12345");
+            }}
+            className="bg-warm-50 hover:bg-warm-100/80 cursor-pointer transition p-2.5 rounded-xl font-mono text-[11px] text-stone-700 border border-stone-200"
+          >
+            <div>Email: <strong className="text-stone-900">studio@memories.com</strong></div>
+            <div>Password: <strong className="text-stone-900">Vendor@12345</strong></div>
+            <div className="text-[10px] text-stone-400 mt-1 font-sans">Role: Moments & Memories Studio (Click to auto-fill)</div>
+          </div>
         )}
       </div>
 

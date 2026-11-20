@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { hashPassword, comparePassword, signToken } from "@/lib/auth";
+import { ensureDemoData } from "@/lib/ensureDemoData";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,13 +11,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase().trim() },
+    const cleanEmail = email.toLowerCase().trim();
+    let user = await prisma.user.findUnique({
+      where: { email: cleanEmail },
       include: {
         customer: true,
         vendor: true,
       },
     });
+
+    // Auto-seed demo accounts in production if not present
+    if (!user && (cleanEmail === "priya@example.com" || cleanEmail === "studio@memories.com")) {
+      await ensureDemoData();
+      user = await prisma.user.findUnique({
+        where: { email: cleanEmail },
+        include: {
+          customer: true,
+          vendor: true,
+        },
+      });
+    }
 
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
