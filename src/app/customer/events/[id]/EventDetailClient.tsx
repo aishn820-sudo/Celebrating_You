@@ -21,10 +21,13 @@ import {
   DollarSign,
   ChevronDown,
   ChevronUp,
+  Edit3,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Modal } from "@/components/ui/Modal";
 
 export default function EventDetailClient({ event: initialEvent }: { event: any }) {
   const router = useRouter();
@@ -32,6 +35,79 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
   const [newCheckpointTitle, setNewCheckpointTitle] = useState("");
   const [addingCheckpoint, setAddingCheckpoint] = useState(false);
   const [expandedBookingId, setExpandedBookingId] = useState<string | null>(null);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    title: initialEvent.title || "",
+    guestCount: initialEvent.guestCount || 50,
+    overallBudget: Math.round((initialEvent.overallBudget || 5000000) / 100),
+    notes: initialEvent.notes || "",
+  });
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [actionError, setActionError] = useState("");
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingEdit(true);
+    setActionError("");
+
+    try {
+      const res = await fetch(`/api/customer/events/${event.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: editFormData.title,
+          guestCount: Number(editFormData.guestCount),
+          overallBudget: Number(editFormData.overallBudget) * 100,
+          notes: editFormData.notes,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to update event");
+      }
+
+      setEvent((prev: any) => ({
+        ...prev,
+        title: editFormData.title,
+        guestCount: Number(editFormData.guestCount),
+        overallBudget: Number(editFormData.overallBudget) * 100,
+        notes: editFormData.notes,
+      }));
+      setIsEditModalOpen(false);
+      router.refresh();
+    } catch (err: any) {
+      setActionError(err.message);
+    } finally {
+      setIsSavingEdit(false);
+    }
+  };
+
+  const handleDeleteEvent = async () => {
+    setIsDeleting(true);
+    setActionError("");
+
+    try {
+      const res = await fetch(`/api/customer/events/${event.id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to delete event");
+      }
+
+      router.push("/customer/events");
+      router.refresh();
+    } catch (err: any) {
+      setActionError(err.message);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const toggleCheckpoint = async (cpId: string, currentStatus: string) => {
     const nextStatus = currentStatus === "COMPLETED" ? "PENDING" : "COMPLETED";
@@ -178,6 +254,29 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
             </div>
 
             <div className="flex flex-wrap gap-2.5">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setActionError("");
+                  setIsEditModalOpen(true);
+                }}
+                leftIcon={<Edit3 className="w-4 h-4" />}
+              >
+                Edit Details
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                onClick={() => {
+                  setActionError("");
+                  setIsDeleteModalOpen(true);
+                }}
+                leftIcon={<Trash2 className="w-4 h-4" />}
+              >
+                Delete Event
+              </Button>
               <Link href={`/explore?city=${encodeURIComponent(event.city)}`}>
                 <Button variant="primary" size="sm" leftIcon={<Sparkles className="w-4 h-4" />}>
                   Add Another Vendor
@@ -468,6 +567,135 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
             </Card>
           </div>
         </div>
+
+        {/* EDIT EVENT MODAL */}
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          title="Edit Celebration Details"
+          description="Update guest count, budget targets, or planning vision."
+        >
+          <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
+            {actionError && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs">
+                {actionError}
+              </div>
+            )}
+
+            <div>
+              <label className="block font-semibold text-stone-700 mb-1">Celebration Title</label>
+              <input
+                type="text"
+                required
+                value={editFormData.title}
+                onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
+                className="w-full px-3 py-2 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block font-semibold text-stone-700 mb-1">Expected Guests</label>
+                <input
+                  type="number"
+                  min="1"
+                  required
+                  value={editFormData.guestCount}
+                  onChange={(e) => setEditFormData({ ...editFormData, guestCount: Number(e.target.value) })}
+                  className="w-full px-3 py-2 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold text-stone-700 mb-1">Target Budget (₹)</label>
+                <input
+                  type="number"
+                  min="5000"
+                  step="1000"
+                  required
+                  value={editFormData.overallBudget}
+                  onChange={(e) => setEditFormData({ ...editFormData, overallBudget: Number(e.target.value) })}
+                  className="w-full px-3 py-2 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block font-semibold text-stone-700 mb-1">Notes & Theme Preferences</label>
+              <textarea
+                rows={3}
+                value={editFormData.notes}
+                onChange={(e) => setEditFormData({ ...editFormData, notes: e.target.value })}
+                placeholder="Theme inspirations, dietary restrictions, musical genres..."
+                className="w-full px-3 py-2 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+              />
+            </div>
+
+            <div className="flex gap-3 pt-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="md"
+                className="w-1/2"
+                onClick={() => setIsEditModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                size="md"
+                className="w-1/2"
+                isLoading={isSavingEdit}
+              >
+                Save Changes
+              </Button>
+            </div>
+          </form>
+        </Modal>
+
+        {/* DELETE CONFIRMATION MODAL */}
+        <Modal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          title="Delete Celebration Event"
+          description="Are you sure you want to remove this celebration? This action cannot be undone."
+        >
+          <div className="space-y-4 text-xs">
+            {actionError && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs">
+                {actionError}
+              </div>
+            )}
+
+            <p className="text-stone-600 leading-relaxed">
+              Deleting <strong>{event.title}</strong> will remove all custom checkpoints and unlink celebration preferences.
+              Events with active or confirmed bookings cannot be deleted until bookings are concluded or cancelled.
+            </p>
+
+            <div className="flex gap-3 pt-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="md"
+                className="w-1/2"
+                onClick={() => setIsDeleteModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="danger"
+                size="md"
+                className="w-1/2"
+                isLoading={isDeleting}
+                onClick={handleDeleteEvent}
+              >
+                Delete Celebration
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </main>
     </div>
   );

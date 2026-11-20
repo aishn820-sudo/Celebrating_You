@@ -19,13 +19,13 @@ import { Card, CardContent } from "@/components/ui/Card";
 
 export default function ExploreGridClient({
   services,
-  formatPrice,
 }: {
   services: any[];
-  formatPrice: (paise: number) => string;
 }) {
   const [selectedForCompare, setSelectedForCompare] = useState<any[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
+
+  const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
 
   const toggleCompare = (service: any) => {
     if (selectedForCompare.find((s) => s.id === service.id)) {

@@ -97,3 +97,45 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const session = await getCurrentUser();
+    if (!session || session.role !== "CUSTOMER" || !session.customerId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const event = await prisma.event.findFirst({
+      where: { id: params.id, customerId: session.customerId },
+      include: {
+        bookings: true,
+      },
+    });
+
+    if (!event) {
+      return NextResponse.json({ error: "Event not found" }, { status: 404 });
+    }
+
+    const activeBookings = event.bookings.filter((b) =>
+      ["REQUEST_SUBMITTED", "ACCEPTED_AWAITING_ADVANCE", "CONFIRMED", "IN_PROGRESS"].includes(b.status)
+    );
+
+    if (activeBookings.length > 0) {
+      return NextResponse.json(
+        { error: "Cannot delete an event with active or confirmed bookings. Please cancel them first." },
+        { status: 400 }
+      );
+    }
+
+    // Cascade delete checkpoints and event services, then delete event
+    await prisma.$transaction([
+      prisma.eventCheckpoint.deleteMany({ where: { eventId: params.id } }),
+      prisma.eventService.deleteMany({ where: { eventId: params.id } }),
+      prisma.event.delete({ where: { id: params.id } }),
+    ]);
+
+    return NextResponse.json({ success: true, message: "Event deleted successfully" });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+

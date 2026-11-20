@@ -339,7 +339,7 @@ export default async function ExplorePage({
                 }
               />
             ) : (
-              <ExploreGridClient services={services} formatPrice={formatPrice} />
+              <ExploreGridClient services={services} />
             )}
           </div>
         </div>

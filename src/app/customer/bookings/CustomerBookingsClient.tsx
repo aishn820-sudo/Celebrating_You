@@ -92,7 +92,7 @@ export default function CustomerBookingsClient({ initialBookings }: { initialBoo
             Client Center
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
-            My Artisan Bookings & Invoices
+            My Celebration Bookings & Invoices
           </h1>
           <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl">
             Track vendor responses, settle advance and balance milestones, and view official transaction receipts.
@@ -131,7 +131,7 @@ export default function CustomerBookingsClient({ initialBookings }: { initialBoo
             action={
               <Link href="/explore">
                 <Button variant="primary" size="sm">
-                  Explore Artisans
+                  Explore Vendors
                 </Button>
               </Link>
             }
@@ -169,11 +169,11 @@ export default function CustomerBookingsClient({ initialBookings }: { initialBoo
                       </div>
 
                       <h3 className="text-xl font-serif font-bold text-stone-900 leading-snug">
-                        {b.service.title}
+                        {b.service?.title || "Custom Service"}
                       </h3>
                       <p className="text-xs text-stone-500 mt-1">
-                        By <strong className="text-stone-800">{b.vendor.businessName}</strong> • Event:{" "}
-                        <strong className="text-stone-800">{b.event?.title}</strong> ({new Date(b.eventDate).toLocaleDateString("en-IN")})
+                        By <strong className="text-stone-800">{b.vendor?.businessName || "Verified Vendor"}</strong> • Event:{" "}
+                        <strong className="text-stone-800">{b.event?.title || "Independent Celebration"}</strong> ({b.eventDate ? new Date(b.eventDate).toLocaleDateString("en-IN") : "Date TBD"})
                       </p>
                     </div>
 
