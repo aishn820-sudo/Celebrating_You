@@ -362,7 +362,7 @@ async function main() {
       },
       images: {
         create: [
-          { imageUrl: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=800", isCover: true, sortOrder: 1 },
+          { imageUrl: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop", isCover: true, sortOrder: 1 },
         ],
       },
     },

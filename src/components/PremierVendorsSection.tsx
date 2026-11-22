@@ -96,7 +96,7 @@ const DEMO_VENDORS = [
       verificationStatus: "VERIFIED",
       bio: "Handcrafted milestone birthday cakes, bespoke dessert tables and themed confectionery.",
     },
-    images: [{ imageUrl: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?q=80&w=800&auto=format&fit=crop" }],
+    images: [{ imageUrl: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop" }],
     isDemo: true,
   },
   {
@@ -223,6 +223,11 @@ export default function PremierVendorsSection({ services }: PremierVendorsSectio
                       alt={item.title}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop";
+                      }}
                     />
                     <div className="absolute top-3 left-3 flex items-center gap-1.5">
                       <Badge variant="neutral" size="sm" className="bg-white/95 dark:bg-dark-surface/90 dark:text-dark-text-primary backdrop-blur-sm shadow-sm font-medium">

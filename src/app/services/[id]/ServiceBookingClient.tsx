@@ -184,6 +184,11 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                     src={service.images[selectedImageIndex]?.imageUrl || service.images[0]?.imageUrl}
                     alt={service.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?w=800";
+                    }}
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-dark-elevated text-stone-400">
@@ -205,7 +210,16 @@ export default function ServiceBookingClient({ service }: { service: any }) {
                           : "border-stone-200 dark:border-dark-border opacity-70 hover:opacity-100"
                       }`}
                     >
-                      <img src={img.imageUrl} alt="" className="w-full h-full object-cover" />
+                      <img
+                        src={img.imageUrl}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?w=800";
+                        }}
+                      />
                     </button>
                   ))}
                 </div>

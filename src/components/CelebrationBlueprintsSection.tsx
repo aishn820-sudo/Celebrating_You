@@ -115,7 +115,7 @@ const DEFAULT_BLUEPRINTS: BlueprintItem[] = [
     suggestedBudgetMin: 2000000,
     suggestedBudgetMax: 4500000,
     defaultGuestCount: 50,
-    coverImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop",
+    coverImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop",
     suggestedServices: ["Balloon Arch & Photo Booth", "Theme Cake", "Sound & DJ", "Buffet Catering"],
     serviceChecklist: ["Diploma & Cap Balloon Arch", "Custom Trophy Cake", "Sound System & Playlist", "Celebration Snack Bar"],
   },
@@ -221,6 +221,11 @@ export default function CelebrationBlueprintsSection({ templates }: BlueprintsSe
                       alt={bp.name}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop";
+                      }}
                     />
                     <div className="absolute top-3 left-3">
                       <Badge variant="rose" size="sm" className="bg-white/95 dark:bg-dark-surface/90 dark:text-dark-text-primary backdrop-blur-sm shadow-sm font-semibold">
@@ -321,6 +326,11 @@ export default function CelebrationBlueprintsSection({ templates }: BlueprintsSe
                   src={selectedBlueprint.coverImage}
                   alt={selectedBlueprint.name}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop";
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-transparent to-transparent flex items-end p-4">
                   <div>

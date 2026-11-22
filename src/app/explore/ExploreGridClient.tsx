@@ -51,6 +51,11 @@ export default function ExploreGridClient({
                       src={service.images[0].imageUrl}
                       alt={service.title}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?w=800";
+                      }}
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-dark-elevated text-stone-400 dark:text-stone-500">

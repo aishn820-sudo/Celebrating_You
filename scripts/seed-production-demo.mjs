@@ -466,6 +466,19 @@ async function run() {
     }
     console.log(`✓ Ensured ${blueprints.length} Curated Celebration Blueprints.`);
 
+    // 7. Fix any broken Unsplash image references in existing database
+    const repairedImages = await prisma.serviceImage.updateMany({
+      where: {
+        imageUrl: { contains: "1535141192574-5d4897c13136" },
+      },
+      data: {
+        imageUrl: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop",
+      },
+    });
+    if (repairedImages.count > 0) {
+      console.log(`✓ Repaired ${repairedImages.count} service image URLs.`);
+    }
+
     console.log("====================================================");
     console.log("✓ DEMO DATA SEEDING COMPLETE & IDEMPOTENT.");
     console.log("====================================================");

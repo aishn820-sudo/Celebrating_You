@@ -159,7 +159,16 @@ export default function VendorServicesClient({
               >
                 <div>
                   <div className="relative h-48 w-full bg-stone-100 dark:bg-dark-elevated overflow-hidden">
-                    <img src={cover} alt={s.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                    <img
+                      src={cover}
+                      alt={s.title}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?w=800";
+                      }}
+                    />
                     <div className="absolute top-3 left-3 bg-white/90 dark:bg-dark-elevated/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-medium text-stone-800 dark:text-dark-text-primary shadow-sm border border-stone-200/60 dark:border-dark-border">
                       {s.category?.name}
                     </div>
