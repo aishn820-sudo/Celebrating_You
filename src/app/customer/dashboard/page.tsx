@@ -227,12 +227,10 @@ export default async function CustomerDashboardPage() {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4 text-xs text-stone-500 dark:text-dark-text-secondary mb-3">
+                          <div className="flex items-center gap-2 text-xs text-stone-500 dark:text-dark-text-secondary mb-3">
                             <span>{new Date(event.eventDate).toLocaleDateString("en-IN", { dateStyle: "medium" })}</span>
                             <span>•</span>
                             <span>{event.guestCount} Guests</span>
-                            <span>•</span>
-                            <span>{formatPrice(event.overallBudget)}</span>
                           </div>
 
                           {/* Checkpoint Progress */}
@@ -262,8 +260,8 @@ export default async function CustomerDashboardPage() {
               <Link href="/plan" className="text-xs font-semibold text-stone-600 dark:text-dark-text-secondary hover:text-stone-900 dark:hover:text-dark-text-primary flex items-center gap-1">
                 <Plus className="w-3.5 h-3.5" /> Plan New Celebration
               </Link>
-              <Link href="/customer/events" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 flex items-center gap-1">
-                Manage all events <ArrowRight className="w-3.5 h-3.5" />
+              <Link href="/customer/events" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800">
+                Manage all celebrations
               </Link>
             </div>
           </Card>
@@ -341,8 +339,8 @@ export default async function CustomerDashboardPage() {
             </div>
 
             <div className="px-6 py-4 bg-stone-50/60 dark:bg-dark-elevated/50 border-t border-stone-100 dark:border-dark-border flex justify-end">
-              <Link href="/customer/bookings" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 flex items-center gap-1">
-                View all bookings & receipts <ArrowRight className="w-3.5 h-3.5" />
+              <Link href="/customer/bookings" className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800">
+                View all bookings & receipts
               </Link>
             </div>
           </Card>

@@ -77,6 +77,9 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
 
   // Services accordion
   const [expandedBookingId, setExpandedBookingId] = useState<string | null>(null);
+  const [payingBooking, setPayingBooking] = useState<any>(null);
+  const [payingLoading, setPayingLoading] = useState(false);
+  const [paySuccessMsg, setPaySuccessMsg] = useState("");
 
   // Memories state
   const [memories, setMemories] = useState<any[]>(initialEvent.memories || []);
@@ -205,6 +208,59 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  // Advance Payment & Contact Unlock
+  const executeAdvancePayment = async () => {
+    if (!payingBooking) return;
+    setPayingLoading(true);
+    setPaySuccessMsg("");
+
+    try {
+      const res = await fetch("/api/customer/pay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookingId: payingBooking.id,
+          type: "ADVANCE",
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Payment failed");
+      }
+
+      setPaySuccessMsg("Advance payment received! Vendor direct contact details unlocked.");
+      setEvent((prev: any) => ({
+        ...prev,
+        bookings: prev.bookings.map((bk: any) =>
+          bk.id === payingBooking.id
+            ? {
+                ...bk,
+                status: "CONFIRMED",
+                advancePaid: bk.advanceRequired,
+                isVendorContactRevealed: true,
+                vendor: {
+                  ...bk.vendor,
+                  phone: bk.vendor?.phone?.includes("🔒") ? "+91 98765 43210" : bk.vendor?.phone,
+                  email: bk.vendor?.email?.includes("🔒") ? "contact@vendor.com" : bk.vendor?.email,
+                },
+              }
+            : bk
+        ),
+      }));
+
+      setTimeout(() => {
+        setPayingBooking(null);
+        setPaySuccessMsg("");
+        router.refresh();
+      }, 1500);
+    } catch (err: any) {
+      alert(err.message || "Payment could not be processed");
+    } finally {
+      setPayingLoading(false);
     }
   };
 
@@ -542,7 +598,7 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
                   onClick={() => setActiveTab("services")}
                   className="mt-4 text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800"
                 >
-                  View Contracts & Contacts →
+                  View Contracts & Contacts
                 </button>
               </Card>
 
@@ -561,7 +617,7 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
                   onClick={() => setActiveTab("memories")}
                   className="mt-4 text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800"
                 >
-                  Open Memories Gallery →
+                  Open Memories Gallery
                 </button>
               </Card>
             </div>
@@ -661,6 +717,16 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
                           </div>
 
                           <div className="flex items-center gap-2">
+                            {!isContactUnlocked && !hasAdvancePaid && !["CANCELLED", "DECLINED", "EXPIRED"].includes(b.status) && (
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={() => setPayingBooking(b)}
+                              >
+                                Pay Advance & Unlock Contact
+                              </Button>
+                            )}
+
                             <button
                               onClick={() => setExpandedBookingId(isExpanded ? null : b.id)}
                               className="p-2 text-stone-500 hover:text-stone-900 dark:hover:text-dark-text-primary rounded-xl border border-stone-200 dark:border-dark-border"
@@ -1337,6 +1403,75 @@ export default function EventDetailClient({ event: initialEvent }: { event: any 
             </div>
           </div>
         </Modal>
+        {/* ADVANCE PAYMENT & CONTACT UNLOCK MODAL */}
+        {payingBooking && (
+          <Modal
+            isOpen={true}
+            onClose={() => {
+              if (!payingLoading) setPayingBooking(null);
+            }}
+            title="Pay Advance Deposit & Unlock Contact"
+            description="Clear the one-time advance deposit to lock your celebration date and reveal direct vendor contact details."
+          >
+            <div className="space-y-4 text-xs">
+              {paySuccessMsg && (
+                <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40 text-emerald-800 dark:text-emerald-300 rounded-xl">
+                  {paySuccessMsg}
+                </div>
+              )}
+
+              <div className="p-4 rounded-xl bg-warm-50 dark:bg-dark-elevated border border-stone-200 dark:border-dark-border space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-stone-500 dark:text-dark-text-secondary">Service:</span>
+                  <span className="font-bold text-stone-900 dark:text-dark-text-primary">
+                    {payingBooking.service?.title}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-stone-500 dark:text-dark-text-secondary">Vendor:</span>
+                  <span className="font-bold text-stone-900 dark:text-dark-text-primary">
+                    {payingBooking.vendor?.businessName}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t border-stone-200 dark:border-dark-border">
+                  <span className="font-semibold text-stone-700 dark:text-stone-300">
+                    Advance Deposit to Pay:
+                  </span>
+                  <span className="text-lg font-bold font-mono text-rose-700 dark:text-rose-400">
+                    {formatPrice(payingBooking.advanceRequired || Math.round((payingBooking.agreedServiceValue * 0.25)))}
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-[11px] text-stone-500 dark:text-dark-text-secondary leading-relaxed">
+                Upon payment confirmation, Document 1 (Advance Voucher) is generated and direct contact details (phone, email) are instantly unlocked.
+              </p>
+
+              <div className="flex gap-3 pt-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="md"
+                  className="w-1/2"
+                  disabled={payingLoading}
+                  onClick={() => setPayingBooking(null)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="md"
+                  className="w-1/2"
+                  isLoading={payingLoading}
+                  onClick={executeAdvancePayment}
+                >
+                  Confirm & Pay Advance
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        )}
       </main>
     </div>
   );

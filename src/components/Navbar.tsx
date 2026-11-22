@@ -45,7 +45,7 @@ export default function Navbar() {
               Celebrating <span className="text-rose-700 dark:text-rose-400 italic">YOU</span>
             </span>
             <span className="block text-[9px] uppercase tracking-widest font-semibold text-stone-500 dark:text-dark-text-secondary">
-              Every Celebration. One Place.
+              Let&apos;s Celebrate Together
             </span>
           </div>
         </Link>

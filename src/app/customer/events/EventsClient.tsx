@@ -140,7 +140,6 @@ export default function EventsClient({
                 variant="primary"
                 size="md"
                 onClick={() => setIsModalOpen(true)}
-                leftIcon={<Plus className="w-4 h-4" />}
               >
                 Plan An Event
               </Button>

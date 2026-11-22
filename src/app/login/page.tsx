@@ -132,7 +132,7 @@ function LoginForm() {
           disabled={loading}
           className="w-full justify-center py-3 shadow-soft mt-2"
         >
-          {loading ? "Signing in..." : "Continue"} <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          {loading ? "Signing in..." : "Continue"}
         </Button>
       </form>
 

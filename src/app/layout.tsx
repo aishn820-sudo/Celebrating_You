@@ -3,8 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "Celebrating YOU — Every Celebration. One Place.",
-  description: "You Imagine the Celebration. We Bring Everything Together. Connect with trusted event service providers and vendors through one unified celebration marketplace.",
+  title: "Celebrating YOU — Let's Celebrate Together",
+  description: "Let's Celebrate Together. Plan your special moments, discover trusted vendors and keep every beautiful memory in one place.",
 };
 
 export default function RootLayout({

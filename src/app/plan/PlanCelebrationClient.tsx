@@ -308,6 +308,7 @@ export default function PlanCelebrationClient({
           overallBudget: budget,
           notes,
           templateId: preselectedTemplate?.id || null,
+          selectedCategories,
         }),
       });
 
@@ -406,76 +407,50 @@ export default function PlanCelebrationClient({
             </p>
           </div>
 
-          {!isEditingOccasion && occasion ? (
-            <div className="mb-8">
-              {(() => {
-                const selectedOcc = OCCASIONS.find((o) => o.name === occasion) || OCCASIONS[0];
-                return (
-                  <div className="p-6 rounded-2xl border-2 border-rose-600/80 dark:border-rose-500 bg-rose-50/40 dark:bg-rose-950/20 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <span className="text-4xl p-3 bg-white dark:bg-dark-elevated rounded-2xl border border-rose-200 dark:border-dark-border shadow-xs">
-                        {selectedOcc.icon}
-                      </span>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-lg font-bold text-stone-900 dark:text-dark-text-primary">
-                            {selectedOcc.name}
-                          </h3>
-                          <Badge variant="rose" size="sm">
-                            Selected Occasion
-                          </Badge>
-                        </div>
-                        <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-1">
-                          {selectedOcc.tagline}
-                        </p>
-                      </div>
-                    </div>
-
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setIsEditingOccasion(true)}
-                    >
-                      Change Occasion
-                    </Button>
-                  </div>
-                );
-              })()}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
-              {OCCASIONS.map((occ) => {
-                const isSelected = occasion === occ.name;
-                return (
-                  <button
-                    key={occ.name}
-                    type="button"
-                    onClick={() => handleOccasionSelect(occ.name)}
-                    className={`p-4 rounded-xl text-left border transition-all flex items-start gap-3.5 ${
-                      isSelected
-                        ? "border-rose-600 dark:border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 shadow-sm ring-1 ring-rose-600/30"
-                        : "border-stone-200 dark:border-dark-border hover:border-stone-300 dark:hover:border-stone-600 hover:bg-stone-50/60 dark:hover:bg-dark-elevated/60"
-                    }`}
-                  >
-                    <span className="text-2xl shrink-0 p-1 bg-white dark:bg-dark-elevated rounded-lg border border-stone-100 dark:border-dark-border shadow-xs">
-                      {occ.icon}
+          <div className="mb-8">
+            {(() => {
+              const selectedOcc = OCCASIONS.find((o) => o.name === occasion) || OCCASIONS[0];
+              return (
+                <div className="p-6 rounded-2xl border-2 border-rose-600/80 dark:border-rose-500 bg-rose-50/40 dark:bg-rose-950/20 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <span className="text-4xl p-3 bg-white dark:bg-dark-elevated rounded-2xl border border-rose-200 dark:border-dark-border shadow-xs">
+                      {selectedOcc.icon}
                     </span>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4 className={`text-sm font-bold ${isSelected ? "text-rose-800 dark:text-rose-300" : "text-stone-900 dark:text-dark-text-primary"}`}>
-                          {occ.name}
-                        </h4>
-                        {isSelected && <Check className="w-4 h-4 text-rose-700 dark:text-rose-400" />}
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-bold text-stone-900 dark:text-dark-text-primary">
+                          {selectedOcc.name}
+                        </h3>
+                        <Badge variant="rose" size="sm">
+                          Selected Occasion
+                        </Badge>
                       </div>
-                      <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5 line-clamp-1">
-                        {occ.tagline}
+                      <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-1">
+                        {selectedOcc.tagline}
                       </p>
                     </div>
-                  </button>
-                );
-              })}
-            </div>
-          )}
+                  </div>
+
+                  <div className="sm:w-56">
+                    <label className="block text-[11px] font-semibold text-stone-600 dark:text-stone-300 mb-1">
+                      Change Celebration Type
+                    </label>
+                    <select
+                      value={occasion}
+                      onChange={(e) => handleOccasionSelect(e.target.value)}
+                      className="w-full text-xs font-semibold px-3 py-2.5 rounded-xl border border-stone-300 dark:border-dark-border bg-white dark:bg-dark-surface text-stone-900 dark:text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    >
+                      {OCCASIONS.map((o) => (
+                        <option key={o.name} value={o.name}>
+                          {o.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
 
           <div className="flex justify-end pt-4 border-t border-stone-100 dark:border-dark-border">
             <Button

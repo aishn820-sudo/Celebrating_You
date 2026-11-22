@@ -160,7 +160,7 @@ export default function BudgetInspirationSection({ services }: BudgetInspiration
               </p>
               <Link href={`/plan?budget=${selectedTier.id}`}>
                 <Button variant="primary" size="sm" className="w-full">
-                  Plan in this Budget <ArrowRight className="w-4 h-4" />
+                  Plan in this Budget
                 </Button>
               </Link>
             </div>
@@ -174,9 +174,9 @@ export default function BudgetInspirationSection({ services }: BudgetInspiration
               </h4>
               <Link
                 href="/explore"
-                className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 flex items-center gap-1"
+                className="text-xs font-semibold text-rose-700 dark:text-rose-400 hover:text-rose-800 dark:hover:text-rose-300 transition-colors"
               >
-                Explore all services <ArrowRight className="w-3.5 h-3.5" />
+                Explore all services
               </Link>
             </div>
 

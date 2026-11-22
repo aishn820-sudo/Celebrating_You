@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
       overallBudget, // in paise or rupees
       notes,
       templateId,
+      selectedCategories = [],
     } = body;
 
     if (!title || !eventType || !eventDate || !locationAddress) {
@@ -80,37 +81,52 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // If created with template, automatically create checkpoints from template
-      if (templateId) {
-        const template = await tx.eventTemplate.findUnique({ where: { id: templateId } });
-        if (template && template.checkpointsJson) {
-          try {
-            const parsedCheckpoints = JSON.parse(template.checkpointsJson);
-            for (const cp of parsedCheckpoints) {
-              await tx.eventCheckpoint.create({
-                data: {
-                  eventId: newEvent.id,
-                  title: cp.title,
-                  description: cp.description || "",
-                  status: "PENDING",
-                },
-              });
-            }
-          } catch (e) {
-            console.error("Error parsing template checkpoints:", e);
-          }
-        }
-      } else {
-        // Default standard checkpoints
-        await tx.eventCheckpoint.createMany({
-          data: [
-            { eventId: newEvent.id, title: "Finalize Date & Budget", status: "COMPLETED" },
-            { eventId: newEvent.id, title: "Book Core Vendors", status: "PENDING" },
-            { eventId: newEvent.id, title: "Review Decor & Menu Details", status: "PENDING" },
-            { eventId: newEvent.id, title: "Final Event Inspection", status: "PENDING" },
-          ],
-        });
+      // Dynamic checkpoints tailored to the selected services & celebration
+      const checkpointList: { title: string; status: string }[] = [];
+      const catArray = Array.isArray(selectedCategories) ? selectedCategories : [];
+
+      if (catArray.some((c: string) => c.includes("photo"))) {
+        checkpointList.push({ title: "Review photography shot list & candid moments", status: "PENDING" });
       }
+      if (catArray.some((c: string) => c.includes("decor"))) {
+        checkpointList.push({ title: "Confirm stage styling & floral color palette", status: "PENDING" });
+      }
+      if (catArray.some((c: string) => c.includes("cater") || c.includes("dining"))) {
+        checkpointList.push({ title: "Finalize dining menu & banquet timing", status: "PENDING" });
+      }
+      if (catArray.some((c: string) => c.includes("cake") || c.includes("bak"))) {
+        checkpointList.push({ title: "Confirm cake flavor, tier design & delivery time", status: "PENDING" });
+      }
+      if (catArray.some((c: string) => c.includes("venue"))) {
+        checkpointList.push({ title: "Inspect venue layout & guest seating", status: "PENDING" });
+      }
+      if (catArray.some((c: string) => c.includes("music") || c.includes("entertain"))) {
+        checkpointList.push({ title: "Curate celebration playlist & sound setup", status: "PENDING" });
+      }
+      if (catArray.some((c: string) => c.includes("makeup") || c.includes("beauty"))) {
+        checkpointList.push({ title: "Schedule makeup & styling arrival time", status: "PENDING" });
+      }
+
+      if (checkpointList.length === 0) {
+        checkpointList.push(
+          { title: "Select celebration theme & color palette", status: "PENDING" },
+          { title: "Book core celebration vendors", status: "PENDING" },
+          { title: "Review dining & cake arrangements", status: "PENDING" }
+        );
+      }
+
+      // Completion milestones
+      checkpointList.unshift({ title: "Celebration details & date confirmed", status: "COMPLETED" });
+      checkpointList.push({ title: "Final celebration walkthrough & welcome guests", status: "PENDING" });
+
+      await tx.eventCheckpoint.createMany({
+        data: checkpointList.map((cp) => ({
+          eventId: newEvent.id,
+          title: cp.title,
+          status: cp.status,
+          isCustom: false,
+        })),
+      });
 
       return newEvent;
     });

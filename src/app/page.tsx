@@ -324,8 +324,8 @@ export default async function HomePage() {
                   <p className="text-xs text-stone-600 dark:text-dark-text-secondary line-clamp-2 leading-relaxed">
                     {occ.description}
                   </p>
-                  <span className="mt-3 text-xs font-semibold text-rose-700 dark:text-rose-400 group-hover:text-rose-800 dark:group-hover:text-rose-300 flex items-center gap-1 transition-colors">
-                    Plan this celebration <ArrowRight className="w-3.5 h-3.5" />
+                  <span className="mt-3 text-xs font-semibold text-rose-700 dark:text-rose-400 group-hover:text-rose-800 dark:group-hover:text-rose-300 transition-colors">
+                    Plan this celebration
                   </span>
                 </div>
               </Link>
@@ -439,9 +439,9 @@ export default async function HomePage() {
             </div>
             <Link
               href="/explore"
-              className="text-sm font-semibold text-rose-700 hover:text-rose-800 flex items-center gap-1.5 transition-colors"
+              className="text-sm font-semibold text-rose-700 hover:text-rose-800 transition-colors"
             >
-              Browse all categories <ArrowRight className="w-4 h-4" />
+              Browse all categories
             </Link>
           </div>
 
@@ -517,8 +517,8 @@ export default async function HomePage() {
                         {cat.description}
                       </p>
                     </div>
-                    <span className="mt-5 text-xs font-semibold text-rose-700 dark:text-rose-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                      Explore Vendors <ArrowRight className="w-3.5 h-3.5" />
+                    <span className="mt-5 text-xs font-semibold text-rose-700 dark:text-rose-400 transition-colors">
+                      Explore Vendors
                     </span>
                   </Card>
                 </Link>
