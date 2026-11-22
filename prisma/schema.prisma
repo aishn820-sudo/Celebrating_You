@@ -45,6 +45,7 @@ model Customer {
   payments      Payment[]
   reviews       Review[]
   complaints    Complaint[]
+  memories      EventMemory[]
 }
 
 // 3. Vendors
@@ -267,6 +268,7 @@ model Event {
   checkpoints        EventCheckpoint[]
   eventServices      EventService[]
   bookings           Booking[]
+  memories           EventMemory[]
 
   @@index([customerId])
   @@index([eventDate])
@@ -663,3 +665,23 @@ model VendorPromotion {
 
   @@index([vendorId])
 }
+
+// 31. EventMemories
+model EventMemory {
+  id          String    @id @default(cuid())
+  eventId     String
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  imageUrl    String
+  publicId    String?
+  caption     String?
+  highlight   Boolean   @default(false)
+  category    String?   // e.g. "HIGHLIGHT", "CAKE", "DECOR", "CANDID", "GUESTS"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([eventId])
+  @@index([customerId])
+}
+

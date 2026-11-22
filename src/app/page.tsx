@@ -30,8 +30,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
 import BudgetInspirationSection from "@/components/BudgetInspirationSection";
 import PremierVendorsSection from "@/components/PremierVendorsSection";
-import CelebrationBlueprintsSection from "@/components/CelebrationBlueprintsSection";
 import { ensureDemoData } from "@/lib/ensureDemoData";
+import { getCompanySettings } from "@/lib/companySettings";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +39,7 @@ export default async function HomePage() {
   let categories: any[] = [];
   let featuredServices: any[] = [];
   let templates: any[] = [];
+  const companySettings = await getCompanySettings();
 
   try {
     let [fetchedCategories, fetchedServices, fetchedTemplates] = await Promise.all([
@@ -187,29 +188,29 @@ export default async function HomePage() {
             {/* Brand Promise Pill */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-dark-elevated border border-stone-200 dark:border-dark-border shadow-sm text-xs font-semibold text-stone-700 dark:text-dark-text-secondary mb-6">
               <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
-              You Imagine the Celebration. We Bring Everything Together.
+              Every Celebration. One Place.
             </div>
 
             {/* Headline */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight leading-[1.1] max-w-4xl mx-auto">
-              Every Celebration. <span className="italic text-rose-700 dark:text-rose-400">One Place.</span>
+              Let&apos;s Celebrate <span className="italic text-rose-700 dark:text-rose-400">Together.</span>
             </h1>
 
             {/* Subheading */}
             <p className="mt-6 text-base sm:text-lg text-stone-600 dark:text-dark-text-secondary max-w-2xl mx-auto leading-relaxed">
-              From finding the perfect photographer to organizing décor, catering and every little detail, plan your celebration effortlessly with everything in one place.
+              Plan your special moments, discover trusted vendors and keep every beautiful memory in one place.
             </p>
 
             {/* Primary & Secondary CTAs */}
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/plan" className="w-full sm:w-auto">
                 <Button variant="primary" size="lg" className="w-full sm:w-auto px-8 py-3.5 text-sm font-bold shadow-premium">
-                  <Sparkles className="w-4 h-4 mr-2" /> Plan My Celebration
+                  Plan Celebration
                 </Button>
               </Link>
               <Link href="/explore" className="w-full sm:w-auto">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3.5 text-sm font-semibold">
-                  Explore Services <ArrowRight className="w-4 h-4 ml-2" />
+                  Explore Services
                 </Button>
               </Link>
             </div>
@@ -417,7 +418,7 @@ export default async function HomePage() {
             <div className="mt-12 text-center">
               <Link href="/plan">
                 <Button variant="champagne" size="lg" className="shadow-premium">
-                  Start Planning Your Celebration <ArrowRight className="w-4 h-4 ml-2" />
+                  Plan Celebration
                 </Button>
               </Link>
             </div>
@@ -529,88 +530,8 @@ export default async function HomePage() {
         {/* PREMIER CELEBRATION VENDORS */}
         <PremierVendorsSection services={featuredServices} />
 
-        {/* CURATED CELEBRATION BLUEPRINTS */}
-        <CelebrationBlueprintsSection templates={templates} />
-
         {/* BUDGET-CONSCIOUS INSPIRATION: Interactive Widget */}
         <BudgetInspirationSection services={featuredServices} />
-
-        {/* TRUST SECTION */}
-        <section className="py-20 bg-warm-100/60 dark:bg-dark-bg border-t border-stone-200/80 dark:border-dark-border transition-colors duration-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mb-14 text-center mx-auto">
-              <p className="text-xs uppercase tracking-widest font-bold text-rose-700 dark:text-rose-400">Built On Integrity</p>
-              <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight mt-1.5">
-                How Celebrating YOU Protects Your Special Day
-              </h2>
-              <p className="text-sm text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
-                We believe peace of mind is the cornerstone of every joyful celebration. Our platform guarantees transparency, punctuality, and financial clarity at every step.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-5">
-                  <ShieldCheck className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Rigorous Vendor Verification</h4>
-                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
-                  Every vendor is verified through Government identity checks, PAN validation, GST registration verification, and actual past event portfolio review before being listed.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 flex items-center justify-center mb-5">
-                  <Clock className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Guaranteed 2-Hour SLA</h4>
-                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
-                  No waiting days for vendor replies. Every booking request is governed by a strict 2-hour vendor response window. If a vendor cannot commit, requests lapse cleanly so you can move forward immediately.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 flex items-center justify-center mb-5">
-                  <FileCheck2 className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Milestone Legal Invoices</h4>
-                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
-                  Never rely on informal bank slips. Each booking generates separate, official documents: Document 1 (Advance Payment Receipt) and Document 2 (Final Payment Tax Invoice) with verified transaction IDs.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-stone-100 dark:bg-dark-elevated text-stone-700 dark:text-dark-text-secondary flex items-center justify-center mb-5">
-                  <FolderCheck className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Centralized Celebration Workspace</h4>
-                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
-                  Organize photography, catering, decor, and cakes under one single celebration event dashboard. Track individual contracts independently without forced package lock-ins.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 flex items-center justify-center mb-5">
-                  <Star className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Verified Customer Reviews</h4>
-                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
-                  Reviews can only be submitted by clients who completed a verified celebration booking. No fabricated reviews or arbitrary vendor removals are permitted.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-dark-surface p-7 rounded-2xl border border-stone-200 dark:border-dark-border shadow-soft">
-                <div className="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 flex items-center justify-center mb-5">
-                  <UserCheck className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-stone-900 dark:text-dark-text-primary">Contact Privacy Protection</h4>
-                <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-2.5 leading-relaxed">
-                  Customer and vendor contact information remains protected until the booking is accepted and the advance payment is verified, preventing unsolicited marketing calls.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* FINAL CTA SECTION */}
         <section className="py-20 bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 text-white text-center">
@@ -624,7 +545,7 @@ export default async function HomePage() {
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/plan">
                 <Button variant="champagne" size="lg" className="px-8 py-3.5 shadow-premium">
-                  Start Planning <ArrowRight className="w-4 h-4 ml-2" />
+                  Plan Celebration
                 </Button>
               </Link>
               <Link href="/explore">
@@ -651,6 +572,11 @@ export default async function HomePage() {
               <p className="text-[11px] text-stone-400 mt-2.5 leading-relaxed">
                 Every Celebration. One Place. Connecting customers with verified event service providers through one unified celebration marketplace.
               </p>
+              <div className="mt-3.5 space-y-1 text-[11px] text-stone-400">
+                <p>Support: <span className="text-stone-300">{companySettings.companyEmail}</span></p>
+                <p>Helpline: <span className="text-stone-300">{companySettings.companyPhone}</span></p>
+                <p className="text-stone-500 line-clamp-1">{companySettings.companyAddress}</p>
+              </div>
             </div>
 
             <div>

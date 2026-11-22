@@ -17,6 +17,7 @@ export default async function EventDashboardPage({ params }: { params: { id: str
     },
     include: {
       checkpoints: { orderBy: { createdAt: "asc" } },
+      memories: { orderBy: [{ highlight: "desc" }, { createdAt: "desc" }] },
       bookings: {
         include: {
           service: {
@@ -27,7 +28,11 @@ export default async function EventDashboardPage({ params }: { params: { id: str
           },
           vendor: true,
           package: true,
-          invoices: true,
+          invoices: {
+            include: {
+              transaction: true,
+            },
+          },
           payments: {
             include: {
               transactions: true,
@@ -42,10 +47,23 @@ export default async function EventDashboardPage({ params }: { params: { id: str
     notFound();
   }
 
+  // Strict server-side verification: mask vendor contact details if advance payment is not confirmed
+  const sanitizedEvent = {
+    ...event,
+    bookings: event.bookings.map((b) => ({
+      ...b,
+      vendor: {
+        ...b.vendor,
+        phone: b.isVendorContactRevealed ? b.vendor.phone : "🔒 Unlocks upon Advance Payment",
+        email: b.isVendorContactRevealed ? b.vendor.email : "🔒 Unlocks upon Advance Payment",
+      },
+    })),
+  };
+
   return (
     <>
       <Navbar />
-      <EventDetailClient event={event} />
+      <EventDetailClient event={sanitizedEvent} />
     </>
   );
 }

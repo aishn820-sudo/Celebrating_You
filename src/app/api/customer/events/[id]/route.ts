@@ -16,6 +16,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       },
       include: {
         checkpoints: { orderBy: { createdAt: "asc" } },
+        memories: { orderBy: [{ highlight: "desc" }, { createdAt: "desc" }] },
         bookings: {
           include: {
             service: {

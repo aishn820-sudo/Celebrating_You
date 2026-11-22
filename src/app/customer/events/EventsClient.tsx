@@ -103,29 +103,28 @@ export default function EventsClient({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
           <div>
             <Badge variant="rose" size="sm" className="mb-2">
-              Event Planner
+              Celebrations
             </Badge>
             <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-dark-text-primary tracking-tight">
-              My Celebration Events
+              My Celebrations
             </h1>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-dark-text-secondary mt-1 max-w-2xl">
-              Organize multi-vendor celebrations with custom timelines, checkpoints, and budget tracking.
+              Organize your celebrations, manage vendor contracts, and preserve your special moments.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-2.5">
             <Link href="/plan">
-              <Button variant="champagne" size="md" leftIcon={<Sparkles className="w-4 h-4" />}>
-                Guided 5-Step Planner
+              <Button variant="primary" size="md">
+                Plan Celebration
               </Button>
             </Link>
             <Button
-              variant="primary"
+              variant="outline"
               size="md"
               onClick={() => setIsModalOpen(true)}
-              leftIcon={<Plus className="w-4 h-4" />}
             >
-              Quick Create
+              Create Celebration
             </Button>
           </div>
         </div>
@@ -225,7 +224,7 @@ export default function EventsClient({
                   <div className="mt-6 pt-4 border-t border-stone-100 dark:border-dark-border">
                     <Link href={`/customer/events/${event.id}`}>
                       <Button variant="secondary" size="sm" className="w-full">
-                        Open Celebration Dashboard <ArrowRight className="w-3.5 h-3.5" />
+                        Open Celebration
                       </Button>
                     </Link>
                   </div>

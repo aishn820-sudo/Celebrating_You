@@ -14,6 +14,7 @@ import {
   AlertCircle,
   LogOut,
   LayoutDashboard,
+  Settings,
   Menu,
   X,
 } from "lucide-react";
@@ -39,6 +40,7 @@ export default function AdminNav() {
     { label: "Bookings & Expiry", href: "/admin-portal/bookings", icon: CalendarRange },
     { label: "Financial Analytics", href: "/admin-portal/financials", icon: BadgePercent },
     { label: "Disputes & Complaints", href: "/admin-portal/complaints", icon: AlertCircle },
+    { label: "Company Settings", href: "/admin-portal/settings", icon: Settings },
     { label: "System Audit Logs", href: "/admin-portal/audit-logs", icon: History },
   ];
 

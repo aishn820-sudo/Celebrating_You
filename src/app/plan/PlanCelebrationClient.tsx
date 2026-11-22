@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -142,6 +142,7 @@ export default function PlanCelebrationClient({
   const [occasion, setOccasion] = useState(
     defaultOccasion || (preselectedTemplate ? preselectedTemplate.category : "Birthday")
   );
+  const [isEditingOccasion, setIsEditingOccasion] = useState(false);
 
   // Step 2: Event Details
   const [title, setTitle] = useState(
@@ -172,6 +173,68 @@ export default function PlanCelebrationClient({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
+  // Session storage draft persistence (Phase 2)
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("cy_planner_draft");
+      if (saved) {
+        const draft = JSON.parse(saved);
+        if (draft.occasion) setOccasion(draft.occasion);
+        if (draft.title) setTitle(draft.title);
+        if (draft.eventDate) setEventDate(draft.eventDate);
+        if (draft.eventTime) setEventTime(draft.eventTime);
+        if (draft.city) setCity(draft.city);
+        if (draft.address) setAddress(draft.address);
+        if (draft.guestCount) setGuestCount(draft.guestCount);
+        if (draft.budget) setBudget(draft.budget);
+        if (draft.notes) setNotes(draft.notes);
+        if (draft.selectedCategories && Array.isArray(draft.selectedCategories)) {
+          setSelectedCategories(draft.selectedCategories);
+        }
+        if (draft.shortlistedServices && Array.isArray(draft.shortlistedServices)) {
+          setShortlistedServices(draft.shortlistedServices);
+        }
+      }
+    } catch (e) {
+      // Ignore storage errors
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(
+        "cy_planner_draft",
+        JSON.stringify({
+          occasion,
+          title,
+          eventDate,
+          eventTime,
+          city,
+          address,
+          guestCount,
+          budget,
+          notes,
+          selectedCategories,
+          shortlistedServices,
+        })
+      );
+    } catch (e) {
+      // Ignore storage quota errors
+    }
+  }, [
+    occasion,
+    title,
+    eventDate,
+    eventTime,
+    city,
+    address,
+    guestCount,
+    budget,
+    notes,
+    selectedCategories,
+    shortlistedServices,
+  ]);
+
   const formatPrice = (paise: number) => `₹${(paise / 100).toLocaleString("en-IN")}`;
   const formatRupees = (inr: number) => `₹${inr.toLocaleString("en-IN")}`;
 
@@ -190,6 +253,7 @@ export default function PlanCelebrationClient({
     if (occObj) {
       setSelectedCategories(occObj.defaultCategories);
     }
+    setIsEditingOccasion(false);
   };
 
   // Filter recommendations based on transparent rules
@@ -258,6 +322,9 @@ export default function PlanCelebrationClient({
       }
 
       // Successfully created event! Redirect to its celebration dashboard
+      try {
+        sessionStorage.removeItem("cy_planner_draft");
+      } catch (e) {}
       router.push(`/customer/events/${data.event.id}`);
       router.refresh();
     } catch (err: any) {
@@ -339,45 +406,82 @@ export default function PlanCelebrationClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
-            {OCCASIONS.map((occ) => {
-              const isSelected = occasion === occ.name;
-              return (
-                <button
-                  key={occ.name}
-                  type="button"
-                  onClick={() => handleOccasionSelect(occ.name)}
-                  className={`p-4 rounded-xl text-left border transition-all flex items-start gap-3.5 ${
-                    isSelected
-                      ? "border-rose-600 dark:border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 shadow-sm ring-1 ring-rose-600/30"
-                      : "border-stone-200 dark:border-dark-border hover:border-stone-300 dark:hover:border-stone-600 hover:bg-stone-50/60 dark:hover:bg-dark-elevated/60"
-                  }`}
-                >
-                  <span className="text-2xl shrink-0 p-1 bg-white dark:bg-dark-elevated rounded-lg border border-stone-100 dark:border-dark-border shadow-xs">
-                    {occ.icon}
-                  </span>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <h4 className={`text-sm font-bold ${isSelected ? "text-rose-800 dark:text-rose-300" : "text-stone-900 dark:text-dark-text-primary"}`}>
-                        {occ.name}
-                      </h4>
-                      {isSelected && <Check className="w-4 h-4 text-rose-700 dark:text-rose-400" />}
+          {!isEditingOccasion && occasion ? (
+            <div className="mb-8">
+              {(() => {
+                const selectedOcc = OCCASIONS.find((o) => o.name === occasion) || OCCASIONS[0];
+                return (
+                  <div className="p-6 rounded-2xl border-2 border-rose-600/80 dark:border-rose-500 bg-rose-50/40 dark:bg-rose-950/20 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <span className="text-4xl p-3 bg-white dark:bg-dark-elevated rounded-2xl border border-rose-200 dark:border-dark-border shadow-xs">
+                        {selectedOcc.icon}
+                      </span>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-bold text-stone-900 dark:text-dark-text-primary">
+                            {selectedOcc.name}
+                          </h3>
+                          <Badge variant="rose" size="sm">
+                            Selected Occasion
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-stone-600 dark:text-dark-text-secondary mt-1">
+                          {selectedOcc.tagline}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5 line-clamp-1">
-                      {occ.tagline}
-                    </p>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsEditingOccasion(true)}
+                    >
+                      Change Occasion
+                    </Button>
                   </div>
-                </button>
-              );
-            })}
-          </div>
+                );
+              })()}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
+              {OCCASIONS.map((occ) => {
+                const isSelected = occasion === occ.name;
+                return (
+                  <button
+                    key={occ.name}
+                    type="button"
+                    onClick={() => handleOccasionSelect(occ.name)}
+                    className={`p-4 rounded-xl text-left border transition-all flex items-start gap-3.5 ${
+                      isSelected
+                        ? "border-rose-600 dark:border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 shadow-sm ring-1 ring-rose-600/30"
+                        : "border-stone-200 dark:border-dark-border hover:border-stone-300 dark:hover:border-stone-600 hover:bg-stone-50/60 dark:hover:bg-dark-elevated/60"
+                    }`}
+                  >
+                    <span className="text-2xl shrink-0 p-1 bg-white dark:bg-dark-elevated rounded-lg border border-stone-100 dark:border-dark-border shadow-xs">
+                      {occ.icon}
+                    </span>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className={`text-sm font-bold ${isSelected ? "text-rose-800 dark:text-rose-300" : "text-stone-900 dark:text-dark-text-primary"}`}>
+                          {occ.name}
+                        </h4>
+                        {isSelected && <Check className="w-4 h-4 text-rose-700 dark:text-rose-400" />}
+                      </div>
+                      <p className="text-xs text-stone-500 dark:text-dark-text-secondary mt-0.5 line-clamp-1">
+                        {occ.tagline}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           <div className="flex justify-end pt-4 border-t border-stone-100 dark:border-dark-border">
             <Button
               variant="primary"
               size="md"
               onClick={() => setStep(2)}
-              rightIcon={<ChevronRight className="w-4 h-4" />}
             >
               Continue to Event Details
             </Button>
@@ -529,7 +633,6 @@ export default function PlanCelebrationClient({
               variant="outline"
               size="md"
               onClick={() => setStep(1)}
-              leftIcon={<ChevronLeft className="w-4 h-4" />}
             >
               Back
             </Button>
@@ -544,7 +647,6 @@ export default function PlanCelebrationClient({
                 setError("");
                 setStep(3);
               }}
-              rightIcon={<ChevronRight className="w-4 h-4" />}
             >
               Continue to Services Needed
             </Button>
@@ -606,7 +708,6 @@ export default function PlanCelebrationClient({
               variant="outline"
               size="md"
               onClick={() => setStep(2)}
-              leftIcon={<ChevronLeft className="w-4 h-4" />}
             >
               Back
             </Button>
@@ -621,7 +722,6 @@ export default function PlanCelebrationClient({
                 setError("");
                 setStep(4);
               }}
-              rightIcon={<ChevronRight className="w-4 h-4" />}
             >
               Discover Matching Vendors ({selectedCategories.length} Selected)
             </Button>
@@ -735,7 +835,6 @@ export default function PlanCelebrationClient({
               variant="outline"
               size="md"
               onClick={() => setStep(3)}
-              leftIcon={<ChevronLeft className="w-4 h-4" />}
             >
               Back
             </Button>
@@ -743,7 +842,6 @@ export default function PlanCelebrationClient({
               variant="primary"
               size="md"
               onClick={() => setStep(5)}
-              rightIcon={<ChevronRight className="w-4 h-4" />}
             >
               Review Celebration Summary ({shortlistedServices.length} Selected)
             </Button>
@@ -894,7 +992,6 @@ export default function PlanCelebrationClient({
               variant="outline"
               size="md"
               onClick={() => setStep(4)}
-              leftIcon={<ChevronLeft className="w-4 h-4" />}
             >
               Back
             </Button>
@@ -905,7 +1002,7 @@ export default function PlanCelebrationClient({
               onClick={handleSaveCelebration}
               className="shadow-premium"
             >
-              Save Celebration & Open Dashboard <ArrowRight className="w-4 h-4 ml-2" />
+              Save Celebration
             </Button>
           </div>
         </div>

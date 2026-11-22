@@ -27,7 +27,7 @@ export default async function CustomerDashboardPage() {
     redirect("/login");
   }
 
-  const [customer, events, bookings] = await Promise.all([
+  const [customer, events, bookings, memoriesCount] = await Promise.all([
     prisma.customer.findUnique({
       where: { id: session.customerId },
     }),
@@ -48,6 +48,9 @@ export default async function CustomerDashboardPage() {
         invoices: true,
       },
       orderBy: { createdAt: "desc" },
+    }),
+    prisma.eventMemory.count({
+      where: { customerId: session.customerId },
     }),
   ]);
 
@@ -87,12 +90,12 @@ export default async function CustomerDashboardPage() {
 
           <div className="flex flex-wrap gap-3">
             <Link href="/plan">
-              <Button variant="primary" size="sm" leftIcon={<Sparkles className="w-4 h-4" />}>
-                Plan My Celebration
+              <Button variant="primary" size="sm">
+                Plan Celebration
               </Button>
             </Link>
             <Link href="/explore">
-              <Button variant="outline" size="sm" leftIcon={<Calendar className="w-4 h-4 text-stone-600 dark:text-stone-400" />}>
+              <Button variant="outline" size="sm">
                 Explore Services
               </Button>
             </Link>
@@ -118,7 +121,7 @@ export default async function CustomerDashboardPage() {
 
             <Link href={`/customer/bookings/${awaitingAdvanceBookings[0].id}`}>
               <Button variant="champagne" size="sm" className="whitespace-nowrap shadow-xs">
-                Review & Confirm Booking <ArrowRight className="w-4 h-4 ml-1.5" />
+                Review & Confirm Booking
               </Button>
             </Link>
           </div>
@@ -158,12 +161,12 @@ export default async function CustomerDashboardPage() {
 
           <Card className="p-5">
             <span className="text-[10px] font-bold text-stone-400 dark:text-stone-500 uppercase tracking-wider block">
-              Outstanding Balances
+              Preserved Memories
             </span>
-            <span className="text-2xl font-serif font-bold text-stone-900 dark:text-dark-text-primary mt-1 block font-mono">
-              {formatPrice(totalOutstandingBalance)}
+            <span className="text-2xl font-serif font-bold text-rose-700 dark:text-rose-400 mt-1 block">
+              {memoriesCount} Photos
             </span>
-            <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 block">Due on final fulfillment</span>
+            <span className="text-[11px] text-stone-500 dark:text-dark-text-secondary mt-0.5 block">Cherished moments saved</span>
           </Card>
         </div>
 

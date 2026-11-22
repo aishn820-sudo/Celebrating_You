@@ -54,13 +54,13 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-stone-600 dark:text-dark-text-secondary">
           <Link
             href="/plan"
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
               pathname.startsWith("/plan")
                 ? "bg-rose-700 text-white shadow-sm"
                 : "bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/50"
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5" /> Plan Celebration
+            Plan Celebration
           </Link>
           <Link
             href="/explore"
@@ -70,33 +70,15 @@ export default function Navbar() {
           >
             Explore Services
           </Link>
-          <Link
-            href="/templates"
-            className={`transition-colors hover:text-stone-900 dark:hover:text-white ${
-              pathname === "/templates" ? "text-rose-700 dark:text-rose-400 font-semibold" : ""
-            }`}
-          >
-            Celebration Blueprints
-          </Link>
           {user?.role === "CUSTOMER" && (
-            <>
-              <Link
-                href="/customer/events"
-                className={`transition-colors hover:text-stone-900 dark:hover:text-white ${
-                  pathname.startsWith("/customer/events") ? "text-rose-700 dark:text-rose-400 font-semibold" : ""
-                }`}
-              >
-                My Celebrations
-              </Link>
-              <Link
-                href="/customer/bookings"
-                className={`transition-colors hover:text-stone-900 dark:hover:text-white ${
-                  pathname.startsWith("/customer/bookings") ? "text-rose-700 dark:text-rose-400 font-semibold" : ""
-                }`}
-              >
-                Bookings
-              </Link>
-            </>
+            <Link
+              href="/customer/events"
+              className={`transition-colors hover:text-stone-900 dark:hover:text-white ${
+                pathname.startsWith("/customer/events") ? "text-rose-700 dark:text-rose-400 font-semibold" : ""
+              }`}
+            >
+              My Celebrations
+            </Link>
           )}
           {user?.role === "VENDOR" && (
             <Link
@@ -155,14 +137,7 @@ export default function Navbar() {
                           onClick={() => setMenuOpen(false)}
                           className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 dark:text-dark-text-secondary hover:bg-stone-50 dark:hover:bg-dark-elevated hover:text-stone-900 dark:hover:text-white"
                         >
-                          <Calendar className="w-4 h-4 text-stone-400" /> My Events
-                        </Link>
-                        <Link
-                          href="/customer/bookings"
-                          onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-stone-700 dark:text-dark-text-secondary hover:bg-stone-50 dark:hover:bg-dark-elevated hover:text-stone-900 dark:hover:text-white"
-                        >
-                          <BookOpen className="w-4 h-4 text-stone-400" /> My Bookings
+                          <Calendar className="w-4 h-4 text-stone-400" /> My Celebrations
                         </Link>
                         <Link
                           href="/customer/invoices"
@@ -230,7 +205,7 @@ export default function Navbar() {
             onClick={() => setMobileNavOpen(false)}
             className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300"
           >
-            <Sparkles className="w-4 h-4" /> Plan Celebration
+            Plan Celebration
           </Link>
           <Link
             href="/explore"
@@ -238,13 +213,6 @@ export default function Navbar() {
             className="block px-3 py-2 rounded-xl text-sm font-medium text-stone-700 dark:text-dark-text-secondary hover:bg-stone-100 dark:hover:bg-dark-elevated"
           >
             Explore Services
-          </Link>
-          <Link
-            href="/templates"
-            onClick={() => setMobileNavOpen(false)}
-            className="block px-3 py-2 rounded-xl text-sm font-medium text-stone-700 dark:text-dark-text-secondary hover:bg-stone-100 dark:hover:bg-dark-elevated"
-          >
-            Celebration Blueprints
           </Link>
           {user?.role === "CUSTOMER" && (
             <>
@@ -254,13 +222,6 @@ export default function Navbar() {
                 className="block px-3 py-2 rounded-xl text-sm font-medium text-stone-700 dark:text-dark-text-secondary hover:bg-stone-100 dark:hover:bg-dark-elevated"
               >
                 My Celebrations
-              </Link>
-              <Link
-                href="/customer/bookings"
-                onClick={() => setMobileNavOpen(false)}
-                className="block px-3 py-2 rounded-xl text-sm font-medium text-stone-700 dark:text-dark-text-secondary hover:bg-stone-100 dark:hover:bg-dark-elevated"
-              >
-                Bookings
               </Link>
               <Link
                 href="/customer/invoices"
